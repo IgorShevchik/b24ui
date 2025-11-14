@@ -227,7 +227,7 @@ export default defineNuxtConfig({
   },
   $production: {
     site: {
-      url: 'https://bitrix24.github.io'
+      url: 'https://b24ui.bx-shef.by'
     }
   },
 
@@ -398,7 +398,7 @@ export default defineNuxtConfig({
   // },
 
   llms: {
-    domain: 'https://bitrix24.github.io/b24ui',
+    domain: 'https://b24ui.bx-shef.by/b24ui',
     title: 'Bitrix24 UI',
     description: 'A comprehensive, Nuxt-integrated UI library providing a rich set of fully-styled, accessible and highly customizable components for REST API web-application development.',
     full: {

@@ -27,7 +27,7 @@ logs
 # Local env files
 .env
 .env.*
-!.env.example
+!.env.prod.example
 
 playgrounds/vue/auto-imports.d.ts
 playgrounds/vue/components.d.ts
@@ -40,3 +40,4 @@ playgrounds/demo/tsconfig.app.tsbuildinfo
 playgrounds/demo/tsconfig.node.tsbuildinfo
 
 # Docs
+/b24ui-app.tar

@@ -1,0 +1,20 @@
+node_modules
+.nuxt
+.nitro
+.cache
+dist
+.git
+.github
+.env
+*.log
+.DS_Store
+Dockerfile
+.dockerignore
+
+**/data
+**/.nuxt
+## **/.output
+**/.nitro
+**/.cache
+**/dist
+**/node_modules
