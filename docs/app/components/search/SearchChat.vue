@@ -4,12 +4,15 @@ import { Chat } from '@ai-sdk/vue'
 import type { UIMessage, UIToolInvocation } from 'ai'
 import { DefaultChatTransport } from 'ai'
 import { splitByCase, upperFirst } from 'scule'
+import { useMemoize } from '@vueuse/core'
 import ProseStreamPre from '../prose/PreStream.vue'
 import AlertIcon from '@bitrix24/b24icons-vue/outline/AlertIcon'
 import RobotIcon from '@bitrix24/b24icons-vue/outline/RobotIcon'
 import UserIcon from '@bitrix24/b24icons-vue/common-b24/UserIcon'
 import Maximize2Icon from '@bitrix24/b24icons-vue/outline/Maximize2Icon'
 import Minimize2Icon from '@bitrix24/b24icons-vue/outline/Minimize2Icon'
+
+const config = useRuntimeConfig()
 
 const components = {
   pre: ProseStreamPre as unknown as DefineComponent
@@ -29,7 +32,7 @@ const toast = useToast()
 const chat = new Chat({
   messages: messages.value,
   transport: new DefaultChatTransport({
-    api: '/b24ui/api/search'
+    api: `${config.public.baseUrl}/api/search`
   }),
   onError: (error) => {
     const { message } = typeof error.message === 'string' && error.message[0] === '{' ? JSON.parse(error.message) : error

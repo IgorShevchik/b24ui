@@ -28,5 +28,7 @@ export default defineNitroPlugin((nitroApp) => {
 })
 
 function transformRawLink(href: string) {
-  return `${withoutTrailingSlash(href.replace(/^https:\/\/bitrix24.github.io\/b24ui/, 'https://bitrix24.github.io/b24ui/raw'))}.md`
+  const config = useRuntimeConfig()
+
+  return `${withoutTrailingSlash(href.replace(new RegExp(`^${config.public.canonicalUrl}${config.public.baseUrl}`), `${config.public.canonicalUrl}${config.public.baseUrl}/raw`))}.md`
 }

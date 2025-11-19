@@ -35,13 +35,14 @@ export default defineCachedEventHandler(async (event) => {
   const componentMetaName = `B24${upperFirst(camelName)}`
 
   const metadata = await $fetch(`/api/component-meta/${componentMetaName}.json`)
+  const config = useRuntimeConfig()
 
   return {
     name: normalizedName,
     title: page.title,
     description: page.description,
     category: page.category,
-    documentation_url: `https://bitrix24.github.io/b24ui${page.path}`,
+    documentation_url: `${config.public.canonicalUrl}${config.public.baseUrl}${page.path}`,
     metadata: {
       pascalName: metadata.pascalName,
       kebabName: metadata.kebabName,

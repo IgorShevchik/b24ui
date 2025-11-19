@@ -7,11 +7,13 @@ export default defineCachedEventHandler(async (event) => {
     .select('id', 'title', 'description', 'path', 'navigation')
     .all()
 
+  const config = useRuntimeConfig()
+
   return pages.map(page => ({
     title: page.title,
     description: page.description,
     path: page.path,
-    url: `https://bitrix24.github.io/b24ui${page.path}`,
+    url: `${config.public.canonicalUrl}${config.public.baseUrl}${page.path}`,
     navigation: page.navigation
   })).sort((a, b) => a.path.localeCompare(b.path))
 }, {

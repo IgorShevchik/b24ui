@@ -105,10 +105,10 @@ export interface TableProps<T extends TableData = TableData> extends TableOption
      */
     overscan?: number
     /**
-     * Estimated size (in px) of each item
+     * Estimated size (in px) of each item, or a function that returns the size for a given index
      * @defaultValue 65
      */
-    estimateSize?: number
+    estimateSize?: number | ((index: number) => number)
   })
   /**
    * The text to display when the table is empty.
@@ -418,7 +418,24 @@ const virtualizer = !!props.virtualize && useVirtualizer({
     return rows.value.length
   },
   getScrollElement: () => rootRef.value?.$el,
-  estimateSize: () => virtualizerProps.value.estimateSize
+  estimateSize: (index: number) => {
+    const estimate = virtualizerProps.value.estimateSize
+    return typeof estimate === 'function' ? estimate(index) : estimate
+  }
+})
+
+const renderedSize = computed(() => {
+  if (!virtualizer) {
+    return 0
+  }
+
+  const virtualItems = virtualizer.value.getVirtualItems()
+  if (!virtualItems?.length) {
+    return 0
+  }
+
+  // Sum up the actual sizes of virtual items
+  return virtualItems.reduce((sum: number, item: any) => sum + item.size, 0)
 })
 
 function valueUpdater<T extends Updater<any>>(updaterOrValue: T, ref: Ref) {
@@ -490,6 +507,7 @@ defineExpose({
       :data-expanded="row.getIsExpanded()"
       :role="props.onSelect ? 'button' : undefined"
       :tabindex="props.onSelect ? 0 : undefined"
+      data-slot="tr"
       :class="b24ui.tr({
         class: [
           props.b24ui?.tr,
@@ -508,6 +526,7 @@ defineExpose({
         :data-pinned="cell.column.getIsPinned()"
         :colspan="resolveValue(cell.column.columnDef.meta?.colspan?.td, cell)"
         :rowspan="resolveValue(cell.column.columnDef.meta?.rowspan?.td, cell)"
+        data-slot="td"
         :class="b24ui.td({
           class: [
             props.b24ui?.td,
@@ -523,23 +542,23 @@ defineExpose({
       </td>
     </tr>
 
-    <tr v-if="row.getIsExpanded()" :class="b24ui.tr({ class: [props.b24ui?.tr] })">
-      <td :colspan="row.getAllCells().length" :class="b24ui.td({ class: [props.b24ui?.td] })">
+    <tr v-if="row.getIsExpanded()" data-slot="tr" :class="b24ui.tr({ class: [props.b24ui?.tr] })">
+      <td :colspan="row.getAllCells().length" data-slot="td" :class="b24ui.td({ class: [props.b24ui?.td] })">
         <slot name="expanded" :row="row" />
       </td>
     </tr>
   </DefineRowTemplate>
 
   <DefineTableTemplate>
-    <table ref="tableRef" :class="b24ui.base({ class: [props.b24ui?.base] })">
-      <caption v-if="caption || !!slots.caption" :class="b24ui.caption({ class: [props.b24ui?.caption] })">
+    <table ref="tableRef" data-slot="base" :class="b24ui.base({ class: [props.b24ui?.base] })">
+      <caption v-if="caption || !!slots.caption" data-slot="caption" :class="b24ui.caption({ class: [props.b24ui?.caption] })">
         <slot name="caption">
           {{ caption }}
         </slot>
       </caption>
 
-      <thead :class="b24ui.thead({ class: [props.b24ui?.thead] })">
-        <tr v-for="headerGroup in tableApi.getHeaderGroups()" :key="headerGroup.id" :class="b24ui.tr({ class: [props.b24ui?.tr] })">
+      <thead data-slot="thead" :class="b24ui.thead({ class: [props.b24ui?.thead] })">
+        <tr v-for="headerGroup in tableApi.getHeaderGroups()" :key="headerGroup.id" data-slot="tr" :class="b24ui.tr({ class: [props.b24ui?.tr] })">
           <th
             v-for="header in headerGroup.headers"
             :key="header.id"
@@ -547,6 +566,7 @@ defineExpose({
             :scope="header.colSpan > 1 ? 'colgroup' : 'col'"
             :colspan="header.colSpan > 1 ? header.colSpan : undefined"
             :rowspan="header.rowSpan > 1 ? header.rowSpan : undefined"
+            data-slot="th"
             :class="b24ui.th({
               class: [
                 props.b24ui?.th,
@@ -562,10 +582,10 @@ defineExpose({
           </th>
         </tr>
 
-        <tr :class="b24ui.separator({ class: [props.b24ui?.separator] })" />
+        <tr data-slot="separator" :class="b24ui.separator({ class: [props.b24ui?.separator] })" />
       </thead>
 
-      <tbody :class="b24ui.tbody({ class: [props.b24ui?.tbody] })">
+      <tbody data-slot="tbody" :class="b24ui.tbody({ class: [props.b24ui?.tbody] })">
         <slot name="body-top" />
 
         <template v-if="rows.length">
@@ -587,13 +607,13 @@ defineExpose({
         </template>
 
         <tr v-else-if="loading && !!slots['loading']">
-          <td :colspan="tableApi.getAllLeafColumns().length" :class="b24ui.loading({ class: props.b24ui?.loading })">
+          <td :colspan="tableApi.getAllLeafColumns().length" data-slot="loading" :class="b24ui.loading({ class: props.b24ui?.loading })">
             <slot name="loading" />
           </td>
         </tr>
 
         <tr v-else>
-          <td :colspan="tableApi.getAllLeafColumns().length" :class="b24ui.empty({ class: props.b24ui?.empty })">
+          <td :colspan="tableApi.getAllLeafColumns().length" data-slot="empty" :class="b24ui.empty({ class: props.b24ui?.empty })">
             <slot name="empty">
               {{ empty || t('table.noData') }}
             </slot>
@@ -605,20 +625,22 @@ defineExpose({
 
       <tfoot
         v-if="hasFooter"
+        data-slot="tfoot"
         :class="b24ui.tfoot({ class: [props.b24ui?.tfoot] })"
         :style="virtualizer ? {
-          transform: `translateY(${virtualizer.getTotalSize() - virtualizer.getVirtualItems().length * virtualizerProps.estimateSize}px)`
+          transform: `translateY(${virtualizer.getTotalSize() - renderedSize}px)`
         } : undefined"
       >
-        <tr :class="b24ui.separator({ class: [props.b24ui?.separator] })" />
+        <tr data-slot="separator" :class="b24ui.separator({ class: [props.b24ui?.separator] })" />
 
-        <tr v-for="footerGroup in tableApi.getFooterGroups()" :key="footerGroup.id" :class="b24ui.tr({ class: [props.b24ui?.tr] })">
+        <tr v-for="footerGroup in tableApi.getFooterGroups()" :key="footerGroup.id" data-slot="tr" :class="b24ui.tr({ class: [props.b24ui?.tr] })">
           <th
             v-for="header in footerGroup.headers"
             :key="header.id"
             :data-pinned="header.column.getIsPinned()"
             :colspan="header.colSpan > 1 ? header.colSpan : undefined"
             :rowspan="header.rowSpan > 1 ? header.rowSpan : undefined"
+            data-slot="th"
             :class="b24ui.th({
               class: [
                 props.b24ui?.th,
@@ -637,7 +659,7 @@ defineExpose({
     </table>
   </DefineTableTemplate>
 
-  <Primitive ref="rootRef" :as="as" v-bind="$attrs" :class="b24ui.root({ class: [props.b24ui?.root, props.class] })">
+  <Primitive ref="rootRef" :as="as" v-bind="$attrs" data-slot="root" :class="b24ui.root({ class: [props.b24ui?.root, props.class] })">
     <div
       v-if="virtualizer"
       :style="{

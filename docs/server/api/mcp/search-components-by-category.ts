@@ -19,6 +19,7 @@ export default defineCachedEventHandler(async (event) => {
   }
 
   const components = await query.all()
+  const config = useRuntimeConfig()
 
   let results = components.map(component => ({
     name: component.path.split('/').pop(),
@@ -26,7 +27,7 @@ export default defineCachedEventHandler(async (event) => {
     description: component.description,
     category: component.category,
     path: component.path,
-    url: `https://bitrix24.github.io/b24ui${component.path}`,
+    url: `${config.public.canonicalUrl}${config.public.baseUrl}${component.path}`,
     links: component.links
   }))
 

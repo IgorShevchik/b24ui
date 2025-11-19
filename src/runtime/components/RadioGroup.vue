@@ -178,11 +178,12 @@ function onUpdate(value: any) {
     :orientation="orientation"
     :name="name"
     :disabled="disabled"
+    data-slot="root"
     :class="b24ui.root({ class: [props.b24ui?.root, props.class] })"
     @update:model-value="onUpdate"
   >
-    <fieldset :class="b24ui.fieldset({ class: props.b24ui?.fieldset })" v-bind="ariaAttrs">
-      <legend v-if="legend || !!slots.legend" :class="b24ui.legend({ class: props.b24ui?.legend })">
+    <fieldset data-slot="fieldset" :class="b24ui.fieldset({ class: props.b24ui?.fieldset })" v-bind="ariaAttrs">
+      <legend v-if="legend || !!slots.legend" data-slot="legend" :class="b24ui.legend({ class: props.b24ui?.legend })">
         <slot name="legend">
           {{ legend }}
         </slot>
@@ -192,28 +193,32 @@ function onUpdate(value: any) {
         :is="(!variant || variant === 'list') ? 'div' : Label"
         v-for="item in normalizedItems"
         :key="item.value"
-        :class="b24ui.item({ class: [props.b24ui?.item, item.b24ui?.item, item.class] })"
+        data-slot="item"
+        :class="b24ui.item({ class: [props.b24ui?.item, item.b24ui?.item, item.class], disabled: item.disabled || disabled })"
       >
-        <div :class="b24ui.container({ class: [props.b24ui?.container, item.b24ui?.container] })">
+        <div data-slot="container" :class="b24ui.container({ class: [props.b24ui?.container, item.b24ui?.container] })">
           <RRadioGroupItem
             :id="item.id"
             :value="item.value"
-            :disabled="item.disabled"
-            :class="b24ui.base({ class: [props.b24ui?.base, item.b24ui?.base], disabled: item.disabled })"
+            :disabled="item.disabled || disabled"
+            data-slot="base"
+            :class="b24ui.base({ class: [props.b24ui?.base, item.b24ui?.base], disabled: item.disabled || disabled  })"
           >
-            <RadioGroupIndicator :class="b24ui.indicator({ class: [props.b24ui?.indicator, item.b24ui?.indicator] })" />
+            <RadioGroupIndicator data-slot="indicator" :class="b24ui.indicator({ class: [props.b24ui?.indicator, item.b24ui?.indicator] })" />
           </RRadioGroupItem>
         </div>
 
         <div
           v-if="(item.label || !!slots.label) || (item.description || !!slots.description)"
+          data-slot="wrapper"
           :class="b24ui.wrapper({ class: [props.b24ui?.wrapper, item.b24ui?.wrapper] })"
         >
           <component
             :is="(!variant || variant === 'list') ? Label : 'p'"
             v-if="item.label || !!slots.label"
             :for="item.id"
-            :class="b24ui.label({ class: [props.b24ui?.label, item.b24ui?.label] })"
+            data-slot="label"
+            :class="b24ui.label({ class: [props.b24ui?.label, item.b24ui?.label], disabled: item.disabled || disabled })"
           >
             <slot name="label" :item="item" :model-value="(modelValue as RadioGroupValue)">
               {{ item.label }}
@@ -221,7 +226,8 @@ function onUpdate(value: any) {
           </component>
           <p
             v-if="item.description || !!slots.description"
-            :class="b24ui.description({ class: [props.b24ui?.description, item.b24ui?.description] })"
+            data-slot="description"
+            :class="b24ui.description({ class: [props.b24ui?.description, item.b24ui?.description], disabled: item.disabled || disabled })"
           >
             <slot name="description" :item="item" :model-value="(modelValue as RadioGroupValue)">
               {{ item.description }}

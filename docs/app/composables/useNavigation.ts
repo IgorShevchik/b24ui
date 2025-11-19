@@ -228,7 +228,15 @@ export const useNavigation = (navigation: Ref<ContentNavigationItem[] | undefine
   )
 
   const navigationByFramework = computed(() =>
-    rootNavigation.value?.map(item => filterChildrenByFramework(item, framework.value))
+    rootNavigation.value?.map(item => filterChildrenByFramework(item, framework.value)).map((item) => {
+      return {
+        ...item,
+        path: withTrailingSlash(item.path),
+        children: (item?.children || []).map((child) => {
+          return { ...child, path: withTrailingSlash(child.path) }
+        })
+      }
+    })
   )
 
   const navigationByCategory = computed(() => {
@@ -282,7 +290,7 @@ export const useNavigation = (navigation: Ref<ContentNavigationItem[] | undefine
         ...item,
         open: true,
         children: [
-          ...(((item?.children || []) as NavigationMenuItem[]).map(link => ({ ...link, to: withTrailingSlash(link.to as string), active: withTrailingSlash(link.to as string) === route.path })))
+          ...(((item?.children || []) as (NavigationMenuItem & { description?: string })[]).map(link => ({ ...link, to: withTrailingSlash(link.to as string), active: withTrailingSlash(link.to as string) === route.path })))
         ]
       }
     })
@@ -293,6 +301,7 @@ export const useNavigation = (navigation: Ref<ContentNavigationItem[] | undefine
         ...row,
         type: 'label' as const,
         open: undefined,
+        description: undefined,
         children: undefined
       })
 

@@ -1,7 +1,7 @@
 {
   "name": "@bitrix24/b24ui-nuxt",
   "description": "Bitrix24 UI-Kit for developing web applications REST API for NUXT & VUE",
-  "version": "2.1.2",
+  "version": "2.1.5",
   "packageManager": "pnpm@10.22.0",
   "repository": {
     "type": "git",
@@ -115,7 +115,6 @@
     "dev:vue": "pnpm --filter ./playgrounds/vue dev -- --uiDev",
     "dev:vue:build": "pnpm --filter ./playgrounds/vue build",
     "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxt prepare playgrounds/nuxt && nuxt prepare docs && pnpm dev:vue:build && nuxt prepare playgrounds/demo && nuxt-component-meta playgrounds/nuxt --outputDir ../../src/.component-meta/",
-    "dev:prepare-component-meta": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxt prepare docs && nuxt-component-meta docs --outputDir ../../src/.component-meta/",
     "demo:dev": "nuxt dev playgrounds/demo",
     "demo:generate": "nuxt generate playgrounds/demo",
     "demo:preview": "nuxt preview playgrounds/demo",
@@ -157,7 +156,7 @@
     "embla-carousel-wheel-gestures": "^8.1.0",
     "fuse.js": "^7.1.0",
     "hookable": "^5.5.3",
-    "knitwork": "^1.2.0",
+    "knitwork": "^1.3.0",
     "magic-string": "^0.30.21",
     "mlly": "^1.8.0",
     "motion-v": "^1.7.3",
@@ -173,20 +172,19 @@
     "unplugin-auto-import": "^20.2.0",
     "unplugin-vue-components": "^30.0.0",
     "vaul-vue": "0.4.1",
-    "vue-component-type-helpers": "^3.1.3"
+    "vue-component-type-helpers": "^3.1.4"
   },
   "devDependencies": {
-    "@nuxt/content": "^3.8.0",
     "@nuxt/eslint-config": "^1.10.0",
     "@nuxt/module-builder": "^1.0.2",
     "@nuxt/test-utils": "^3.20.1",
     "@types/canvas-confetti": "^1.9.0",
     "@types/node": "^24.7.0",
     "esno": "^4.8.0",
-    "nuxt-component-meta": "^0.14.1",
+    "nuxt-component-meta": "^0.14.2",
     "sharp": "^0.34.3",
     "@vue/test-utils": "^2.4.6",
-    "ai": "^5.0.90",
+    "ai": "^5.0.93",
     "embla-carousel": "^8.6.0",
     "eslint": "^9.39.1",
     "happy-dom": "^20.0.10",
@@ -194,10 +192,11 @@
     "vitest": "^3.2.4",
     "vitest-axe": "^0.1.0",
     "vitest-environment-nuxt": "^1.0.1",
-    "vue-tsc": "^3.1.3"
+    "vue-tsc": "^3.1.4"
   },
   "peerDependencies": {
     "@inertiajs/vue3": "^2.0.7",
+    "@nuxt/content": "^3.8.0",
     "joi": "^18.0.0",
     "superstruct": "^2.0.0",
     "typescript": "^5.6.3",
@@ -208,6 +207,9 @@
   },
   "peerDependenciesMeta": {
     "@inertiajs/vue3": {
+      "optional": true
+    },
+    "@nuxt/content": {
       "optional": true
     },
     "joi": {
@@ -234,9 +236,7 @@
     "@bitrix24/b24ui-nuxt": "workspace:*",
     "debug": "4.3.7",
     "typescript": "5.8.3",
-    "unplugin": "^2.3.10",
-    "ai": "5.0.90",
-    "@ai-sdk/vue": "2.0.90"
+    "unplugin": "^2.3.10"
   },
   "keywords": [
     "bitrix24-ui",

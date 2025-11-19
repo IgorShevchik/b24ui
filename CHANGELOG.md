@@ -1,5 +1,60 @@
 # Changelog
 
+## [2.1.5](https://github.com/bitrix24/b24ui/compare/v2.1.4...v2.1.5) (2025-11-xx)
+
+### Bug Fixes
+
+* **NavigationMenu:** proxy `modelValue` / `defaultValue` in vertical orientation
+* **NavigationMenu:** hide label and trailing with css when collapsed
+* **ContentSearchButton/DashboardSearchButton:** hide label and trailing with css when collapsed
+* **CheckboxGroup/RadioGroup/Switch:** consistent disabled styles
+
+### Docs
+
+* **navigation-menu:** incorrect index in model value example
+
+### Chore
+
+* **deps:** remove @vueuse/nuxt
+
+## [2.1.4](https://github.com/bitrix24/b24ui/compare/v2.1.3...v2.1.4) (2025-11-18)
+
+### Features
+
+* **Table:** handle virtualizer `estimateSize` as function
+
+### Bug Fixes
+
+* **module:** scan layers when using component detection
+* **ColorModeButton:** use css to display color mode icon
+* **components:** calc virtualizer estimateSize based on item description
+* **InputMenu:** prevent change event when selecting create item
+
+### Docs
+
+* improve llms
+
+## [2.1.3](https://github.com/bitrix24/b24ui/compare/v2.1.2...v2.1.3) (2025-11-17)
+
+### Features
+
+* **components:** add `data-slot` attributes
+
+### Bug Fixes
+
+* **types:** export missing utils types
+* **CommandPalette/ContentSearch:** improve performances and filtering logic
+* **inertia:** set serverRendered dynamically to prevent SSR crash
+
+### Docs
+
+* **app:** improve navigation filtering logic
+* **components:** add search to filter navigation
+
+### Chore
+
+* **deps:** update
+
 ## [2.1.2](https://github.com/bitrix24/b24ui/compare/v2.1.1...v2.1.2) (2025-11-13)
 
 ### Features

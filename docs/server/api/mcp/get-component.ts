@@ -31,6 +31,7 @@ export default defineCachedEventHandler(async (event) => {
   }
 
   const documentation = await $fetch<string>(`/raw${page.path}.md`)
+  const config = useRuntimeConfig()
 
   return {
     name: normalizedName,
@@ -38,7 +39,7 @@ export default defineCachedEventHandler(async (event) => {
     description: page.description,
     category: page.category,
     documentation,
-    documentation_url: `https://bitrix24.github.io/b24ui${page.path}`
+    documentation_url: `${config.public.canonicalUrl}${config.public.baseUrl}${page.path}`
   }
 }, {
   name: 'mcp-get-component',

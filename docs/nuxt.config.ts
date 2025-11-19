@@ -1,4 +1,3 @@
-import type { NuxtComponentMeta } from 'nuxt-component-meta'
 import { createResolver } from '@nuxt/kit'
 import pkg from '../package.json'
 import { withoutTrailingSlash } from 'ufo'
@@ -28,6 +27,7 @@ const pages = [
   '/docs/getting-started/ai/mcp/',
   '/docs/getting-started/ai/llms-txt/',
   // endregion ////
+  '/docs/components/',
   // region Layout ////
   '/docs/components/app/',
   '/docs/components/sidebar-layout/',
@@ -194,6 +194,11 @@ const pagesService = [
 
 const extraAllowedHosts = (process?.env.NUXT_ALLOWED_HOSTS?.split(',').map((s: string) => s.trim()).filter(Boolean)) ?? []
 
+const prodUrl = process?.env.NUXT_PUBLIC_SITE_URL ?? ''
+const baseUrl = process?.env.NUXT_PUBLIC_BASE_URL ?? ''
+const canonicalUrl = process?.env.NUXT_PUBLIC_CANONICAL_URL ?? ''
+const gitUrl = process?.env.NUXT_PUBLIC_GIT_URL ?? ''
+
 export default defineNuxtConfig({
   modules: [
     '../src/module',
@@ -201,7 +206,6 @@ export default defineNuxtConfig({
     '@nuxt/content',
     // '@nuxt/image',
     '@nuxtjs/plausible',
-    '@vueuse/nuxt',
     'nuxt-component-meta',
     'nuxt-og-image',
     // @memo off this -> use in nuxt-og-image
@@ -220,17 +224,6 @@ export default defineNuxtConfig({
     'nuxt-llms'
   ],
 
-  $development: {
-    site: {
-      url: 'http://localhost:3000'
-    }
-  },
-  $production: {
-    site: {
-      url: 'https://b24ui.bx-shef.by'
-    }
-  },
-
   ssr: true,
 
   devtools: {
@@ -238,19 +231,15 @@ export default defineNuxtConfig({
   },
 
   app: {
-    baseURL: '/b24ui/',
+    baseURL: `${baseUrl}/`,
     buildAssetsDir: '/_nuxt/',
     head: {
       link: [
-        { rel: 'icon', type: 'image/x-icon', href: '/b24ui/favicon.ico' }
+        { rel: 'icon', type: 'image/x-icon', href: `${baseUrl}/favicon.ico` }
       ],
-      htmlAttrs: {
-        class: 'edge-dark'
-      }
+      htmlAttrs: { class: 'edge-dark' }
     },
-    rootAttrs: {
-      'data-vaul-drawer-wrapper': ''
-    }
+    rootAttrs: { 'data-vaul-drawer-wrapper': '' }
   },
 
   css: ['~/assets/css/main.css'],
@@ -271,9 +260,17 @@ export default defineNuxtConfig({
     }
   },
 
+  /**
+   * @memo this will be overwritten from .env or Docker_*
+   * @see https://nuxt.com/docs/guide/going-further/runtime-config#example
+   */
   runtimeConfig: {
     public: {
-      version: pkg.version
+      version: pkg.version,
+      siteUrl: prodUrl,
+      baseUrl,
+      canonicalUrl,
+      gitUrl
     }
   },
 
@@ -317,11 +314,7 @@ export default defineNuxtConfig({
   nitro: {
     prerender: {
       routes: [
-        // ...pages.map((page: string) => `${page}`),
-        // @memo fix EMFILE: too many open files
         ...pages.map((page: string) => `${withoutTrailingSlash(`/raw${page}`)}.md`),
-        // ...apiComponentMeta,
-        // ...apiComponentExample,
         ...pagesFrameExamples,
         ...pagesService
       ],
@@ -338,28 +331,6 @@ export default defineNuxtConfig({
     server: {
       // Fix: "Blocked request. This host is not allowed" when using tunnels like ngrok
       allowedHosts: [...extraAllowedHosts]
-      // Optionally set HMR host if needed behind proxy:
-      // hmr: { protocol: 'wss', host: 'whale-viable-wasp.ngrok-free.app', port: 443 }
-    }
-  },
-
-  hooks: {
-    // @ts-expect-error - Hook is not typed correctly
-    'component-meta:schema': (schema: NuxtComponentMeta) => {
-      for (const componentName in schema) {
-        const component = schema[componentName]
-        // Delete schema from slots to reduce metadata file size
-        if (component?.meta?.slots) {
-          for (const slot of component.meta.slots) {
-            delete (slot as any).schema
-          }
-        }
-        if (component?.meta?.events) {
-          for (const event of component.meta.events) {
-            delete (event as any).schema
-          }
-        }
-      }
     }
   },
 
@@ -385,8 +356,8 @@ export default defineNuxtConfig({
     metaFields: {
       type: false,
       props: true,
-      slots: true,
-      events: true,
+      slots: 'no-schema',
+      events: 'no-schema',
       exposed: false
     }
   },
@@ -398,7 +369,7 @@ export default defineNuxtConfig({
   // },
 
   llms: {
-    domain: 'https://b24ui.bx-shef.by/b24ui',
+    domain: `${prodUrl}${baseUrl}`,
     title: 'Bitrix24 UI',
     description: 'A comprehensive, Nuxt-integrated UI library providing a rich set of fully-styled, accessible and highly customizable components for REST API web-application development.',
     full: {

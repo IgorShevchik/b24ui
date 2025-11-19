@@ -22,6 +22,7 @@ export default defineCachedEventHandler(async (event) => {
   }
 
   const documentation = await $fetch<string>(`/raw${page.path}.md`)
+  const config = useRuntimeConfig()
 
   return {
     version,
@@ -29,7 +30,7 @@ export default defineCachedEventHandler(async (event) => {
     description: page.description,
     path: page.path,
     documentation,
-    url: `https://bitrix24.github.io/b24ui${page.path}`
+    url: `${config.public.canonicalUrl}${config.public.baseUrl}${page.path}`
   }
 }, {
   name: 'mcp-get-migration-guide',

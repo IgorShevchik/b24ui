@@ -8,9 +8,10 @@ import { createDeepSeek } from '@ai-sdk/deepseek'
  */
 export default defineEventHandler(async (event) => {
   const { messages } = await readBody(event)
+  const config = useRuntimeConfig()
 
   const httpTransport = new StreamableHTTPClientTransport(
-    new URL(import.meta.dev ? 'http://localhost:3000/b24ui/mcp/' : 'https://b24ui.bx-shef.by/b24ui/mcp/')
+    new URL(import.meta.dev ? `http://localhost:3000${config.public.baseUrl}/mcp/` : `${config.public.siteUrl}${config.public.baseUrl}/mcp/`)
   )
   const httpClient = await experimental_createMCPClient({
     transport: httpTransport

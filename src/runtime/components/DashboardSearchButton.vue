@@ -80,8 +80,9 @@ const { t } = useLocale()
 const appConfig = useAppConfig() as DashboardSearchButton['AppConfig']
 const { toggleSearch } = useDashboard({ toggleSearch: () => {} })
 
-// eslint-disable-next-line vue/no-dupe-keys
-const b24ui = computed(() => tv({ extend: tv(theme), ...(appConfig.b24ui?.dashboardSearchButton || {}) })())
+const b24ui = computed(() => tv({ extend: tv(theme), ...(appConfig.b24ui?.dashboardSearchButton || {}) })({
+  collapsed: props.collapsed
+}))
 </script>
 
 <template>
@@ -92,13 +93,13 @@ const b24ui = computed(() => tv({ extend: tv(theme), ...(appConfig.b24ui?.dashbo
       v-bind="{
         ...buttonProps,
         ...(collapsed ? {
-          'label': undefined,
           'aria-label': label || t('dashboardSearchButton.label')
         } : {
           color: 'air-secondary-no-accent'
         }),
         ...$attrs
       }"
+      data-slot="base"
       :class="b24ui.base({ class: [props.b24ui?.base, props.class] })"
       :b24ui="transformUI(b24ui, props.b24ui)"
       @click="toggleSearch"
@@ -107,8 +108,8 @@ const b24ui = computed(() => tv({ extend: tv(theme), ...(appConfig.b24ui?.dashbo
         <slot :name="name" v-bind="slotData" />
       </template>
 
-      <template v-if="!collapsed" #trailing="{ b24ui: b24uiProxy }">
-        <div :class="b24ui.trailing({ class: props.b24ui?.trailing })">
+      <template #trailing="{ b24ui: b24uiProxy }">
+        <div data-slot="trailing" :class="b24ui.trailing({ class: props.b24ui?.trailing })">
           <slot name="trailing" :b24ui="b24uiProxy">
             <template v-if="kbds?.length">
               <B24Kbd
