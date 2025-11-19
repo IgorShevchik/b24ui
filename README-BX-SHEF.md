@@ -66,6 +66,10 @@ which make
 
 ---
 
+### Увеличить swap
+
+> @todo Описать
+
 ## Сборка проекта на вашем компьютере
 
 ```bash
@@ -80,9 +84,10 @@ pnpm run docs:build
 
 ```bash
 # Соберите Docker образ
-
 docker build -t b24ui-app .
+```
 
+```bash
 # Проверьте, что образ создан
 docker images
 ```
