@@ -202,14 +202,11 @@ const gitUrl = process?.env.NUXT_PUBLIC_GIT_URL ?? ''
 export default defineNuxtConfig({
   modules: [
     '../src/module',
-    // '@bitrix24/b24ui-nuxt',
     '@nuxt/content',
     // '@nuxt/image',
     '@nuxtjs/plausible',
     'nuxt-component-meta',
     'nuxt-og-image',
-    // @memo off this -> use in nuxt-og-image
-    'nuxt-site-config',
     'motion-v/nuxt',
     (_, nuxt) => {
       nuxt.hook('components:dirs', (dirs) => {
