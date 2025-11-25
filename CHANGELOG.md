@@ -1,5 +1,22 @@
 # Changelog
 
+## [2.1.8](https://github.com/bitrix24/b24ui/compare/v2.1.7...v2.1.8) (2025-11-xx)
+
+### Bug Fixes
+
+* **Table:** properly position pinned columns based on `size`
+* **Button:** some improve the label style
+
+### Docs
+
+* **llms:** improve generate
+* **transformMDC:** improve generate
+
+### Chore
+
+* **deps:** update all non-major dependencies
+* **deps:** update actions/checkout action to v6
+
 ## [2.1.7](https://github.com/bitrix24/b24ui/compare/v2.1.6...v2.1.7) (2025-11-24)
 
 ### Bug Fixes
