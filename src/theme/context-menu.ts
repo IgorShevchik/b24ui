@@ -8,10 +8,10 @@
 export default {
   slots: {
     content: [
-      'light',
-      'bg-(--popup-window-background-color)',
+      'base-mode',
+      'bg-(--ui-color-bg-content-primary)',
       'shadow-(--popup-window-box-shadow)',
-      'rounded-(--popup-window-border-radius) will-change-[opacity]',
+      'rounded-(--ui-border-radius-xl) will-change-[opacity]',
       'motion-safe:data-[state=open]:animate-[scale-in_100ms_ease-out] motion-safe:data-[state=closed]:animate-[scale-out_100ms_ease-in]',
       'origin-(--reka-context-menu-content-transform-origin)',
       'font-[family-name:var(--ui-font-family-primary)]',
@@ -22,7 +22,7 @@ export default {
     ].join(' '),
     viewport: [
       'relative',
-      'w-full max-h-[40vh] min-w-[120px]',
+      'w-full max-h-[40vh] min-w-[192px]',
       'scroll-py-1',
       'overflow-x-hidden overflow-y-auto scrollbar-thin' // scrollbar-transparent
     ].join(' '),
@@ -33,12 +33,12 @@ export default {
       'flex flex-row rtl:flex-row-reverse items-center',
       'select-none outline-none whitespace-nowrap',
       'text-start',
-      'text-(length:--popup-window-delimiter-font-size)',
-      'text-(--popup-window-delimiter-text-color)',
-      'font-(--popup-window-delimiter-font-weight)',
-      'after:ms-[10px] after:block after:flex-1 after:min-w-[15px] after:h-px after:bg-(--popup-window-delimiter-bg-color)'
+      'text-(length:--ui-size-sm)',
+      'text-(--b24ui-typography-legend-color)',
+      'font-(--ui-font-weight-normal)',
+      'after:ms-[10px] after:block after:flex-1 after:min-w-[15px] after:h-px after:bg-(--ui-color-divider-vibrant-default)'
     ].join(' '),
-    separator: 'my-[8px] mx-[18px] h-[1px] bg-(--popup-window-delimiter-bg-color)',
+    separator: 'my-[8px] mx-[18px] h-[1px] bg-(--ui-color-divider-vibrant-default)',
     item: [
       'group',
       'w-full h-[36px]',
@@ -49,13 +49,13 @@ export default {
       'cursor-pointer',
       'data-disabled:cursor-not-allowed data-disabled:opacity-30',
       'text-start',
-      'text-(length:--menu-popup-item-font-size)',
-      'text-(--menu-popup-item-color) hover:text-(--menu-popup-item-color-hover)',
-      'data-highlighted:text-(--menu-popup-item-color-hover)',
-      'data-[state=open]:text-(--menu-popup-item-color-hover)',
-      'hover:bg-(--menu-popup-item-bg-color-hover)',
-      'data-highlighted:bg-(--menu-popup-item-bg-color-hover)',
-      'data-[state=open]:bg-(--menu-popup-item-bg-color-hover)',
+      'text-(length:--ui-font-size-md)',
+      'text-(--b24ui-typography-legend-color) hover:text-(--b24ui-typography-label-color)',
+      'data-highlighted:text-(--b24ui-typography-label-color)',
+      'data-[state=open]:text-(--b24ui-typography-label-color)',
+      'hover:bg-(--ui-color-divider-optical-1-alt)',
+      'data-highlighted:bg-(--ui-color-divider-optical-1-alt)',
+      'data-[state=open]:bg-(--ui-color-divider-optical-1-alt)',
       'transition-colors'
     ].join(' '),
     itemLeadingIcon: [
