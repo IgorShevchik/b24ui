@@ -44,7 +44,7 @@ type EditorToolbarBaseProps<T extends ArrayOrNested<EditorToolbarItem> = ArrayOr
   color?: ButtonProps['color']
   /**
    * The color of the active toolbar control.
-   * @defaultValue 'air-primary'
+   * @defaultValue 'air-tertiary-accent'
    */
   activeColor?: ButtonProps['color']
   /**
@@ -103,7 +103,7 @@ defineOptions({ inheritAttrs: false })
 const props = withDefaults(defineProps<EditorToolbarProps<T>>(), {
   layout: 'fixed',
   color: 'air-tertiary-no-accent',
-  activeColor: 'air-primary',
+  activeColor: 'air-tertiary-accent',
   size: 'sm'
 })
 defineSlots<EditorToolbarSlots<T>>()
@@ -259,21 +259,27 @@ function getDropdownProps(item: EditorToolbarDropdownItem) {
   })
 }
 
-function mapDropdownItem(item: EditorToolbarDropdownChildItem) {
-  // If it's a separator or label (no 'kind' property), return as is
+function mapDropdownItem(item: EditorToolbarDropdownChildItem): any {
+  // Recursively map children if present
+  const children = 'children' in item && Array.isArray(item.children)
+    ? item.children.map(mapDropdownItem)
+    : undefined
+
+  // If it's a separator or label (no 'kind' property), return with mapped children
   if (!('kind' in item)) {
-    return item
+    return children ? { ...item, children } : item
   }
 
   const editorToolbarItem = item as EditorToolbarDropdownChildItem
   return {
     ...editorToolbarItem,
+    ...(children && { children }),
     // @ts-expect-error: need test at nuxt.ui? but this work
     active: isActive(editorToolbarItem),
     // @ts-expect-error: need test at nuxt.ui? but this work
     disabled: isDisabled(editorToolbarItem),
     // @ts-expect-error: need test at nuxt.ui? but this work
-    onClick: (e: MouseEvent) => onClick(e, editorToolbarItem)
+    onSelect: (e: Event) => onClick(e as MouseEvent, editorToolbarItem)
   }
 }
 

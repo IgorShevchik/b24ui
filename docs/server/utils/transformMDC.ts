@@ -815,10 +815,11 @@ export async function transformMDC(event: H3Event, doc: Document): Promise<Docum
 
   visitAndReplace(doc, 'component-example', (node) => {
     const camelName = camelCase(node[1]['name'])
-    const name = camelName.charAt(0).toUpperCase() + camelName.slice(1)
+    const lang = node[1]['lang'] ?? 'vue'
+    const name = node[1]['filename'] ?? camelName.charAt(0).toUpperCase() + camelName.slice(1)
     try {
-      const code = components[name].code
-      replaceNodeWithPre(node, 'vue', code, `${name}.vue`)
+      const code = components[name]?.code || ''
+      replaceNodeWithPre(node, lang, code, `${name}.${lang}`)
     } catch (error) {
       console.error(
         error,
@@ -872,11 +873,6 @@ export async function transformMDC(event: H3Event, doc: Document): Promise<Docum
     ]
   })
 
-  visitAndReplace(doc, 'card-group', (node) => {
-    node[0] = 'p'
-    node[1] = {}
-  })
-
   visitAndReplace(doc, 'accordion-item', (node) => {
     const prevNode = { ...node }
 
@@ -888,12 +884,12 @@ export async function transformMDC(event: H3Event, doc: Document): Promise<Docum
     const title = [
       'strong',
       {},
-      `${customTitle}`
+      `Question: ${customTitle}`
     ]
 
     const description = Array.isArray(prevNode[2]) ? prevNode[2] : []
     if (description) {
-      description[2] = `%br%${description[2]}%br%%br%`
+      description[2] = `%br%Answer: ${description[2]}%br%%br%`
     }
 
     node[2] = [
@@ -902,16 +898,6 @@ export async function transformMDC(event: H3Event, doc: Document): Promise<Docum
       title,
       description
     ]
-  })
-
-  visitAndReplace(doc, 'accordion', (node) => {
-    node[0] = 'p'
-    node[1] = {}
-  })
-
-  visitAndReplace(doc, 'code-group', (node) => {
-    node[0] = 'p'
-    node[1] = {}
   })
 
   const componentsListNodes: any[] = []
