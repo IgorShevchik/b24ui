@@ -46,9 +46,22 @@ export interface Bitrix24UIOptions extends Omit<ModuleOptions, 'colorMode'> {
    */
   components?: Partial<ComponentsOptions>
   /**
+   * Router integration mode
+   * - `true` (default): Use vue-router integration
+   * - `false`: Disable routing, use anchor tags
+   * - `'inertia'`: Use Inertia.js compatibility layer
+   * @defaultValue `true`
+   */
+  router?: boolean | 'inertia'
+  /**
    * Enables compatibility layer for InertiaJS
+   * @deprecated Use `router: 'inertia'` instead
    */
   inertia?: boolean
+  /**
+   * Additional packages to scan for components using Nuxt UI
+   */
+  scanPackages?: string[]
 }
 
 export const runtimeDir = normalize(fileURLToPath(new URL('./runtime', import.meta.url)))
