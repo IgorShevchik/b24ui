@@ -1,10 +1,7 @@
 <script setup lang="ts">
-import usePageMeta from './../../composables/usePageMeta'
 import ExampleGrid from '../../components/ExampleGrid.vue'
 import ExampleCard from '../../components/ExampleCard.vue'
 import MoreLIcon from '@bitrix24/b24icons-vue/outline/MoreLIcon'
-
-usePageMeta.setPageTitle('Breadcrumb')
 
 const isUseBg = ref(true)
 

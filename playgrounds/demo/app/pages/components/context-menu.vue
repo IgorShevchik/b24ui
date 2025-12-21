@@ -1,12 +1,9 @@
 <script setup lang="ts">
-import usePageMeta from './../../composables/usePageMeta'
 import ExampleGrid from '../../components/ExampleGrid.vue'
 import ExampleCard from '../../components/ExampleCard.vue'
 import SyncCircleIcon from '@bitrix24/b24icons-vue/main/SyncCircleIcon'
 import SunIcon from '@bitrix24/b24icons-vue/outline/SunIcon'
 import MoonIcon from '@bitrix24/b24icons-vue/outline/MoonIcon'
-
-usePageMeta.setPageTitle('ContextMenu')
 
 const loading = ref(false)
 const isUseBg = ref(true)

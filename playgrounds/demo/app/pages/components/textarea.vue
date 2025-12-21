@@ -1,12 +1,9 @@
 <script setup lang="ts">
 import theme from '#build/b24ui/textarea'
-import usePageMeta from './../../composables/usePageMeta'
 import RocketIcon from '@bitrix24/b24icons-vue/main/RocketIcon'
 import TaskIcon from '@bitrix24/b24icons-vue/button/TaskIcon'
 import MicrophoneOnIcon from '@bitrix24/b24icons-vue/outline/MicrophoneOnIcon'
 import StopLIcon from '@bitrix24/b24icons-vue/outline/StopLIcon'
-
-usePageMeta.setPageTitle('Textarea')
 
 const isUseBg = ref(true)
 

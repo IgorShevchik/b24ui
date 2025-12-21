@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import theme from '#build/b24ui/button'
-import usePageMeta from './../../composables/usePageMeta'
 import ExampleGrid from '../../components/ExampleGrid.vue'
 import ExampleCard from '../../components/ExampleCard.vue'
 import ExampleCardSubTitle from '../../components/ExampleCardSubTitle.vue'
@@ -9,7 +8,6 @@ import DownloadDoubleIcon from '@bitrix24/b24icons-vue/actions/DownloadDoubleIco
 import TaskIcon from '@bitrix24/b24icons-vue/button/TaskIcon'
 import TrendDownIcon from '@bitrix24/b24icons-vue/outline/TrendDownIcon'
 
-usePageMeta.setPageTitle('Button')
 const colors = Object.keys(theme.variants.color) as Array<keyof typeof theme.variants.color>
 const depths = Object.keys(theme.variants.depth) as Array<keyof typeof theme.variants.depth>
 const sizes = Object.keys(theme.variants.size) as Array<keyof typeof theme.variants.size>

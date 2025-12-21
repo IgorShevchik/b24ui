@@ -4,7 +4,6 @@
  */
 import type { SelectItem, SelectProps, AvatarProps, ChipProps, ToastProps } from '@bitrix24/b24ui-nuxt'
 import theme from '#build/b24ui/select'
-import usePageMeta from './../../composables/usePageMeta'
 import ExampleGrid from '../../components/ExampleGrid.vue'
 import ExampleCard from '../../components/ExampleCard.vue'
 import ExampleCardSubTitle from '../../components/ExampleCardSubTitle.vue'
@@ -19,8 +18,6 @@ import PlusInCircleIcon from '@bitrix24/b24icons-vue/actions/PlusInCircleIcon'
 import ArrowTopIcon from '@bitrix24/b24icons-vue/actions/ArrowTopIcon'
 import CircleCheckIcon from '@bitrix24/b24icons-vue/main/CircleCheckIcon'
 import CancelIcon from '@bitrix24/b24icons-vue/button/CancelIcon'
-
-usePageMeta.setPageTitle('Select')
 
 const toast = useToast()
 const colors = Object.keys(theme.variants.color) as Array<keyof typeof theme.variants.color>

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import type { NavigationMenuItem } from '@bitrix24/b24ui-nuxt'
-import usePageMeta from './../../composables/usePageMeta'
 import Placeholder from '../../components/Placeholder.vue'
 import ExampleGrid from '../../components/ExampleGrid.vue'
 import ExampleCard from '../../components/ExampleCard.vue'
@@ -12,8 +11,6 @@ import MicrophoneOnIcon from '@bitrix24/b24icons-vue/main/MicrophoneOnIcon'
 import CrmMapIcon from '@bitrix24/b24icons-vue/crm/CrmMapIcon'
 import Settings5Icon from '@bitrix24/b24icons-vue/editor/Settings5Icon'
 import Filter1Icon from '@bitrix24/b24icons-vue/main/Filter1Icon'
-
-usePageMeta.setPageTitle('NavigationMenu')
 
 const isCollapsed = ref(false)
 const isTooltip = ref(false)

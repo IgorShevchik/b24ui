@@ -1,14 +1,11 @@
 <script setup lang="ts">
 import type { ShortcutsConfig } from '@bitrix24/b24ui-nuxt/composables/defineShortcuts'
 import { ref, nextTick, useTemplateRef } from 'vue'
-import usePageMeta from './../../composables/usePageMeta'
 import B24SidebarLayout from '@bitrix24/b24ui-nuxt/components/SidebarLayout.vue'
 import TrashBinIcon from '@bitrix24/b24icons-vue/main/TrashBinIcon'
 import CheckIcon from '@bitrix24/b24icons-vue/main/CheckIcon'
 import Cross30Icon from '@bitrix24/b24icons-vue/actions/Cross30Icon'
 import KeyboardIcon from '@bitrix24/b24icons-vue/actions/KeyboardIcon'
-
-usePageMeta.setPageTitle('Shortcuts')
 
 const logs = ref<string[]>([])
 const inputValue = ref<string>('')

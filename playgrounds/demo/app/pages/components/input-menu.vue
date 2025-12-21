@@ -4,7 +4,6 @@
  */
 import type { InputMenuItem, InputMenuProps } from '@bitrix24/b24ui-nuxt'
 import theme from '#build/b24ui/input-menu'
-import usePageMeta from './../../composables/usePageMeta'
 import ExampleGrid from '../../components/ExampleGrid.vue'
 import ExampleCard from '../../components/ExampleCard.vue'
 import ExampleCardSubTitle from '../../components/ExampleCardSubTitle.vue'
@@ -15,7 +14,6 @@ import Search2Icon from '@bitrix24/b24icons-vue/main/Search2Icon'
 import Cross20Icon from '@bitrix24/b24icons-vue/actions/Cross20Icon'
 import TaskListIcon from '@bitrix24/b24icons-vue/outline/TaskListIcon'
 
-usePageMeta.setPageTitle('InputMenu')
 const colors = Object.keys(theme.variants.color) as Array<keyof typeof theme.variants.color>
 const sizes = Object.keys(theme.variants.size) as Array<keyof typeof theme.variants.size>
 

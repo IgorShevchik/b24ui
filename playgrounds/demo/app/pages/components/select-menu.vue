@@ -4,7 +4,6 @@
  */
 import type { SelectMenuItem, SelectMenuProps, AvatarProps, ChipProps } from '@bitrix24/b24ui-nuxt'
 import theme from '#build/b24ui/select-menu'
-import usePageMeta from './../../composables/usePageMeta'
 import ExampleGrid from '../../components/ExampleGrid.vue'
 import ExampleCard from '../../components/ExampleCard.vue'
 import ExampleCardSubTitle from '../../components/ExampleCardSubTitle.vue'
@@ -21,7 +20,6 @@ import CircleCheckIcon from '@bitrix24/b24icons-vue/main/CircleCheckIcon'
 import CancelIcon from '@bitrix24/b24icons-vue/button/CancelIcon'
 import TaskListIcon from '@bitrix24/b24icons-vue/outline/TaskListIcon'
 
-usePageMeta.setPageTitle('SelectMenu')
 const colors = Object.keys(theme.variants.color) as Array<keyof typeof theme.variants.color>
 const sizes = Object.keys(theme.variants.size) as Array<keyof typeof theme.variants.size>
 

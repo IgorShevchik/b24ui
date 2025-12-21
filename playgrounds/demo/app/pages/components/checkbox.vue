@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import theme from '#build/b24ui/checkbox'
-import usePageMeta from './../../composables/usePageMeta'
 import ExampleGrid from '../../components/ExampleGrid.vue'
 import ExampleCard from '../../components/ExampleCard.vue'
 import ExampleCardSubTitle from '../../components/ExampleCardSubTitle.vue'
 
-usePageMeta.setPageTitle('Checkbox')
 const sizes = Object.keys(theme.variants.size) as Array<keyof typeof theme.variants.size>
 const colors = Object.keys(theme.variants.color) as Array<keyof typeof theme.variants.color>
 

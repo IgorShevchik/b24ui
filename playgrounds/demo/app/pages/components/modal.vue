@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { defineAsyncComponent } from 'vue'
-import usePageMeta from './../../composables/usePageMeta'
 import ExampleGrid from '../../components/ExampleGrid.vue'
 import ExampleCard from '../../components/ExampleCard.vue'
 import Placeholder from '../../components/Placeholder.vue'
@@ -8,8 +7,6 @@ import ExampleCardSubTitle from '../../components/ExampleCardSubTitle.vue'
 import MockContentLongString from '../../components/MockContentLongString.vue'
 import MockContentLongText from '../../components/MockContentLongText.vue'
 import MockContentUploadFile from '../../components/MockContentUploadFile.vue'
-
-usePageMeta.setPageTitle('Modal')
 
 const LazyModalExample = defineAsyncComponent(() => import('../../components/ModalExample.vue'))
 

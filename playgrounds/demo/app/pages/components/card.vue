@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import theme from '#build/b24ui/card'
-import usePageMeta from './../../composables/usePageMeta'
 import ExampleGrid from '../../components/ExampleGrid.vue'
 
-usePageMeta.setPageTitle('Card')
 const variants = Object.keys(theme.variants.variant) as Array<keyof typeof theme.variants.variant>
 </script>
 

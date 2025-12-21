@@ -1,13 +1,10 @@
 <script setup lang="ts">
 import { upperFirst } from 'scule'
 import theme from '#build/b24ui/input-tags'
-import usePageMeta from './../../composables/usePageMeta'
 import ExampleGrid from '../../components/ExampleGrid.vue'
 import ExampleCard from '../../components/ExampleCard.vue'
 import ALetterIcon from '@bitrix24/b24icons-vue/main/ALetterIcon'
 import Search2Icon from '@bitrix24/b24icons-vue/main/Search2Icon'
-
-usePageMeta.setPageTitle('InputTags')
 
 const sizes = Object.keys(theme.variants.size) as Array<keyof typeof theme.variants.size>
 

@@ -5,7 +5,6 @@ import type { TableColumn, TableRow } from '@bitrix24/b24ui-nuxt'
 import type { Column } from '@tanstack/vue-table'
 import { getPaginationRowModel } from '@tanstack/vue-table'
 import { useClipboard, refDebounced } from '@vueuse/core'
-import usePageMeta from './../../composables/usePageMeta'
 import { useState } from '#imports'
 import CircleCheckIcon from '@bitrix24/b24icons-vue/outline/CircleCheckIcon'
 import MenuIcon from '@bitrix24/b24icons-vue/main/MenuIcon'
@@ -14,8 +13,6 @@ import ChevronTopLIcon from '@bitrix24/b24icons-vue/outline/ChevronTopLIcon'
 import ChevronDownLIcon from '@bitrix24/b24icons-vue/outline/ChevronDownLIcon'
 import PinIcon from '@bitrix24/b24icons-vue/outline/PinIcon'
 import UnpinIcon from '@bitrix24/b24icons-vue/outline/UnpinIcon'
-
-usePageMeta.setPageTitle('CheckboxGroup')
 
 const B24Button = resolveComponent('B24Button')
 const B24Checkbox = resolveComponent('B24Checkbox')

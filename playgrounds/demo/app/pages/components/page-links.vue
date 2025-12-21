@@ -1,13 +1,10 @@
 <script setup lang="ts">
 import type { PageLink } from '@bitrix24/b24ui-nuxt'
-import usePageMeta from './../../composables/usePageMeta'
 import ExampleGrid from '../../components/ExampleGrid.vue'
 import ExampleCard from '../../components/ExampleCard.vue'
 import DocumentSignIcon from '@bitrix24/b24icons-vue/main/DocumentSignIcon'
 import AiStarsIcon from '@bitrix24/b24icons-vue/outline/AiStarsIcon'
 import RocketIcon from '@bitrix24/b24icons-vue/outline/RocketIcon'
-
-usePageMeta.setPageTitle('PageLinks')
 
 const isUseBg = ref(true)
 

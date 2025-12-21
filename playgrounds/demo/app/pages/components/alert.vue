@@ -1,14 +1,12 @@
 <script setup lang="ts">
 import type { ButtonProps } from '@bitrix24/b24ui-nuxt'
 import theme from '#build/b24ui/alert'
-import usePageMeta from './../../composables/usePageMeta'
 import ExampleGrid from '../../components/ExampleGrid.vue'
 import ExampleCard from '../../components/ExampleCard.vue'
 import ExampleCardSubTitle from '../../components/ExampleCardSubTitle.vue'
 import SignIcon from '@bitrix24/b24icons-vue/main/SignIcon'
 import MoreMIcon from '@bitrix24/b24icons-vue/outline/MoreMIcon'
 
-usePageMeta.setPageTitle('Alert')
 const colors = Object.keys(theme.variants.color) as Array<keyof typeof theme.variants.color>
 const sizes = Object.keys(theme.variants.size) as Array<keyof typeof theme.variants.size>
 

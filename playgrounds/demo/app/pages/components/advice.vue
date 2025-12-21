@@ -1,13 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import usePageMeta from './../../composables/usePageMeta'
 import ExampleGrid from '../../components/ExampleGrid.vue'
 import ExampleCard from '../../components/ExampleCard.vue'
 import ExampleCardSubTitle from '../../components/ExampleCardSubTitle.vue'
 import InfoIcon from '@bitrix24/b24icons-vue/button/InfoIcon'
 import MoreMIcon from '@bitrix24/b24icons-vue/outline/MoreMIcon'
-
-usePageMeta.setPageTitle('Advice')
 
 const description = ref('Let\'s signal the manager that the deal is not moving, the manager does not call the client back and does not respond to his messages. Let\'s assign a task to the manager on behalf of the manager')
 </script>

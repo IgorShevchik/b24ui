@@ -1,14 +1,11 @@
 <script setup lang="ts">
 import { computed, onMounted } from 'vue'
 import theme from '#build/b24ui/dropdown-menu'
-import usePageMeta from './../../composables/usePageMeta'
 import { useMockMenu } from './../../composables/useMockMenu'
 import More9Cubes1Icon from '@bitrix24/b24icons-vue/actions/More9Cubes1Icon'
 import CircleCheckThinIcon from '@bitrix24/b24icons-vue/main/CircleCheckThinIcon'
 import HamburgerMenuIcon from '@bitrix24/b24icons-vue/outline/HamburgerMenuIcon'
 import MoreMIcon from '@bitrix24/b24icons-vue/outline/MoreMIcon'
-
-usePageMeta.setPageTitle('DropdownMenu')
 
 const { dropdownMenuItems } = useMockMenu()
 

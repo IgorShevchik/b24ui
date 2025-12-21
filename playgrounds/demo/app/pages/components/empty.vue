@@ -1,13 +1,10 @@
 <script setup lang="ts">
-import usePageMeta from './../../composables/usePageMeta'
 import ExampleGrid from '../../components/ExampleGrid.vue'
 import ExampleCard from '../../components/ExampleCard.vue'
 import theme from '#build/b24ui/empty'
 import ProductIcon from '@bitrix24/b24icons-vue/outline/ProductIcon'
 import AddProductIcon from '@bitrix24/b24icons-vue/outline/AddProductIcon'
 import RefreshIcon from '@bitrix24/b24icons-vue/outline/RefreshIcon'
-
-usePageMeta.setPageTitle('Empty')
 
 const isUseBg = ref(true)
 

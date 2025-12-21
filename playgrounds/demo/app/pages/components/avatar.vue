@@ -1,13 +1,10 @@
 <script setup lang="ts">
-import usePageMeta from './../../composables/usePageMeta'
 import ExampleGrid from '../../components/ExampleGrid.vue'
 import ExampleCard from '../../components/ExampleCard.vue'
 import ExampleCardSubTitle from '../../components/ExampleCardSubTitle.vue'
 import theme from '#build/b24ui/avatar'
 import IncertImageIcon from '@bitrix24/b24icons-vue/editor/IncertImageIcon'
 import PersonIcon from '@bitrix24/b24icons-vue/main/PersonIcon'
-
-usePageMeta.setPageTitle('Avatar')
 
 const sizes = Object.keys(theme.variants.size) as Array<keyof typeof theme.variants.size>
 </script>

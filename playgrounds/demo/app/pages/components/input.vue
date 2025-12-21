@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import theme from '#build/b24ui/input'
-import usePageMeta from './../../composables/usePageMeta'
 import CalculatorIcon from '@bitrix24/b24icons-vue/main/CalculatorIcon'
 import RocketIcon from '@bitrix24/b24icons-vue/main/RocketIcon'
 import TaskIcon from '@bitrix24/b24icons-vue/button/TaskIcon'
@@ -11,7 +10,6 @@ import CalendarIcon from '@bitrix24/b24icons-vue/outline/CalendarIcon'
 import MicrophoneOnIcon from '@bitrix24/b24icons-vue/outline/MicrophoneOnIcon'
 import StopLIcon from '@bitrix24/b24icons-vue/outline/StopLIcon'
 
-usePageMeta.setPageTitle('Input')
 const colors = Object.keys(theme.variants.color) as Array<keyof typeof theme.variants.color>
 const sizes = Object.keys(theme.variants.size) as Array<keyof typeof theme.variants.size>
 

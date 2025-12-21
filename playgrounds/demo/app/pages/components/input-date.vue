@@ -1,11 +1,8 @@
 <script setup lang="ts">
 import { CalendarDate } from '@internationalized/date'
-import usePageMeta from './../../composables/usePageMeta'
 import theme from '#build/b24ui/input-date'
 import ClockIcon from '@bitrix24/b24icons-vue/outline/ClockIcon'
 import ChevronDownLIcon from '@bitrix24/b24icons-vue/outline/ChevronDownLIcon'
-
-usePageMeta.setPageTitle('InputDate')
 
 const isUseBg = ref(false)
 

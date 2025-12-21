@@ -1,13 +1,11 @@
 <script setup lang="ts">
 import theme from '#build/b24ui/toaster'
 import themeToast from '#build/b24ui/toast'
-import usePageMeta from './../../composables/usePageMeta'
 import { useAppConfig } from '#imports'
 import B24SidebarLayout from '@bitrix24/b24ui-nuxt/components/SidebarLayout.vue'
 import RocketIcon from '@bitrix24/b24icons-vue/main/RocketIcon'
 import NotificationIcon from '@bitrix24/b24icons-vue/outline/NotificationIcon'
 
-usePageMeta.setPageTitle('Toast')
 const colors = Object.keys(themeToast.variants.color) as Array<keyof typeof themeToast.variants.color>
 const positions = Object.keys(theme.variants.position)
 

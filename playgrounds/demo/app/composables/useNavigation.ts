@@ -1,11 +1,14 @@
 import { upperName } from '../utils'
+import type { NavigationMenuItem } from '@bitrix24/b24ui-nuxt'
 import GroupIcon from '@bitrix24/b24icons-vue/main/GroupIcon'
+import TextIcon from '@bitrix24/b24icons-vue/outline/TextIcon'
 import HomeIcon from '@bitrix24/b24icons-vue/outline/HomeIcon'
+import type { NavigationGroup } from '../types'
 // import CopilotIcon from '@bitrix24/b24icons-vue/outline/CopilotIcon'
 // import ArrowRightLIcon from '@bitrix24/b24icons-vue/outline/ArrowRightLIcon'
 // import ArrowLeftLIcon from '@bitrix24/b24icons-vue/outline/ArrowLeftLIcon'
 
-const components = [
+const components: NavigationMenuItem[] = [
   'accordion',
   'alert',
   // 'auth-form',
@@ -89,16 +92,36 @@ const components = [
   'user'
 ].map(component => ({ label: upperName(component.split('/').pop() as string), icon: GroupIcon, to: `/components/${component}` }))
 
+const componentsProse: NavigationMenuItem[] = ['show'].map(component => ({
+  label: upperName(component.split('/').pop() as string),
+  icon: TextIcon,
+  to: `/components/prose/${component}`
+}))
+
+const externalLinks: NavigationMenuItem[] = [
+  {
+    label: 'b24icons',
+    to: 'https://bitrix24.github.io/b24icons/',
+    target: '_blank'
+  },
+  {
+    label: 'b24jssdk',
+    to: 'https://bitrix24.github.io/b24jssdk/',
+    target: '_blank'
+  }
+]
+
 export const useNavigation = () => {
   // const appConfig = useAppConfig()
 
-  const items = [
+  const items: NavigationMenuItem[] = [
     { label: 'Home', icon: HomeIcon, to: '/' }
     // { label: 'Chat', icon: CopilotIcon, to: '/chat' }
   ]
-  const groups = computed(() => [
+  const groups = computed<NavigationGroup[]>(() => [
     { id: 'links', items },
-    { id: 'components', label: 'Components', items: components }
+    { id: 'components', label: 'Components', items: components },
+    { id: 'components/prose', label: 'Prose', items: componentsProse }
     // {
     //   id: 'dir',
     //   label: 'Direction',
@@ -118,7 +141,9 @@ export const useNavigation = () => {
 
   return {
     components,
+    componentsProse,
     groups,
-    items
+    items,
+    externalLinks
   }
 }

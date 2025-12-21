@@ -1,10 +1,7 @@
 <script setup lang="ts">
 import type { PageCardProps } from '@bitrix24/b24ui-nuxt'
-import usePageMeta from './../../composables/usePageMeta'
 import theme from '#build/b24ui/page-card'
 import PaletteIcon from '@bitrix24/b24icons-vue/outline/PaletteIcon'
-
-usePageMeta.setPageTitle('PageCard')
 
 const isUseBg = ref(false)
 

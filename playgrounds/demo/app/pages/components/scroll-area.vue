@@ -1,11 +1,8 @@
 <script setup lang="ts">
-import usePageMeta from './../../composables/usePageMeta'
 import MoreLIcon from '@bitrix24/b24icons-vue/outline/MoreLIcon'
 import MoreVerticalLIcon from '@bitrix24/b24icons-vue/outline/MoreVerticalLIcon'
 import ColumnsIcon from '@bitrix24/b24icons-vue/outline/ColumnsIcon'
 import AppsIcon from '@bitrix24/b24icons-vue/outline/AppsIcon'
-
-usePageMeta.setPageTitle('ScrollArea')
 
 const isUseBg = ref(true)
 

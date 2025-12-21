@@ -2,10 +2,11 @@
 import { computed, ref } from 'vue'
 import { useColorMode } from '#imports'
 import { useTextDirection } from '@vueuse/core'
-import usePageMeta from '~/composables/usePageMeta'
 import AlignRightIcon from '@bitrix24/b24icons-vue/outline/AlignRightIcon'
 import AlignLeftIcon from '@bitrix24/b24icons-vue/outline/AlignLeftIcon'
 import type { NavigationMenuItem } from '@bitrix24/b24ui-nuxt'
+import { upperName } from '~/utils'
+import { useNavigation } from '~/composables/useNavigation'
 
 const appConfig = useAppConfig()
 const dir = useTextDirection()
@@ -29,6 +30,8 @@ useHead({
 
 const route = useRoute()
 const router = useRouter()
+
+const { groups } = useNavigation()
 
 const isDark = computed({
   get() {
@@ -63,11 +66,13 @@ const getLightContent = computed(() => {
     result.pageWrapper = 'lg:mt-[22px]'
   }
 
+  result.pageWrapper = `${result.pageWrapper} flex-1 min-h-0 lg:grid-rows-[1fr]`
+  result.container = `${result.container} h-full min-h-0`
+  result.containerWrapper = `${isDark.value ? 'dark' : 'light'} h-full min-h-0`
+
   if (!isSidebarLayoutUseLightContent.value) {
     return result
   }
-
-  result.containerWrapper = isDark.value ? 'dark' : 'light'
 
   return result
 })
@@ -89,24 +94,29 @@ defineShortcuts({
 
 const menuTop = computed<NavigationMenuItem[]>(() => {
   return [
-    {
-      label: 'Home',
-      to: '/'
-    },
-    ...(usePageMeta.groups.map((group) => {
+    ...(groups.value.filter(group => group.label).map((group) => {
       return {
         label: group.label,
         type: 'trigger' as NavigationMenuItem['type'],
         active: (group.id === 'components' && (route.path.includes(`content/`) || route.path.includes(`prose/`)))
           ? false
           : route.path.includes(`${group.id}`),
-        children: group.children
+        children: group.items
       }
     }))
   ]
 })
 
-const { groups } = useNavigation()
+const pageTitle = computed(() => {
+  if (route.path === '/') {
+    return ''
+  }
+  if (route.path.startsWith('/components/prose/')) {
+    return 'Prose'
+  }
+  const lastSegment = route.path.split('/').filter(Boolean).pop()
+  return lastSegment ? upperName(lastSegment) : ''
+})
 </script>
 
 <template>
@@ -134,11 +144,11 @@ const { groups } = useNavigation()
           </div>
         </B24SidebarHeader>
         <B24SidebarBody>
-          <template v-for="(group) in usePageMeta.groups" :key="group.id">
+          <template v-for="group in groups" :key="group.id">
             <B24NavigationMenu
               :items="[
-                { label: group.label, type: 'label' },
-                ...group.children
+                ...(group.label ? [{ label: group.label, type: 'label' as NavigationMenuItem['type'] }] : []),
+                ...group.items
               ]"
               orientation="vertical"
             />
@@ -196,15 +206,15 @@ const { groups } = useNavigation()
         v-if="route.path !== '/' && !isSidebarLayoutClearContent"
         #content-top
       >
-        <div class="w-full flex flex-col gap-[20px] mt-[20px]">
+        <div class="w-full flex flex-col gap-lg mt-lg">
           <MockSidebarLayoutTopProfile class="rounded-(--ui-border-radius-md)" />
           <ClientOnly>
             <MockSidebarLayoutTop class="flex-row">
-              {{ usePageMeta.getPageTitle() }}
+              {{ pageTitle }}
             </MockSidebarLayoutTop>
             <template #fallback>
-              <div class="flex items-center gap-[12px]">
-                <div class="w-full flex items-center gap-[20px]">
+              <div class="flex items-center gap-sm">
+                <div class="w-full flex items-center gap-lg">
                   <ProseH2 class="font-(--ui-font-weight-semi-bold) mb-0">
                     Loading ...
                   </ProseH2>

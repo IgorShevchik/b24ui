@@ -1,13 +1,11 @@
 <script setup lang="ts">
 import theme from '#build/b24ui/badge'
-import usePageMeta from './../../composables/usePageMeta'
 import ExampleGrid from '../../components/ExampleGrid.vue'
 import ExampleCard from '../../components/ExampleCard.vue'
 import ExampleCardSubTitle from '../../components/ExampleCardSubTitle.vue'
 import InfoIcon from '@bitrix24/b24icons-vue/button/InfoIcon'
 import type { ToastProps } from '@bitrix24/b24ui-nuxt'
 
-usePageMeta.setPageTitle('Badge')
 const sizes = Object.keys(theme.variants.size) as Array<keyof typeof theme.variants.size>
 const colors = Object.keys(theme.variants.color) as Array<keyof typeof theme.variants.color>
 

@@ -1,9 +1,6 @@
 <script lang="ts" setup>
-import usePageMeta from './../../composables/usePageMeta'
 import ExampleGrid from '../../components/ExampleGrid.vue'
 import ExampleCard from '../../components/ExampleCard.vue'
-
-usePageMeta.setPageTitle('User')
 
 const isUseBg = ref(true)
 </script>

@@ -1,13 +1,10 @@
 <script setup lang="ts">
-import usePageMeta from './../../composables/usePageMeta'
 import ExampleGrid from '../../components/ExampleGrid.vue'
 import ExampleCard from '../../components/ExampleCard.vue'
 import ExampleCardSubTitle from '../../components/ExampleCardSubTitle.vue'
 import MockContentLongText from '../../components/MockContentLongText.vue'
 import MockContentUploadFile from '../../components/MockContentUploadFile.vue'
 import Cross50Icon from '@bitrix24/b24icons-vue/actions/Cross50Icon'
-
-usePageMeta.setPageTitle('Popover')
 
 const openVer1 = ref(false)
 const openVer2 = ref(false)

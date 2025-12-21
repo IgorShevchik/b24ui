@@ -1,8 +1,5 @@
 <script setup lang="ts">
 import theme from '#build/b24ui/form-field'
-import usePageMeta from './../../composables/usePageMeta'
-
-usePageMeta.setPageTitle('FormField')
 
 const isUseBg = ref(true)
 

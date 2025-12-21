@@ -1,15 +1,12 @@
 <script lang="ts" setup>
 import type { TimelineItem } from '@bitrix24/b24ui-nuxt'
 import theme from '#build/b24ui/timeline'
-import usePageMeta from './../../composables/usePageMeta'
 import ExampleGrid from '../../components/ExampleGrid.vue'
 import ExampleCard from '../../components/ExampleCard.vue'
 import SignIcon from '@bitrix24/b24icons-vue/main/SignIcon'
 import MoreMIcon from '@bitrix24/b24icons-vue/outline/MoreMIcon'
 import InfoIcon from '@bitrix24/b24icons-vue/button/InfoIcon'
 import RocketIcon from '@bitrix24/b24icons-vue/main/RocketIcon'
-
-usePageMeta.setPageTitle('Timeline')
 
 const sizes = Object.keys(theme.variants.size)
 const colors = Object.keys(theme.variants.color)

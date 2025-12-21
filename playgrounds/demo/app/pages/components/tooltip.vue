@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import usePageMeta from './../../composables/usePageMeta'
 import HelpIcon from '@bitrix24/b24icons-vue/main/HelpIcon'
 
-usePageMeta.setPageTitle('Tooltip')
 const text = ref({
   long: 'When the performer completes the task, it will come to you for review. You can accept the work (and then the task will be closed) or return the task for revision.'
 })

@@ -1,9 +1,6 @@
 <script setup lang="ts">
-import usePageMeta from './../../composables/usePageMeta'
 import ExampleGrid from '../../components/ExampleGrid.vue'
 import ExampleCard from '../../components/ExampleCard.vue'
-
-usePageMeta.setPageTitle('Collapsible')
 
 const open = ref(true)
 

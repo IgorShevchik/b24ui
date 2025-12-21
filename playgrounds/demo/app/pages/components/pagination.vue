@@ -1,9 +1,6 @@
 <script setup lang="ts">
-import usePageMeta from './../../composables/usePageMeta'
 import ExampleGrid from '../../components/ExampleGrid.vue'
 import ExampleCard from '../../components/ExampleCard.vue'
-
-usePageMeta.setPageTitle('Pagination')
 
 const page = ref(5)
 const isUseBg = ref(true)

@@ -1,11 +1,8 @@
 <script setup lang="ts">
 import { Time } from '@internationalized/date'
-import usePageMeta from './../../composables/usePageMeta'
 import theme from '#build/b24ui/input-time'
 import ClockIcon from '@bitrix24/b24icons-vue/outline/ClockIcon'
 import ChevronDownLIcon from '@bitrix24/b24icons-vue/outline/ChevronDownLIcon'
-
-usePageMeta.setPageTitle('InputTime')
 
 const isUseBg = ref(false)
 

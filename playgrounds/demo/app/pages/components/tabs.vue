@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import theme from '#build/b24ui/tabs'
-import usePageMeta from './../../composables/usePageMeta'
 import ExampleGrid from '../../components/ExampleGrid.vue'
 import ExampleCard from '../../components/ExampleCard.vue'
 // import ExampleCardSubTitle from '../../components/ExampleCardSubTitle.vue'
@@ -8,7 +7,6 @@ import Shining2Icon from '@bitrix24/b24icons-vue/main/Shining2Icon'
 import ChevronDownIcon from '@bitrix24/b24icons-vue/actions/ChevronDownIcon'
 import Refresh5Icon from '@bitrix24/b24icons-vue/actions/Refresh5Icon'
 
-usePageMeta.setPageTitle('Tabs')
 const orientations = Object.keys(theme.variants.orientation)
 const sizes = Object.keys(theme.variants.size)
 

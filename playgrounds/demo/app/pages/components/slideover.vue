@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { defineAsyncComponent } from 'vue'
-import usePageMeta from './../../composables/usePageMeta'
 import Placeholder from '../../components/Placeholder.vue'
 import MockSidebarLayoutMenu from '../../components/MockSidebarLayoutMenu.vue'
 import MockSidebarLayoutActions from '../../components/MockSidebarLayoutActions.vue'
@@ -16,7 +15,6 @@ import { useMockMenu } from './../../composables/useMockMenu'
 import { useDashboard } from '@bitrix24/b24ui-nuxt/utils/dashboard'
 import { sleepAction } from '../../utils/sleep'
 
-usePageMeta.setPageTitle('Slideover')
 const isUseBg = ref(true)
 
 const { action } = useMockMenu()

@@ -2,7 +2,6 @@
 import { ref } from 'vue'
 import theme from '#build/b24ui/countdown'
 import B24Countdown from '@bitrix24/b24ui-nuxt/components/Countdown.vue'
-import usePageMeta from './../../composables/usePageMeta'
 import ExampleGrid from '../../components/ExampleGrid.vue'
 import ExampleCard from '../../components/ExampleCard.vue'
 import ExampleCardSubTitle from '../../components/ExampleCardSubTitle.vue'
@@ -12,8 +11,6 @@ import StopHandIcon from '@bitrix24/b24icons-vue/main/StopHandIcon'
 import Refresh5Icon from '@bitrix24/b24icons-vue/actions/Refresh5Icon'
 import Clock2Icon from '@bitrix24/b24icons-vue/main/Clock2Icon'
 import Cross30Icon from '@bitrix24/b24icons-vue/actions/Cross30Icon'
-
-usePageMeta.setPageTitle('Countdown')
 
 const sizes = Object.keys(theme.variants.size) as Array<keyof typeof theme.variants.size>
 

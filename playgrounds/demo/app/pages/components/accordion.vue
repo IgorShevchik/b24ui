@@ -1,14 +1,11 @@
 <script setup lang="ts">
 import type { AccordionItem } from '@bitrix24/b24ui-nuxt'
-import usePageMeta from './../../composables/usePageMeta'
 import ExampleGrid from '../../components/ExampleGrid.vue'
 import ExampleCard from '../../components/ExampleCard.vue'
 import IncertImageIcon from '@bitrix24/b24icons-vue/editor/IncertImageIcon'
 import CalculatorIcon from '@bitrix24/b24icons-vue/main/CalculatorIcon'
 import RocketIcon from '@bitrix24/b24icons-vue/main/RocketIcon'
 import CollapseIcon from '@bitrix24/b24icons-vue/actions/CollapseIcon'
-
-usePageMeta.setPageTitle('Accordion')
 
 const items = ref<AccordionItem[]>([
   {

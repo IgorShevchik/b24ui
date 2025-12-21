@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import theme from '#build/b24ui/separator'
-import usePageMeta from './../../composables/usePageMeta'
 import ExampleGrid from '../../components/ExampleGrid.vue'
 import ExampleCard from '../../components/ExampleCard.vue'
 import Bitrix24Icon from '@bitrix24/b24icons-vue/common-service/Bitrix24Icon'
 
-usePageMeta.setPageTitle('Separator')
 const sizes = Object.keys(theme.variants.size) as Array<keyof typeof theme.variants.size>
 const accents = Object.keys(theme.variants.accent) as Array<keyof typeof theme.variants.accent>
 </script>

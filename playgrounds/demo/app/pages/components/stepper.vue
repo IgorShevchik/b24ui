@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { StepperItem } from '@bitrix24/b24ui-nuxt'
 import theme from '#build/b24ui/stepper'
-import usePageMeta from './../../composables/usePageMeta'
 import ExampleGrid from '../../components/ExampleGrid.vue'
 import ExampleCard from '../../components/ExampleCard.vue'
 import ArrowLeftLIcon from '@bitrix24/b24icons-vue/outline/ArrowLeftLIcon'
@@ -9,8 +8,6 @@ import ArrowRightLIcon from '@bitrix24/b24icons-vue/outline/ArrowRightLIcon'
 import LocationIcon from '@bitrix24/b24icons-vue/outline/LocationIcon'
 import DeliveryIcon from '@bitrix24/b24icons-vue/outline/DeliveryIcon'
 import PaymentTerminalIcon from '@bitrix24/b24icons-vue/outline/PaymentTerminalIcon'
-
-usePageMeta.setPageTitle('Stepper')
 
 const colors = Object.keys(theme.variants.color)
 const sizes = Object.keys(theme.variants.size)

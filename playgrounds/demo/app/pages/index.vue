@@ -1,33 +1,13 @@
 <script setup lang="ts">
-import usePageMeta from '~/composables/usePageMeta'
-
-usePageMeta.setPageTitle('Bitrix24 UI - Demo')
 </script>
 
 <template>
-  <template
-    v-for="(group) in usePageMeta.groups"
-    :key="group.id"
-  >
-    <ProseH4 class="mb-sm">
-      {{ group.label }}
-    </ProseH4>
-    <B24PageGrid class="gap-5 mb-4 mt-3">
-      <B24PageCard
-        v-for="(component) in group.children"
-        :key="component.id"
-        :to="component.to"
-        :title="component.label"
-        :description="component.description"
-        :icon="component.iconData"
-        reverse
-        :b24ui="{
-          root: '',
-          header: 'mb-0',
-          title: 'text-[15px] font-medium',
-          description: 'line-clamp-2 mt-1'
-        }"
-      />
-    </B24PageGrid>
-  </template>
+  <B24Container class="h-full min-h-0 text-center backdrop-blur-lg flex flex-col justify-center rounded-(--ui-border-radius-md)">
+    <ProseH1 class="text-2xl font-bold">
+      Demo Playground
+    </ProseH1>
+    <ProseP class="max-w-96 mx-auto text-(--ui-color-design-outline-content-secondary)">
+      Explore and test all Bitrix24 UI components in an interactive environment.
+    </ProseP>
+  </B24Container>
 </template>

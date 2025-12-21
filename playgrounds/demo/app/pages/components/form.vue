@@ -4,12 +4,10 @@ import FormExampleOnError from '../../../../../docs/app/components/content/examp
 import FormExampleNested from '../../../../../docs/app/components/content/examples/form/FormExampleNested.vue'
 import FormExampleNestedList from '../../../../../docs/app/components/content/examples/form/FormExampleNestedList.vue'
 import FormExampleElements from '../../../../../docs/app/components/content/examples/form/FormExampleElements.vue'
-import usePageMeta from './../../composables/usePageMeta'
 import ExampleGrid from '../../components/ExampleGrid.vue'
 import ExampleCard from '../../components/ExampleCard.vue'
 import ExampleCardSubTitle from '../../components/ExampleCardSubTitle.vue'
 
-usePageMeta.setPageTitle('Form')
 const validateOn = ref(['input', 'change', 'blur'])
 const disabled = ref(false)
 const isUseBg = ref(true)
