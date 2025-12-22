@@ -12,3 +12,5 @@ export interface NavigationGroup {
   label?: string
   items: NavigationMenuItem[]
 }
+
+export type Surround<T> = [T | undefined, T | undefined]
