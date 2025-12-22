@@ -128,7 +128,17 @@ const pageTitle = computed(() => {
     >
       <template #sidebar>
         <B24SidebarHeader>
-          <div class="h-full flex items-center relative my-0 ps-[25px] pe-xs rtl:pe-[25px]">
+          <div class="h-full flex items-center gap-x-sm relative my-0 ps-[25px] pe-xs rtl:pe-[25px]">
+            <B24Tooltip :content="{ side: 'bottom' }" :text="`Switch to ${dir === 'ltr' ? 'Right-to-left' : 'Left-to-right'} mode`" :kbds="['shift', 'L']">
+              <B24Button
+                :icon="dir === 'ltr' ? AlignRightIcon : AlignLeftIcon"
+                :aria-label="`Switch to ${dir === 'ltr' ? 'Right-to-left' : 'Left-to-right'} mode`"
+                color="air-secondary-accent"
+                rounded
+                size="xs"
+                @click="toggleDir"
+              />
+            </B24Tooltip>
             <B24Tooltip
               class="flex-0 mt-1"
               :content="{ side: 'bottom', align: 'start' }"
@@ -136,9 +146,9 @@ const pageTitle = computed(() => {
               :kbds="['ctrl', 'arrowleft']"
             >
               <NuxtLink to="/" class="mt-0 text-(--ui-color-design-selection-content)" aria-label="Home">
-                <ProseH4 class="font-(--ui-font-weight-medium) mb-0">
+                <ProseH3 class="font-(--ui-font-weight-medium) mb-0">
                   Demo
-                </ProseH4>
+                </ProseH3>
               </NuxtLink>
             </B24Tooltip>
           </div>
@@ -184,21 +194,6 @@ const pageTitle = computed(() => {
             indicator="hidden"
             @change="toggleModeContext"
           />
-          <B24Switch
-            v-model="checkedUseLightContent"
-            :disabled="isSidebarLayoutClearContent"
-            size="sm"
-          />
-          <B24Tooltip :content="{ side: 'bottom' }" :text="`Switch to ${dir === 'ltr' ? 'Right-to-left' : 'Left-to-right'} mode`" :kbds="['shift', 'L']">
-            <B24Button
-              :icon="dir === 'ltr' ? AlignLeftIcon : AlignRightIcon"
-              :aria-label="`Switch to ${dir === 'ltr' ? 'Right-to-left' : 'Left-to-right'} mode`"
-              color="air-secondary-accent"
-              rounded
-              size="xs"
-              @click="toggleDir"
-            />
-          </B24Tooltip>
         </B24NavbarSection>
       </template>
 
