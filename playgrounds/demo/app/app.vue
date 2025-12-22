@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const route = useRoute()
 const appConfig = useAppConfig()
+const { components } = useNavigation()
 
 useHead({
   title: 'Bitrix24 UI - Playground',
@@ -13,6 +14,7 @@ useHead({
     dir: computed(() => appConfig.dir)
   }
 })
+provide('components', components)
 </script>
 
 <template>

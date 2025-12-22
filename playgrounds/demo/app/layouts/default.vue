@@ -5,13 +5,12 @@ import { useTextDirection } from '@vueuse/core'
 import AlignRightIcon from '@bitrix24/b24icons-vue/outline/AlignRightIcon'
 import AlignLeftIcon from '@bitrix24/b24icons-vue/outline/AlignLeftIcon'
 import type { NavigationMenuItem } from '@bitrix24/b24ui-nuxt'
-import { upperName } from '~/utils'
 import { useNavigation } from '~/composables/useNavigation'
 
 const appConfig = useAppConfig()
 const dir = useTextDirection()
 const colorMode = useColorMode()
-const { isSidebarLayoutUseLightContent, isSidebarLayoutClearContent, checkedUseLightContent } = useRouteCheck()
+const { isSidebarLayoutUseLightContent } = useRouteCheck()
 
 const modeContext = ref<string>((appConfig?.colorModeTypeLight || 'light') as string)
 
@@ -106,17 +105,6 @@ const menuTop = computed<NavigationMenuItem[]>(() => {
     }))
   ]
 })
-
-const pageTitle = computed(() => {
-  if (route.path === '/') {
-    return ''
-  }
-  if (route.path.startsWith('/components/prose/')) {
-    return 'Prose'
-  }
-  const lastSegment = route.path.split('/').filter(Boolean).pop()
-  return lastSegment ? upperName(lastSegment) : ''
-})
 </script>
 
 <template>
@@ -198,33 +186,11 @@ const pageTitle = computed(() => {
       </template>
 
       <template
-        v-if="route.path !== '/' && !isSidebarLayoutClearContent"
         #content-top
       >
-        <div class="w-full flex flex-col gap-lg mt-lg">
-          <MockSidebarLayoutTopProfile class="rounded-(--ui-border-radius-md)" />
-          <ClientOnly>
-            <MockSidebarLayoutTop class="flex-row">
-              {{ pageTitle }}
-            </MockSidebarLayoutTop>
-            <template #fallback>
-              <div class="flex items-center gap-sm">
-                <div class="w-full flex items-center gap-lg">
-                  <ProseH2 class="font-(--ui-font-weight-semi-bold) mb-0">
-                    Loading ...
-                  </ProseH2>
-                </div>
-              </div>
-            </template>
-          </ClientOnly>
+        <div class="w-full base-mode bg-(--ui-color-bg-content-primary) rounded-(--ui-border-radius-md) mt-lg">
+          <Navbar class="rounded-(--ui-border-radius-md)" />
         </div>
-      </template>
-
-      <template
-        v-if="route.path !== '/' && !isSidebarLayoutClearContent"
-        #content-actions
-      >
-        <MockSidebarLayoutActions />
       </template>
 
       <slot />
