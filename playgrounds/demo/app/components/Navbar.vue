@@ -12,15 +12,13 @@ defineProps<{
   to?: string
 }>()
 
+const componentName = computed(() => route.path.split('/').filter(Boolean).pop() ?? '')
+
 const title = computed(() => {
-  if (route.path === '/') {
-    return ''
-  }
-  if (route.path.startsWith('/components/prose/')) {
+  if (componentName.value.includes('prose')) {
     return 'Prose'
   }
-  const lastSegment = route.path.split('/').filter(Boolean).pop()
-  return lastSegment ? upperName(lastSegment) : ''
+  return upperName(componentName.value)
 })
 
 const components = inject<{ to: string, label: string }[]>('components')
@@ -38,47 +36,42 @@ defineShortcuts({
 </script>
 
 <template>
-  <B24Container class="backdrop-blur-sm backdrop-brightness-110 px-[15px] py-[10px] flex flex-col items-start justify-between gap-[20px]">
-    <div class="w-full flex flex-row items-center justify-between gap-[20px]">
-      <div class="flex-1 flex flex-row items-center justify-start gap-[12px]">
+  <div class="base-mode bg-(--ui-color-bg-content-primary) backdrop-blur-sm backdrop-brightness-110 px-[15px] py-xs2 flex flex-col items-start justify-between gap-lg">
+    <div class="w-full flex flex-row items-center justify-between gap-lg">
+      <div class="flex-1 flex flex-row items-center justify-start gap-sm">
         <B24FieldGroup size="sm">
           <B24Button
             :icon="ChevronLeftLIcon"
             color="air-selection"
-            variant="outline"
             :disabled="index === 0"
-            class="ring-default"
-            aria-label="Previous component"
             @click="navigate(index - 1)"
           />
           <B24Button
             :icon="ChevronRightLIcon"
             color="air-selection"
-            variant="outline"
             :disabled="index === (components?.length ?? 0) - 1"
-            class="ring-default"
-            aria-label="Next component"
             @click="navigate(index + 1)"
           />
         </B24FieldGroup>
 
-        <ProseH1 class="text-(--b24ui-typography-label-color) leading-[29px] font-(--ui-font-weight-semi-bold) mb-0">
+        <ProseH1 class="text-label leading-[29px] font-(--ui-font-weight-semi-bold) mb-0">
           {{ title }}
         </ProseH1>
 
         <slot name="trailing">
           <B24Button
             :icon="ExpandIcon"
-            :to="to || `https://bitrix24.github.io/b24ui/docs/components/${name}`"
-            color="link"
-            variant="outline"
+            :to="to || `https://bitrix24.github.io/b24ui/docs/components/${componentName}`"
+            color="air-tertiary"
             aria-label="Open component in docs"
           />
         </slot>
       </div>
     </div>
     <div>
-      <MockSidebarLayoutMenu orientation="horizontal" />
+      <slot name="controls">
+        <MockSidebarLayoutMenu orientation="horizontal" />
+      </slot>
     </div>
-  </B24Container>
+  </div>
 </template>

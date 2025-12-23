@@ -10,7 +10,6 @@ import { useNavigation } from '~/composables/useNavigation'
 const appConfig = useAppConfig()
 const dir = useTextDirection()
 const colorMode = useColorMode()
-const { isSidebarLayoutUseLightContent } = useRouteCheck()
 
 const modeContext = ref<string>((appConfig?.colorModeTypeLight || 'light') as string)
 
@@ -67,11 +66,7 @@ const getLightContent = computed(() => {
 
   result.pageWrapper = `${result.pageWrapper} flex-1 min-h-0 lg:grid-rows-[1fr]`
   result.container = `${result.container} h-full min-h-0`
-  result.containerWrapper = `${isDark.value ? 'dark' : 'light'} h-full min-h-0`
-
-  if (!isSidebarLayoutUseLightContent.value) {
-    return result
-  }
+  result.containerWrapper = `${isDark.value ? 'dark' : 'light'} h-full min-h-0 bg-transparent lg:p-0 p-0`
 
   return result
 })
@@ -111,7 +106,6 @@ const menuTop = computed<NavigationMenuItem[]>(() => {
   <B24DashboardGroup>
     <!-- // @see playgrounds/demo/app/assets/css/main.css -->
     <B24SidebarLayout
-      :use-light-content="isSidebarLayoutUseLightContent"
       :b24ui="getLightContent"
     >
       <template #sidebar>
@@ -183,14 +177,6 @@ const menuTop = computed<NavigationMenuItem[]>(() => {
             @change="toggleModeContext"
           />
         </B24NavbarSection>
-      </template>
-
-      <template
-        #content-top
-      >
-        <div class="w-full base-mode bg-(--ui-color-bg-content-primary) rounded-(--ui-border-radius-md) mt-lg">
-          <Navbar class="rounded-(--ui-border-radius-md)" />
-        </div>
       </template>
 
       <slot />
