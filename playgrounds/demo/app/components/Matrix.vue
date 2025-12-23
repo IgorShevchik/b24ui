@@ -1,8 +1,10 @@
-<script setup lang="ts" generic="T extends Record<string, string[]>">
+<script setup lang="ts" generic="T extends Record<string, unknown | readonly unknown[]>">
+type MatrixValue<V> = V extends readonly (infer U)[] ? U : V
+
 const props = defineProps<{
   attrs: T
   containerClass?: string
-  containerProps?: Record<string, string>
+  containerProps?: Record<string, unknown>
 }>()
 
 defineSlots<{
@@ -10,26 +12,30 @@ defineSlots<{
 }>()
 
 const combinations = computed(() => {
-  const keys = Object.keys(props.attrs)
-  const values = Object.values(props.attrs)
+  const keys = Object.keys(props.attrs) as Array<keyof T>
 
   if (keys.length === 0) {
-    return [{}]
+    return [{}] as Array<{ [K in keyof T]?: MatrixValue<T[K]> }>
   }
 
-  const result: Record<string, string>[] = []
+  const result: Array<{ [K in keyof T]?: MatrixValue<T[K]> }> = []
 
-  function generateCombinations(index: number, current: Record<string, string>) {
+  function generateCombinations(index: number, current: { [K in keyof T]?: MatrixValue<T[K]> }) {
     if (index === keys.length) {
       result.push({ ...current })
       return
     }
 
-    const key = keys[index]
-    const valueArray = values[index] || []
+    const key = keys[index]!
+    const raw = props.attrs[key]
+    const variants = (Array.isArray(raw) ? raw : [raw]) as Array<MatrixValue<T[typeof key]>>
 
-    for (const value of valueArray) {
-      generateCombinations(index + 1, { ...current, [key as string]: value })
+    if (variants.length === 0) {
+      return
+    }
+
+    for (const value of variants) {
+      generateCombinations(index + 1, { ...current, [key]: value } as any)
     }
   }
 
