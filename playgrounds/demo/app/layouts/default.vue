@@ -55,18 +55,16 @@ function toggleModeContext() {
 
 const getLightContent = computed(() => {
   const result = {
-    pageWrapper: 'px-(--content-area-shift)',
-    container: 'gap-[22px]',
-    containerWrapper: ''
+    root: 'max-lg:h-[100dvh] max-lg:min-h-[100dvh]',
+    contentWrapper: 'flex-1 min-h-0',
+    pageWrapper: 'px-(--content-area-shift) flex-1 min-h-0 max-lg:overflow-y-auto mt-lg',
+    container: 'gap-[22px] h-full min-h-0',
+    containerWrapper: `${isDark.value ? 'dark' : 'light'} h-full min-h-0 bg-transparent lg:p-0 p-0`
   }
 
-  if (route.path === '/') {
-    result.pageWrapper = 'lg:mt-[22px]'
-  }
-
-  result.pageWrapper = `${result.pageWrapper} flex-1 min-h-0 lg:grid-rows-[1fr]`
-  result.container = `${result.container} h-full min-h-0`
-  result.containerWrapper = `${isDark.value ? 'dark' : 'light'} h-full min-h-0 bg-transparent lg:p-0 p-0`
+  // result.pageWrapper = `${result.pageWrapper} flex-1 min-h-0 lg:grid-rows-[1fr]`
+  // result.container = `${result.container} h-full min-h-0`
+  // result.containerWrapper = `${isDark.value ? 'dark' : 'light'} h-full min-h-0 bg-transparent lg:p-0 p-0`
 
   return result
 })
@@ -136,6 +134,16 @@ const menuTop = computed<NavigationMenuItem[]>(() => {
           </div>
         </B24SidebarHeader>
         <B24SidebarBody>
+          <B24RadioGroup
+            v-model="modeContext"
+            class="lg:hidden inline-flex m-auto pb-3"
+            :items="['dark', 'light', 'edge-dark', 'edge-light']"
+            size="xs"
+            orientation="horizontal"
+            variant="table"
+            indicator="hidden"
+            @change="toggleModeContext"
+          />
           <template v-for="group in groups" :key="group.id">
             <B24NavigationMenu
               :items="[

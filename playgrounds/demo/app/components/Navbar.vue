@@ -61,9 +61,8 @@ defineShortcuts({
         <slot name="trailing">
           <B24Button
             :icon="ExpandIcon"
-            :to="to || `https://bitrix24.github.io/b24ui/docs/components/${componentName}`"
+            :to="to || `https://bitrix24.github.io/b24ui/docs/components/${componentName}/`"
             color="air-tertiary"
-            aria-label="Open component in docs"
           />
         </slot>
       </div>

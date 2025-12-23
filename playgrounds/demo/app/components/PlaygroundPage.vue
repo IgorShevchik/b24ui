@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full flex flex-col gap-lg rounded-(--ui-border-radius-md) mt-lg">
+  <div class="w-full flex flex-col gap-lg rounded-(--ui-border-radius-md)">
     <Navbar class="rounded-(--ui-border-radius-md)">
       <template #controls>
         <slot name="controls" />
