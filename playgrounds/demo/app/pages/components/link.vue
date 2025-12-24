@@ -1,88 +1,46 @@
 <script setup lang="ts">
-import ExampleGrid from '../../components/ExampleGrid.vue'
-import ExampleCard from '../../components/ExampleCard.vue'
-import ExampleCardSubTitle from '../../components/ExampleCardSubTitle.vue'
+const attrs = reactive({
+  to: '/components/link',
+  raw: false,
+  isAction: false,
+  active: false,
+  disabled: false
+})
 </script>
 
 <template>
-  <ExampleGrid v-once>
-    <ExampleCard title="button" class="md:col-span-2">
-      <ExampleCardSubTitle title="raw" />
-      <div class="mb-4 flex flex-col items-start gap-4 text-(length:--ui-font-size-sm)">
-        <B24Link raw>
-          Button raw
-        </B24Link>
+  <PlaygroundPage>
+    <template #controls>
+      <div class="flex flex-wrap items-center gap-2">
+        <B24Input v-model="attrs.to" class="w-56" type="url" placeholder="to" />
+        <B24Separator orientation="vertical" class="h-10" />
+        <B24Switch v-model="attrs.raw" label="raw" size="xs" />
+        <B24Switch v-model="attrs.isAction" label="isAction" size="xs" />
+        <B24Switch v-model="attrs.active" label="active" size="xs" />
+        <B24Switch v-model="attrs.disabled" label="disabled" size="xs" />
       </div>
-      <div class="mb-4 flex flex-col items-start gap-4 text-(length:--ui-font-size-sm)">
-        <B24Link is-action>
-          Some action
-        </B24Link>
-      </div>
+    </template>
 
-      <ExampleCardSubTitle title="active" />
-      <div class="mb-4 flex flex-col items-start gap-4 text-(length:--ui-font-size-sm)">
-        <B24Link active>
-          Button active
-        </B24Link>
-        <B24Link active class="font-(--ui-font-weight-medium)" active-class="text-(--ui-color-accent-main-alert)">
-          Button active with class
-        </B24Link>
-        <B24Link active disabled>
-          Button active disabled
-        </B24Link>
-      </div>
+    <div class="flex items-stretch flex-wrap justify-start gap-2 min-h-0 mb-4">
+      <Matrix v-slot="props" :attrs="attrs">
+        <B24Card variant="outline-no-accent" class="w-96">
+          <template #header>
+            <ProseH5 class="mb-0">
+              {{ [props?.raw ? 'raw' : 'default', props?.active ? 'active' : 'inactive', props?.disabled ? 'disabled' : 'enabled'].join(' | ') }}
+            </ProseH5>
+          </template>
 
-      <ExampleCardSubTitle title="inactive" />
-      <div class="mb-4 flex flex-col items-start gap-4 text-(length:--ui-font-size-sm)">
-        <B24Link>
-          Button inactive
-        </B24Link>
-        <B24Link class="font-(--ui-font-weight-medium)" inactive-class="hover:not-disabled:not-aria-disabled:text-(--ui-color-accent-main-success)">
-          Button inactive with class
-        </B24Link>
-        <B24Link disabled>
-          Button inactive disabled
-        </B24Link>
-      </div>
-    </ExampleCard>
-    <ExampleCard title="link" class="md:col-span-2">
-      <ExampleCardSubTitle title="raw" />
-      <div class="mb-4 flex flex-col items-start gap-4 text-(length:--ui-font-size-sm)">
-        <B24Link to="/components/link" raw>
-          Link raw
-        </B24Link>
-      </div>
-      <div class="mb-4 flex flex-col items-start gap-4 text-(length:--ui-font-size-sm)">
-        <B24Link to="/components/link" is-action>
-          Some action
-        </B24Link>
-      </div>
-
-      <ExampleCardSubTitle title="active" />
-      <div class="mb-4 flex flex-col items-start gap-4 text-(length:--ui-font-size-sm)">
-        <B24Link to="/components/link">
-          Link active
-        </B24Link>
-        <B24Link to="/components/link" class="font-(--ui-font-weight-medium)" active-class="text-(--ui-color-accent-main-success)">
-          Link active with class
-        </B24Link>
-        <B24Link to="/components/link" disabled>
-          Link active disabled
-        </B24Link>
-      </div>
-
-      <ExampleCardSubTitle title="inactive" />
-      <div class="mb-4 flex flex-col items-start gap-4 text-(length:--ui-font-size-sm)">
-        <B24Link to="/components/button">
-          Link inactive
-        </B24Link>
-        <B24Link to="/components/button" class="font-(--ui-font-weight-medium)" inactive-class="hover:not-disabled:not-aria-disabled:text-(--ui-color-accent-main-success)">
-          Link inactive with class
-        </B24Link>
-        <B24Link to="/components/button" disabled>
-          Link inactive disabled
-        </B24Link>
-      </div>
-    </ExampleCard>
-  </ExampleGrid>
+          <div class="flex flex-col items-start gap-3 text-(length:--ui-font-size-sm)">
+            <B24Separator :label="props?.to ? 'as link' : 'as button'" />
+            <B24Link v-bind="props">
+              {{ `${props?.to ? 'Link': 'Button'} preview` }}
+            </B24Link>
+            <B24Link v-bind="props" active-class="font-(--ui-font-weight-bold) text-(--ui-color-copilot-accent-primary)" inactive-class="text-(--ui-color-accent-main-alert)">
+              {{ `${props?.to ? 'Link': 'Button'} preview (with classes)` }}
+            </B24Link>
+          </div>
+        </B24Card>
+      </Matrix>
+    </div>
+  </PlaygroundPage>
 </template>
