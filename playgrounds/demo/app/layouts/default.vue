@@ -187,7 +187,9 @@ const menuTop = computed<NavigationMenuItem[]>(() => {
         </B24NavbarSection>
       </template>
 
-      <slot />
+      <template #content-top>
+        <slot />
+      </template>
     </B24SidebarLayout>
 
     <B24DashboardSearch :groups="groups" :fuse="{ resultLimit: 100 }" :color-mode="false" />
