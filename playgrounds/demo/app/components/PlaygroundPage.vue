@@ -1,24 +1,28 @@
 <script setup lang="ts">
-const isUseBg = ref(true)
+import { createPlaygroundContext, providePlaygroundContext } from '../composables/usePlaygroundContext'
+
+const playground = providePlaygroundContext(createPlaygroundContext({ isUseBg: true }))
 </script>
 
 <template>
   <div class="w-full flex flex-col gap-lg rounded-(--ui-border-radius-md)">
     <Navbar>
       <template #controls>
-        <slot name="controls" />
+        <slot name="controls" :playground="playground" />
       </template>
       <template #head-trailing>
-        <B24Switch v-model="isUseBg" label="isUseBg" size="xs" />
+        <B24Switch v-model="playground.isUseBg.value" label="isUseBg" size="xs" />
       </template>
     </Navbar>
 
     <B24Card
-      :variant="isUseBg ? 'outline-alt' : 'plain-no-accent'"
-      :class="{ 'backdrop-blur-[20px]': isUseBg }"
+      :variant="playground.isUseBg.value ? 'outline-alt' : 'plain-no-accent'"
+      :class="{ 'backdrop-blur-[20px]': playground.isUseBg.value }"
       class="border-0"
     >
-      <slot :is-use-bg="isUseBg" />
+      <div class="flex items-stretch flex-wrap justify-start gap-2 min-h-0">
+        <slot :playground="playground" />
+      </div>
     </B24Card>
   </div>
 </template>
