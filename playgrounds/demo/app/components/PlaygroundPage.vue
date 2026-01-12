@@ -5,13 +5,15 @@ const playground = providePlaygroundContext(createPlaygroundContext({ isUseBg: t
 </script>
 
 <template>
-  <div class="w-full flex flex-col gap-lg rounded-(--ui-border-radius-md)">
+  <div class="w-full flex flex-col gap-5">
     <Navbar>
-      <template #controls>
-        <slot name="controls" :playground="playground" />
-      </template>
       <template #head-trailing>
         <B24Switch v-model="playground.isUseBg.value" label="isUseBg" size="xs" />
+      </template>
+      <template #controls>
+        <div class="flex flex-wrap items-center gap-2">
+          <slot name="controls" :playground="playground" />
+        </div>
       </template>
     </Navbar>
 

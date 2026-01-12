@@ -43,13 +43,13 @@ defineShortcuts({
           <B24FieldGroup size="sm">
             <B24Button
               :icon="ChevronLeftLIcon"
-              color="air-selection"
+              color="air-secondary-accent"
               :disabled="index === 0"
               @click="navigate(index - 1)"
             />
             <B24Button
               :icon="ChevronRightLIcon"
-              color="air-selection"
+              color="air-secondary-accent"
               :disabled="index === (components?.length ?? 0) - 1"
               @click="navigate(index + 1)"
             />

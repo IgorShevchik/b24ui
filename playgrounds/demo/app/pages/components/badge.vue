@@ -52,15 +52,13 @@ function onCloseClick(event: MouseEvent) {
 <template>
   <PlaygroundPage>
     <template #controls>
-      <div class="flex flex-wrap items-center gap-2">
-        <B24Select v-model="attrs.color" class="w-44" :items="airColors" placeholder="Color" multiple />
-        <B24Select v-model="attrs.size" class="w-24" :items="sizes" placeholder="Size" multiple />
-        <B24Separator orientation="vertical" class="h-10" />
-        <B24Switch v-model="attrs.inverted" label="Inverted" size="xs" />
-        <B24Switch v-model="attrs.square" label="Square" size="xs" />
-        <B24Switch v-model="attrs.useLink" label="useLink" size="xs" />
-        <B24Switch v-model="attrs.useClose" label="useClose" size="xs" />
-      </div>
+      <B24Select v-model="attrs.color" class="w-44" :items="airColors" placeholder="Color" multiple />
+      <B24Select v-model="attrs.size" class="w-24" :items="sizes" placeholder="Size" multiple />
+      <B24Separator orientation="vertical" class="h-10" />
+      <B24Switch v-model="attrs.inverted" label="Inverted" size="xs" />
+      <B24Switch v-model="attrs.square" label="Square" size="xs" />
+      <B24Switch v-model="attrs.useLink" label="useLink" size="xs" />
+      <B24Switch v-model="attrs.useClose" label="useClose" size="xs" />
     </template>
 
     <Matrix v-slot="props" :attrs="attrs">

@@ -14,11 +14,9 @@ const showGroup = ref(false)
 <template>
   <PlaygroundPage>
     <template #controls>
-      <div class="flex flex-wrap items-center gap-2">
-        <B24Select v-model="attrs.size" class="w-32" :items="sizes" placeholder="Size" multiple />
-        <B24Separator orientation="vertical" class="h-10" />
-        <B24Switch v-model="showGroup" label="Group" size="xs" />
-      </div>
+      <B24Select v-model="attrs.size" class="w-32" :items="sizes" placeholder="Size" multiple />
+      <B24Separator orientation="vertical" class="h-10" />
+      <B24Switch v-model="showGroup" label="Group" size="xs" />
     </template>
 
     <Matrix v-slot="props" :attrs="attrs">
