@@ -62,10 +62,6 @@ const getLightContent = computed(() => {
     containerWrapper: `${isDark.value ? 'dark' : 'light'} h-full min-h-0 bg-transparent lg:p-0 p-0`
   }
 
-  // result.pageWrapper = `${result.pageWrapper} flex-1 min-h-0 lg:grid-rows-[1fr]`
-  // result.container = `${result.container} h-full min-h-0`
-  // result.containerWrapper = `${isDark.value ? 'dark' : 'light'} h-full min-h-0 bg-transparent lg:p-0 p-0`
-
   return result
 })
 

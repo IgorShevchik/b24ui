@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import theme from '#build/b24ui/radio-group'
+import type { RadioGroupItem } from '@bitrix24/b24ui-nuxt'
 
 const sizes = Object.keys(theme.variants.size)
 const colors = Object.keys(theme.variants.color)
@@ -7,36 +8,24 @@ const variants = Object.keys(theme.variants.variant)
 const indicators = Object.keys(theme.variants.indicator)
 const orientations = Object.keys(theme.variants.orientation)
 
-const defaultColor = theme.defaultVariants.color
-const defaultSize = theme.defaultVariants.size
-const defaultVariant = theme.defaultVariants.variant
-const defaultIndicator = theme.defaultVariants.indicator
-const defaultOrientation = theme.defaultVariants.orientation
-
 const attrs = reactive({
-  color: [defaultColor],
-  size: [defaultSize],
-  variant: [defaultVariant],
-  indicator: [defaultIndicator],
-  orientation: defaultOrientation,
+  color: [theme.defaultVariants.color],
+  size: [theme.defaultVariants.size],
+  variant: [theme.defaultVariants.variant],
+  indicator: [theme.defaultVariants.indicator],
+  orientation: theme.defaultVariants.orientation,
   required: false,
   disabled: false
 })
 
-const literalOptions = [
-  'Basic',
-  'Standard',
-  'Professional',
-  'Enterprise'
-]
-const items = [
+const items: RadioGroupItem[] = [
   { value: '1', label: 'Basic' },
   { value: '2', label: 'Standard' },
   { value: '3', label: 'Professional' },
   { value: '4', label: 'Enterprise' }
 ]
 
-const itemsWithDescription = [
+const itemsWithDescription: RadioGroupItem[] = [
   { value: '1', label: 'Basic', description: 'includes 5 users' },
   { value: '2', label: 'Standard', description: 'includes 50 users' },
   { value: '3', label: 'Professional', description: 'includes 100 users' },
@@ -75,17 +64,11 @@ const airColors = computed(() => {
 
         <div class="mb-4 flex flex-wrap flex-col items-start justify-start gap-4">
           <B24RadioGroup v-model="value" :items="items" default-value="2" v-bind="props" />
-          <B24Separator label="Literal options" />
-          <B24RadioGroup v-model="value" :items="literalOptions" default-value="Enterprise" v-bind="props" />
-          <B24Separator label="Items with description" />
-          <B24RadioGroup v-model="value" :items="itemsWithDescription" v-bind="props" />
-          <B24Separator label="Legend" />
-          <B24RadioGroup v-model="value" legend="Legend" :items="items" v-bind="props" required />
-          <B24Separator label="Legend slots" />
+          <B24RadioGroup v-model="value" legend="Items with description" :items="itemsWithDescription" v-bind="props" />
           <B24RadioGroup v-model="value" :items="items" v-bind="props">
             <template #legend>
               <span class="italic font-(--ui-font-weight-bold)">
-                Legend slots
+                With legend and label slots
               </span>
             </template>
             <template #label="{ item }">

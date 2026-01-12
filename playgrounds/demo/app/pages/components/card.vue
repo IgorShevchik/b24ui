@@ -5,9 +5,8 @@ const withHeader = ref(true)
 const withFooter = ref(true)
 
 const variants = Object.keys(theme.variants.variant)
-const defaultVariant = theme.defaultVariants.variant
 const attrs = reactive({
-  variant: [defaultVariant]
+  variant: [theme.defaultVariants.variant]
 })
 </script>
 
@@ -21,7 +20,7 @@ const attrs = reactive({
     </template>
 
     <Matrix v-slot="props" :attrs="attrs">
-      <PlaygroundCard :on-bg-variant="props?.variant" class="w-60">
+      <B24Card v-bind="props" class="w-60">
         <template v-if="withHeader" #header>
           <ProseH5 class="mb-0">
             {{ props?.variant }}
@@ -33,7 +32,7 @@ const attrs = reactive({
         <template v-if="withFooter" #footer>
           <Placeholder class="h-8" />
         </template>
-      </PlaygroundCard>
+      </B24Card>
     </Matrix>
   </PlaygroundPage>
 </template>

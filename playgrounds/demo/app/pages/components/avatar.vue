@@ -3,9 +3,8 @@ import theme from '#build/b24ui/avatar'
 import IncertImageIcon from '@bitrix24/b24icons-vue/editor/IncertImageIcon'
 
 const sizes = Object.keys(theme.variants.size)
-const defaultSize = (theme.defaultVariants.size)
 const attrs = reactive({
-  size: [defaultSize]
+  size: [theme.defaultVariants.size]
 })
 
 const showGroup = ref(false)

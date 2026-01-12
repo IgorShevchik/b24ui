@@ -8,16 +8,11 @@ const colors = Object.keys(theme.variants.color)
 const variants = Object.keys(theme.variants.variant)
 const indicators = Object.keys(theme.variants.indicator)
 
-const defaultColor = theme.defaultVariants.color
-const defaultSize = theme.defaultVariants.size
-const defaultVariant = theme.defaultVariants.variant
-const defaultIndicator = theme.defaultVariants.indicator
-
 const attrs = reactive({
-  color: [defaultColor],
-  size: [defaultSize],
-  variant: [defaultVariant],
-  indicator: [defaultIndicator],
+  color: [theme.defaultVariants.color],
+  size: [theme.defaultVariants.size],
+  variant: [theme.defaultVariants.variant],
+  indicator: [theme.defaultVariants.indicator],
   disabled: false,
   required: false
 })

@@ -8,12 +8,9 @@ const toast = useToast()
 const sizes = Object.keys(theme.variants.size)
 const colors = Object.keys(theme.variants.color)
 
-const defaultColor = theme.defaultVariants.color
-const defaultSize = theme.defaultVariants.size
-
 const attrs = reactive({
-  color: [defaultColor],
-  size: [defaultSize],
+  color: [theme.defaultVariants.color],
+  size: [theme.defaultVariants.size],
   inverted: false,
   useLink: false,
   useClose: false,

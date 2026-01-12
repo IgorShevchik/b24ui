@@ -6,14 +6,12 @@ import ExampleGrid from '../../components/ExampleGrid.vue'
 import ExampleCard from '../../components/ExampleCard.vue'
 import Calendar1Icon from '@bitrix24/b24icons-vue/main/Calendar1Icon'
 
-const colors = Object.keys(theme.variants.color) as Array<keyof typeof theme.variants.color>
-const sizes = Object.keys(theme.variants.size) as Array<keyof typeof theme.variants.size>
+const colors = Object.keys(theme.variants.color)
+const sizes = Object.keys(theme.variants.size)
 
-const defaultColor = (theme.defaultVariants?.color ?? colors[0]) as (typeof colors)[number]
-const defaultSize = (theme.defaultVariants?.size ?? sizes[0]) as (typeof sizes)[number]
 const attrs = reactive({
-  color: [defaultColor],
-  size: [defaultSize],
+  color: [theme.defaultVariants.color],
+  size: [theme.defaultVariants.size],
   multiple: false,
   range: false
 })

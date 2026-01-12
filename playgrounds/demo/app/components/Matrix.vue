@@ -1,14 +1,22 @@
-<script setup lang="ts" generic="T extends Record<string, unknown | readonly unknown[]>">
-type MatrixValue<V> = V extends readonly (infer U)[] ? U : V
+<script lang="ts">
+export type MatrixValue<V> = V extends readonly (infer U)[] ? U : V
 
-const props = defineProps<{
+export type MatrixAttrs = Record<string, unknown | readonly unknown[]>
+
+export interface MatrixProps<T extends MatrixAttrs> {
   attrs: T
-  containerClass?: string
-  containerProps?: Record<string, unknown>
-}>()
+}
+
+export type MatrixSlotProps<T extends MatrixAttrs> = {
+  [K in keyof T]: T[K] extends readonly (infer U)[] ? U : never
+}
+</script>
+
+<script setup lang="ts" generic="T extends MatrixAttrs">
+const props = defineProps<MatrixProps<T>>()
 
 defineSlots<{
-  default: (props?: { [K in keyof T]: T[K] extends (infer U)[] ? U : never }) => any
+  default: (props?: MatrixSlotProps<T>) => any
 }>()
 
 const combinations = computed(() => {

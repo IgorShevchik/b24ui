@@ -8,14 +8,10 @@ const colors = Object.keys(theme.variants.color)
 const sizes = Object.keys(theme.variants.size)
 const positions = Object.keys(theme.variants.position)
 
-const defaultColor = theme.defaultVariants.color
-const defaultSize = theme.defaultVariants.size
-const defaultPosition = theme.defaultVariants.position
-
 const attrs = reactive({
-  color: [defaultColor],
-  size: [defaultSize],
-  position: [defaultPosition],
+  color: [theme.defaultVariants.color],
+  size: [theme.defaultVariants.size],
+  position: [theme.defaultVariants.position],
   inset: false,
   inverted: false,
   hideZero: false

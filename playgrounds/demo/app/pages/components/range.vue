@@ -11,11 +11,9 @@ const sizes = Object.keys(theme.variants.size)
 const colors = Object.keys(theme.variants.color)
 const orientations = Object.keys(theme.variants.orientation)
 
-const defaultColor = theme.defaultVariants?.color
-const defaultSize = theme.defaultVariants?.size
 const attrs = reactive({
-  color: [defaultColor],
-  size: [defaultSize],
+  color: [theme.defaultVariants.color],
+  size: [theme.defaultVariants.size],
   orientation: orientations[0],
   inverted: false,
   disabled: false

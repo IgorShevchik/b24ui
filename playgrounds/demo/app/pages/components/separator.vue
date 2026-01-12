@@ -6,15 +6,11 @@ const sizes = Object.keys(theme.variants.size)
 const accents = Object.keys(theme.variants.accent)
 const types = Object.keys(theme.variants.type)
 
-const defaultSize = theme.defaultVariants?.size
-const defaultAccent = theme.defaultVariants?.accent
-const defaultType = theme.defaultVariants?.type
-
 const attrs = reactive({
-  size: [defaultSize],
-  accent: [defaultAccent],
-  type: [defaultType],
-  label: 'Preview',
+  size: [theme.defaultVariants.size],
+  accent: [theme.defaultVariants.accent],
+  type: [theme.defaultVariants.type],
+  label: 'Label',
   useIcon: true,
   useLabel: true
 })
