@@ -98,16 +98,7 @@ const isDateUnavailable = (date: DateValue) => {
 
     <template #default="{ playground }">
       <Matrix v-slot="props" :attrs="attrs">
-        <PlaygroundCard>
-          <template #header>
-            <ProseH5 class="mb-0">
-              {{ [props?.color, props?.size].join(' | ') }}
-            </ProseH5>
-          </template>
-          <div class="p-2">
-            <B24Calendar v-bind="props" />
-          </div>
-        </PlaygroundCard>
+        <B24Calendar v-bind="props" />
       </Matrix>
 
       <ExampleGrid v-once>

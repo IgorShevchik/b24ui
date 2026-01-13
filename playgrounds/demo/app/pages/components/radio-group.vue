@@ -55,30 +55,20 @@ const airColors = computed(() => {
     </template>
 
     <Matrix v-slot="props" :attrs="attrs">
-      <PlaygroundCard>
-        <template #header>
-          <ProseH5 class="mb-0">
-            {{ [props?.color, props?.size, props?.variant, props?.indicator].join(' | ') }}
-          </ProseH5>
+      <B24RadioGroup v-model="value" :items="items" default-value="2" v-bind="props" />
+      <B24RadioGroup v-model="value" legend="Items with description" :items="itemsWithDescription" v-bind="props" />
+      <B24RadioGroup v-model="value" :items="items" v-bind="props">
+        <template #legend>
+          <span class="italic font-(--ui-font-weight-bold)">
+            With legend and label slots
+          </span>
         </template>
-
-        <div class="mb-4 flex flex-wrap flex-col items-start justify-start gap-4">
-          <B24RadioGroup v-model="value" :items="items" default-value="2" v-bind="props" />
-          <B24RadioGroup v-model="value" legend="Items with description" :items="itemsWithDescription" v-bind="props" />
-          <B24RadioGroup v-model="value" :items="items" v-bind="props">
-            <template #legend>
-              <span class="italic font-(--ui-font-weight-bold)">
-                With legend and label slots
-              </span>
-            </template>
-            <template #label="{ item }">
-              <span class="italic">
-                {{ item.label }}
-              </span>
-            </template>
-          </B24RadioGroup>
-        </div>
-      </PlaygroundCard>
+        <template #label="{ item }">
+          <span class="italic">
+            {{ item.label }}
+          </span>
+        </template>
+      </B24RadioGroup>
     </Matrix>
   </PlaygroundPage>
 </template>

@@ -37,31 +37,21 @@ const airColors = computed(() => {
     </template>
 
     <Matrix v-slot="props" :attrs="attrs">
-      <PlaygroundCard class="w-80">
-        <template #header>
-          <ProseH5 class="mb-0">
-            {{ [props?.color, props?.size].join(' | ') }}
-          </ProseH5>
-        </template>
-
-        <div class="flex flex-col gap-3">
-          <B24Switch
-            v-model="checked"
-            label="Preview"
-            :unchecked-icon="showIcons ? Cross30Icon : undefined"
-            :checked-icon="showIcons ? CheckIcon : undefined"
-            v-bind="props"
-          />
-          <B24Switch
-            v-model="checked"
-            label="With description"
-            description="This is a description"
-            :unchecked-icon="showIcons ? Cross30Icon : undefined"
-            :checked-icon="showIcons ? CheckIcon : undefined"
-            v-bind="props"
-          />
-        </div>
-      </PlaygroundCard>
+      <B24Switch
+        v-model="checked"
+        label="Preview"
+        :unchecked-icon="showIcons ? Cross30Icon : undefined"
+        :checked-icon="showIcons ? CheckIcon : undefined"
+        v-bind="props"
+      />
+      <B24Switch
+        v-model="checked"
+        label="With description"
+        description="This is a description"
+        :unchecked-icon="showIcons ? Cross30Icon : undefined"
+        :checked-icon="showIcons ? CheckIcon : undefined"
+        v-bind="props"
+      />
     </Matrix>
   </PlaygroundPage>
 </template>

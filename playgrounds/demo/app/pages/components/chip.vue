@@ -36,29 +36,19 @@ const airColors = computed(() => {
       <B24Switch v-model="attrs.hideZero" label="Hide zero" size="xs" />
     </template>
 
-    <Matrix v-slot="props" :attrs="attrs">
-      <PlaygroundCard>
-        <template #header>
-          <ProseH5 class="mb-0">
-            {{ [props?.color, props?.size, props?.position].join(' | ') }}
-          </ProseH5>
-        </template>
-
-        <div class="flex flex-wrap items-center justify-start gap-4">
-          <B24Chip :text="53" :trailing-icon="TrendUpIcon" v-bind="props">
-            <B24Button :icon="MailIcon" color="air-secondary-no-accent" />
-          </B24Chip>
-          <B24Chip :b24ui="{ base: 'style-filled-boost' }" v-bind="props">
-            <B24Button :icon="BellIcon" color="air-secondary-no-accent" />
-          </B24Chip>
-          <B24Chip :text="0" v-bind="props">
-            <B24Avatar src="/b24ui/demo/avatar/employee.png" alt="Employee" />
-          </B24Chip>
-          <B24Chip :text="1000" v-bind="props">
-            <B24Avatar src="/b24ui/demo/avatar/assistant.png" alt="Assistant" />
-          </B24Chip>
-        </div>
-      </PlaygroundCard>
+    <Matrix v-slot="props" :attrs="attrs" content-class="flex-row flex-wrap">
+      <B24Chip :text="53" :trailing-icon="TrendUpIcon" v-bind="props">
+        <B24Button :icon="MailIcon" color="air-secondary-no-accent" />
+      </B24Chip>
+      <B24Chip :b24ui="{ base: 'style-filled-boost' }" v-bind="props">
+        <B24Button :icon="BellIcon" color="air-secondary-no-accent" />
+      </B24Chip>
+      <B24Chip :text="0" v-bind="props">
+        <B24Avatar src="/b24ui/demo/avatar/employee.png" alt="Employee" />
+      </B24Chip>
+      <B24Chip :text="1000" v-bind="props">
+        <B24Avatar src="/b24ui/demo/avatar/assistant.png" alt="Assistant" />
+      </B24Chip>
     </Matrix>
   </PlaygroundPage>
 </template>

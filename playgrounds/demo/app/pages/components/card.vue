@@ -19,7 +19,7 @@ const attrs = reactive({
       <B24Switch v-model="withFooter" label="Footer" size="xs" />
     </template>
 
-    <Matrix v-slot="props" :attrs="attrs">
+    <Matrix v-slot="props" :attrs="attrs" layout="bare">
       <B24Card v-bind="props" class="w-60">
         <template v-if="withHeader" #header>
           <ProseH5 class="mb-0">

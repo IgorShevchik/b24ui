@@ -115,73 +115,63 @@ function getUserAvatar(value: string) {
       <B24Switch v-model="attrs.loading" label="Loading" size="xs" />
     </template>
 
-    <Matrix v-slot="props" :attrs="attrs">
-      <PlaygroundCard class="w-[240px]">
-        <template #header>
-          <ProseH5 class="mb-0">
-            {{ [props?.color, props?.size].join(' | ') }}
-          </ProseH5>
-        </template>
-
-        <div class="flex flex-col gap-4">
-          <B24Select
-            v-model="value"
-            :items="items"
-            autofocus
-            v-bind="props"
-            placeholder="Choose a value…"
-            aria-label="Choose a value"
+    <Matrix v-slot="props" :attrs="attrs" container-class="w-[240px]">
+      <B24Select
+        v-model="value"
+        :items="items"
+        autofocus
+        v-bind="props"
+        placeholder="Choose a value…"
+        aria-label="Choose a value"
+      />
+      <B24Select :default-value="value" :items="items" v-bind="props" tag="tag" :tag-color="props?.color" />
+      <B24Select placeholder="Highlight" highlight :items="items" v-bind="props" />
+      <B24Select placeholder="Search..." :avatar="{ src: '/b24ui/demo/avatar/employee.png' }" :items="items" v-bind="props" />
+      <B24Select placeholder="Loading trailing" v-bind="props" trailing :items="items" />
+      <B24Select placeholder="Trailing icon" :trailing-icon="RocketIcon" v-bind="props" :items="items" />
+      <B24Select placeholder="Underline" underline v-bind="props" :items="items" />
+      <B24Select placeholder="Rounded" rounded v-bind="props" :items="items" />
+      <B24Select placeholder="No border" no-border v-bind="props" :items="items" />
+      <B24Select placeholder="No padding" no-padding v-bind="props" :items="items" />
+      <B24Select
+        v-if="props?.multiple === false"
+        :items="statuses"
+        :icon="Search2Icon"
+        v-bind="props"
+        name="some_value"
+        placeholder="Search status&hellip;"
+        aria-label="Search status"
+        arrow
+      >
+        <template #leading="{ modelValue, b24ui }">
+          <Component
+            :is="getStatusIcon(String(modelValue))"
+            v-if="modelValue"
+            :class="b24ui.leadingIcon()"
           />
-          <B24Select :default-value="value" :items="items" v-bind="props" tag="tag" :tag-color="props?.color" />
-          <B24Select placeholder="Highlight" highlight :items="items" v-bind="props" />
-          <B24Select placeholder="Search..." :avatar="{ src: '/b24ui/demo/avatar/employee.png' }" :items="items" v-bind="props" />
-          <B24Select placeholder="Loading trailing" v-bind="props" trailing :items="items" />
-          <B24Select placeholder="Trailing icon" :trailing-icon="RocketIcon" v-bind="props" :items="items" />
-          <B24Select placeholder="Underline" underline v-bind="props" :items="items" />
-          <B24Select placeholder="Rounded" rounded v-bind="props" :items="items" />
-          <B24Select placeholder="No border" no-border v-bind="props" :items="items" />
-          <B24Select placeholder="No padding" no-padding v-bind="props" :items="items" />
-          <B24Select
-            v-if="props?.multiple === false"
-            :items="statuses"
-            :icon="Search2Icon"
-            v-bind="props"
-            name="some_value"
-            placeholder="Search status&hellip;"
-            aria-label="Search status"
-            arrow
-          >
-            <template #leading="{ modelValue, b24ui }">
-              <Component
-                :is="getStatusIcon(modelValue)"
-                v-if="modelValue"
-                :class="b24ui.leadingIcon()"
-              />
-            </template>
-          </B24Select>
-          <B24Select
-            v-if="props?.multiple === false"
-            :items="users || []"
-            :icon="UserIcon"
-            :trailing-icon="Expand1Icon"
-            v-bind="props"
-            :loading="status === 'pending'"
-            name="some_users"
-            placeholder="Search users&hellip;"
-            aria-label="Search users"
-            arrow
-          >
-            <template #leading="{ modelValue, b24ui }">
-              <B24Avatar
-                v-if="modelValue"
-                v-bind="getUserAvatar(modelValue)"
-                :size="b24ui.leadingAvatarSize() as AvatarProps['size']"
-                :class="b24ui.leadingAvatar()"
-              />
-            </template>
-          </B24Select>
-        </div>
-      </PlaygroundCard>
+        </template>
+      </B24Select>
+      <B24Select
+        v-if="props?.multiple === false"
+        :items="users || []"
+        :icon="UserIcon"
+        :trailing-icon="Expand1Icon"
+        v-bind="props"
+        :loading="status === 'pending'"
+        name="some_users"
+        placeholder="Search users&hellip;"
+        aria-label="Search users"
+        arrow
+      >
+        <template #leading="{ modelValue, b24ui }">
+          <B24Avatar
+            v-if="modelValue"
+            v-bind="getUserAvatar(String(modelValue))"
+            :size="b24ui.leadingAvatarSize() as AvatarProps['size']"
+            :class="b24ui.leadingAvatar()"
+          />
+        </template>
+      </B24Select>
     </Matrix>
   </PlaygroundPage>
 </template>

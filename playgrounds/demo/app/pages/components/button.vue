@@ -36,31 +36,22 @@ function onClick() {
     </template>
 
     <Matrix v-slot="props" :attrs="attrs">
-      <PlaygroundCard>
-        <template #header>
-          <ProseH5 class="mb-0">
-            {{ [props?.color, props?.size].join(' | ') }}
-          </ProseH5>
-        </template>
-        <div class="mb-4 flex flex-col items-start justify-center gap-4">
-          <B24Button label="Button" loading-auto v-bind="props" @click="onClick" />
-          <B24Button label="Link" loading-auto to="/" v-bind="props" @click="onClick" />
-          <B24Button label="Submit" type="submit" loading-auto v-bind="props" @click="onClick" />
-          <B24Button label="Disabled" disabled loading-auto v-bind="props" @click="onClick" />
-          <B24Button
-            label="Disabled link"
-            to="#"
-            loading-auto
-            disabled
-            v-bind="props"
-            @click="onClick"
-          />
-          <B24Button label="Loading wait" use-wait loading-auto v-bind="props" @click="onClick" />
-          <B24Button label="Loading clock" use-clock loading-auto v-bind="props" @click="onClick" />
-          <B24Button label="Avatar" :avatar="{ src: '/b24ui/demo/avatar/employee.png' }" loading-auto v-bind="props" @click="onClick" />
-          <B24Button label="Icon" :icon="RocketIcon" loading-auto v-bind="props" @click="onClick" />
-        </div>
-      </PlaygroundCard>
+      <B24Button label="Button" loading-auto v-bind="props" @click="onClick" />
+      <B24Button label="Link" loading-auto to="/" v-bind="props" @click="onClick" />
+      <B24Button label="Submit" type="submit" loading-auto v-bind="props" @click="onClick" />
+      <B24Button label="Disabled" disabled loading-auto v-bind="props" @click="onClick" />
+      <B24Button
+        label="Disabled link"
+        to="#"
+        loading-auto
+        disabled
+        v-bind="props"
+        @click="onClick"
+      />
+      <B24Button label="Loading wait" use-wait loading-auto v-bind="props" @click="onClick" />
+      <B24Button label="Loading clock" use-clock loading-auto v-bind="props" @click="onClick" />
+      <B24Button label="Avatar" :avatar="{ src: '/b24ui/demo/avatar/employee.png' }" loading-auto v-bind="props" @click="onClick" />
+      <B24Button label="Icon" :icon="RocketIcon" loading-auto v-bind="props" @click="onClick" />
     </Matrix>
   </PlaygroundPage>
 </template>

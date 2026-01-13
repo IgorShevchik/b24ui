@@ -59,34 +59,24 @@ function onCloseClick(event: MouseEvent) {
     </template>
 
     <Matrix v-slot="props" :attrs="attrs">
-      <PlaygroundCard>
-        <template #header>
-          <ProseH5 class="mb-0">
-            {{ [props?.color, props?.size].join(' | ') }}
-          </ProseH5>
-        </template>
-
-        <div class="flex flex-col items-start justify-start gap-3">
-          <B24Badge
-            label="Badge"
-            v-bind="props"
-            :on-close-click="onCloseClick"
-            @click="onClick"
-          />
-          <B24Badge
-            :label="props?.square ? '' : 'Icon'"
-            :icon="InfoIcon"
-            v-bind="props"
-            :on-close-click="onCloseClick"
-          />
-          <B24Badge
-            label="With avatar"
-            v-bind="props"
-            :avatar="{ src: '/b24ui/demo/avatar/employee.png', text: 'Employee' }"
-            :on-close-click="onCloseClick"
-          />
-        </div>
-      </PlaygroundCard>
+      <B24Badge
+        label="Badge"
+        v-bind="props"
+        :on-close-click="onCloseClick"
+        @click="onClick"
+      />
+      <B24Badge
+        :label="props?.square ? '' : 'Icon'"
+        :icon="InfoIcon"
+        v-bind="props"
+        :on-close-click="onCloseClick"
+      />
+      <B24Badge
+        label="With avatar"
+        v-bind="props"
+        :avatar="{ src: '/b24ui/demo/avatar/employee.png', text: 'Employee' }"
+        :on-close-click="onCloseClick"
+      />
     </Matrix>
   </PlaygroundPage>
 </template>

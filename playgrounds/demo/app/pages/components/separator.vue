@@ -30,38 +30,30 @@ const attrs = reactive({
     </template>
 
     <Matrix v-slot="props" :attrs="attrs">
-      <PlaygroundCard>
-        <template #header>
-          <ProseH5 class="mb-0">
-            {{ [props?.size, props?.accent, props?.type].join(' | ') }}
-          </ProseH5>
-        </template>
-
-        <div class="h-24 flex gap-4 items-center">
-          <div class="flex-1 text-center">
-            <ProseP>Blog</ProseP>
-          </div>
-
-          <B24Separator :avatar="props?.useIcon ? { src: '/b24ui/demo/avatar/assistant.png' } : undefined" v-bind="props" orientation="vertical" :label="props?.useLabel ? props?.label : undefined" />
-
-          <div class="flex-1 text-center">
-            <ProseP>Docs</ProseP>
-          </div>
-
-          <B24Separator v-bind="props" orientation="vertical" :label="props?.useLabel ? props?.label : undefined">
-            <B24Avatar v-if="props?.useIcon" size="sm" src="/b24ui/demo/avatar/employee.png" />
-          </B24Separator>
-
-          <div class="flex-1 text-center">
-            <ProseP>Source</ProseP>
-          </div>
+      <div class="h-24 flex gap-4 items-center">
+        <div class="flex-1 text-center">
+          <ProseP>Blog</ProseP>
         </div>
-        <B24Separator
-          v-bind="props"
-          :icon="props?.useIcon ? Bitrix24Icon : undefined"
-          :label="props?.useLabel ? props?.label : undefined"
-        />
-      </PlaygroundCard>
+
+        <B24Separator :avatar="props?.useIcon ? { src: '/b24ui/demo/avatar/assistant.png' } : undefined" v-bind="props" orientation="vertical" :label="props?.useLabel ? props?.label : undefined" />
+
+        <div class="flex-1 text-center">
+          <ProseP>Docs</ProseP>
+        </div>
+
+        <B24Separator v-bind="props" orientation="vertical" :label="props?.useLabel ? props?.label : undefined">
+          <B24Avatar v-if="props?.useIcon" size="sm" src="/b24ui/demo/avatar/employee.png" />
+        </B24Separator>
+
+        <div class="flex-1 text-center">
+          <ProseP>Source</ProseP>
+        </div>
+      </div>
+      <B24Separator
+        v-bind="props"
+        :icon="props?.useIcon ? Bitrix24Icon : undefined"
+        :label="props?.useLabel ? props?.label : undefined"
+      />
     </Matrix>
   </PlaygroundPage>
 </template>
