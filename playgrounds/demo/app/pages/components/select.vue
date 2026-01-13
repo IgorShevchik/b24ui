@@ -2,13 +2,9 @@
 /**
  * @see playground/app/pages/components/select-menu.vue
  */
-import type { SelectItem, SelectProps, AvatarProps, ChipProps, ToastProps } from '@bitrix24/b24ui-nuxt'
+import type { SelectItem, SelectProps, AvatarProps } from '@bitrix24/b24ui-nuxt'
 import theme from '#build/b24ui/select'
-import ExampleGrid from '../../components/ExampleGrid.vue'
-import ExampleCard from '../../components/ExampleCard.vue'
-import ExampleCardSubTitle from '../../components/ExampleCardSubTitle.vue'
 import type { IUser } from '~/types'
-import ALetterIcon from '@bitrix24/b24icons-vue/main/ALetterIcon'
 import Expand1Icon from '@bitrix24/b24icons-vue/actions/Expand1Icon'
 import Search2Icon from '@bitrix24/b24icons-vue/main/Search2Icon'
 import UserIcon from '@bitrix24/b24icons-vue/common-b24/UserIcon'
@@ -19,11 +15,22 @@ import ArrowTopIcon from '@bitrix24/b24icons-vue/actions/ArrowTopIcon'
 import CircleCheckIcon from '@bitrix24/b24icons-vue/main/CircleCheckIcon'
 import CancelIcon from '@bitrix24/b24icons-vue/button/CancelIcon'
 
-const toast = useToast()
-const colors = Object.keys(theme.variants.color) as Array<keyof typeof theme.variants.color>
-const sizes = Object.keys(theme.variants.size) as Array<keyof typeof theme.variants.size>
+const colors = Object.keys(theme.variants.color)
+const sizes = Object.keys(theme.variants.size)
 
-const isUseBg = ref(true)
+const attrs = reactive({
+  color: [theme.defaultVariants.color],
+  size: [theme.defaultVariants.size],
+  multiple: false,
+  disabled: false,
+  loading: false
+})
+
+const airColors = computed(() => {
+  return colors.filter((color) => {
+    return color.includes('air')
+  })
+})
 
 const knowledgeBase = ['Select Knowledge base', 'Create knowledge base'] satisfies SelectItem[]
 const smartScripts = ['Scripts', 'Create script', 'Install from Bitrix24.Market'] satisfies SelectItem[]
@@ -37,51 +44,8 @@ const items = [
   [{ label: 'Smart Process Automation', type: 'label' as const }, ...smartProcess],
   [{ label: 'Settings', type: 'label' as const }, ...settings]
 ] satisfies SelectItem[][]
-const selectedItems = ref([knowledgeBase[0]!, smartProcess[0]!])
 
-const chipItems = ref([
-  {
-    label: 'New message',
-    value: 'message',
-    chip: {
-      color: 'air-primary-alert' as ChipProps['color']
-    },
-    color: 'air-primary-success' as SelectProps['color']
-  },
-  {
-    label: 'New information',
-    value: 'information',
-    chip: {
-      color: 'air-primary' as ChipProps['color']
-    },
-    onSelect(e: Event) {
-      e.preventDefault()
-      toast.add({ title: 'Action', description: 'New information', color: 'air-primary' as ToastProps['color'] })
-    }
-  },
-  {
-    label: 'Online',
-    value: 'online',
-    chip: {
-      color: 'air-primary-success' as ChipProps['color']
-    },
-    onSelect() {
-      toast.add({ title: 'Action', description: 'Online', color: 'air-primary-success' as ToastProps['color'] })
-    }
-  },
-  {
-    label: 'Offline',
-    value: 'offline',
-    chip: {
-      color: 'air-secondary' as ChipProps['color']
-    }
-  }
-] satisfies SelectItem[])
-const chipValue = ref(chipItems.value[0]?.value)
-
-function getChip(value: string) {
-  return chipItems.value.find(item => item.value === value)?.chip
-}
+const value = ref('CRM settings')
 
 const statuses = [
   {
@@ -138,342 +102,86 @@ function getStatusIcon(value: string) {
 function getUserAvatar(value: string) {
   return users.value?.find(user => user.value === value)?.avatar || {}
 }
-
-const oldColors = computed(() => {
-  return colors.filter((color) => {
-    return !color.includes('air')
-  })
-})
-
-const airColors = computed(() => {
-  return colors.filter((color) => {
-    return color.includes('air')
-  })
-})
 </script>
 
 <template>
-  <ExampleGrid v-once>
-    <ExampleCard title="base" :use-bg="isUseBg">
-      <ExampleCardSubTitle title="simple" />
-      <div class="mb-4 flex flex-col">
-        <B24Select
-          :items="items"
-          name="some_value"
-          placeholder="Choose a value&hellip;"
-          aria-label="Choose a value"
-          default-value="Scripts"
-        />
-      </div>
+  <PlaygroundPage>
+    <template #controls>
+      <B24Select v-model="attrs.color" class="w-44" :items="airColors" placeholder="Color" multiple />
+      <B24Select v-model="attrs.size" class="w-32" :items="sizes" placeholder="Size" multiple />
+      <B24Separator orientation="vertical" class="h-10" />
+      <B24Switch v-model="attrs.multiple" label="Multiple" size="xs" />
+      <B24Switch v-model="attrs.disabled" label="Disabled" size="xs" />
+      <B24Switch v-model="attrs.loading" label="Loading" size="xs" />
+    </template>
 
-      <ExampleCardSubTitle title="underline" />
-      <div class="mb-4 flex flex-col">
-        <B24Select
-          :items="items"
-          name="some_value"
-          placeholder="Choose a value&hellip;"
-          aria-label="Choose a value"
-          default-value="Scripts"
-          color="air-primary-success"
-          underline
-        />
-      </div>
-
-      <ExampleCardSubTitle title="no border" />
-      <div class="mb-4 flex flex-col">
-        <B24Select
-          :items="items"
-          name="some_value"
-          placeholder="Choose a value&hellip;"
-          aria-label="Choose a value"
-          default-value="Scripts"
-          no-border
-        />
-      </div>
-
-      <ExampleCardSubTitle title="no padding" />
-      <div class="mb-4 flex flex-col">
-        <B24Select
-          :items="items"
-          name="some_value"
-          placeholder="Choose a value&hellip;"
-          aria-label="Choose a value"
-          default-value="Scripts"
-          no-padding
-        />
-      </div>
-
-      <ExampleCardSubTitle title="some error" />
-      <div class="mb-4 flex flex-col">
-        <B24Select
-          :items="items"
-          name="some_value"
-          placeholder="Choose a value&hellip;"
-          aria-label="Choose a value"
-          default-value="Scripts"
-          highlight
-          color="air-primary-alert"
-          aria-invalid="true"
-        />
-      </div>
-
-      <ExampleCardSubTitle title="some more" />
-      <div class="mb-4 flex flex-col gap-4">
-        <B24Select
-          :items="items"
-          name="disabled"
-          placeholder="Disabled"
-          aria-label="Disabled"
-          disabled
-        />
-        <B24Select
-          :items="items"
-          name="required"
-          placeholder="Required"
-          aria-label="Required"
-          required
-        />
-        <B24Select
-          v-model="selectedItems"
-          :items="items"
-          name="multiple"
-          placeholder="Multiple"
-          aria-label="Multiple"
-          multiple
-        />
-        <B24Select
-          :items="items"
-          name="rounded"
-          placeholder="Rounded"
-          aria-label="Rounded"
-          rounded
-          :icon="ALetterIcon"
-          :trailing-icon="Expand1Icon"
-        />
-      </div>
-    </ExampleCard>
-
-    <ExampleCard title="loading" :use-bg="isUseBg">
-      <ExampleCardSubTitle title="loading" />
-      <div class="mb-4 flex flex-col gap-4">
-        <B24Select
-          :items="items"
-          loading
-          name="some_value"
-          placeholder="Choose a value&hellip;"
-          aria-label="Choose a value"
-        />
-        <B24Select
-          :items="items"
-          loading
-          trailing
-          name="some_value"
-          placeholder="Choose a value&hellip;"
-          aria-label="Choose a value"
-        />
-        <B24Select
-          :items="items"
-          loading
-          :icon="RocketIcon"
-          name="some_value"
-          placeholder="Choose a value&hellip;"
-          aria-label="Choose a value"
-        />
-        <B24Select
-          :items="items"
-          loading
-          :avatar="{ src: '/b24ui/demo/avatar/employee.png' }"
-          name="some_value"
-          placeholder="Choose a value&hellip;"
-          aria-label="Choose a value"
-        />
-      </div>
-    </ExampleCard>
-
-    <ExampleCard title="color" :use-bg="isUseBg" class="sm:col-span-2">
-      <template v-for="color in airColors" :key="color">
-        <ExampleCardSubTitle :title="color as string" />
-        <div class="mb-4 flex flex-wrap flex-row items-center gap-4">
-          <B24Select
-            :items="items"
-            name="some_value"
-            placeholder="Choose a value&hellip;"
-            aria-label="Choose a value"
-            :color="color"
-            highlight
-            class="w-40"
-          />
-          <B24Select
-            :items="items"
-            :tag-color="color"
-            tag="some text"
-            name="some_value"
-            placeholder="Choose a value&hellip;"
-            aria-label="Choose a value"
-            :color="color"
-            highlight
-            class="w-40"
-          />
-        </div>
-      </template>
-      <B24Collapsible class="mb-2">
-        <B24Button
-          color="air-secondary-no-accent"
-          label="Deprecate"
-          use-dropdown
-        />
-        <template #content>
-          <template v-for="color in oldColors" :key="color">
-            <ExampleCardSubTitle :title="color as string" />
-            <div class="mb-4 flex flex-wrap flex-row items-center gap-4">
-              <B24Select
-                :items="items"
-                name="some_value"
-                placeholder="Choose a value&hellip;"
-                aria-label="Choose a value"
-                :color="color"
-                highlight
-                class="w-40"
-              />
-              <B24Select
-                :items="items"
-                :tag-color="color"
-                tag="some text"
-                name="some_value"
-                placeholder="Choose a value&hellip;"
-                aria-label="Choose a value"
-                :color="color"
-                highlight
-                class="w-40"
-              />
-            </div>
-          </template>
+    <Matrix v-slot="props" :attrs="attrs">
+      <PlaygroundCard class="w-[240px]">
+        <template #header>
+          <ProseH5 class="mb-0">
+            {{ [props?.color, props?.size].join(' | ') }}
+          </ProseH5>
         </template>
-      </B24Collapsible>
-    </ExampleCard>
-  </ExampleGrid>
 
-  <B24Separator accent="accent" class="my-4" label="Size" type="dotted" />
-  <ExampleGrid v-once class="mb-4">
-    <ExampleCard title="Some cases" :use-bg="isUseBg" class="sm:col-span-2 md:col-span-4">
-      <template v-for="size in sizes" :key="size">
-        <ExampleCardSubTitle :title="size as string" />
-        <div class="mb-4 flex flex-wrap flex-row items-center gap-4">
-          <div>
-            <B24Select
-              :items="items"
-              name="some_value"
-              placeholder="Choose a value&hellip;"
-              aria-label="Choose a value"
-              :size="size"
-              class="w-[240px]"
-              arrow
-            />
-          </div>
-          <div>
-            <B24Select
-              :items="items"
-              :icon="Search2Icon"
-              name="some_value"
-              placeholder="Choose a value&hellip;"
-              aria-label="Choose a value"
-              :size="size"
-              class="w-[240px]"
-              arrow
-            />
-          </div>
-          <div>
-            <B24Select
-              :items="statuses"
-              :icon="Search2Icon"
-              name="some_value"
-              placeholder="Search status&hellip;"
-              aria-label="Search status"
-              :size="size"
-              value-key="value"
-              class="w-[240px]"
-              arrow
-            >
-              <template #leading="{ modelValue, b24ui }">
-                <Component
-                  :is="getStatusIcon(modelValue)"
-                  v-if="modelValue"
-                  :class="b24ui.leadingIcon()"
-                />
-              </template>
-            </B24Select>
-          </div>
-          <div class="flex flex-row items-center justify-between gap-4">
-            <B24Select
-              :items="items"
-              :avatar="{ src: '/b24ui/demo/avatar/employee.png' }"
-              :trailing-icon="Expand1Icon"
-              name="some_value"
-              placeholder="Choose a value&hellip;"
-              aria-label="Choose a value"
-              :size="size"
-              class="w-[240px]"
-              arrow
-            />
-            <B24Input
-              :avatar="{ src: '/b24ui/demo/avatar/assistant.png' }"
-              :trailing-icon="Search2Icon"
-              name="some_value"
-              placeholder="Input"
-              aria-label="Insert value"
-              :size="size"
-              class="w-[140px]"
-            />
-          </div>
-          <div>
-            <B24Select
-              :items="users || []"
-              :loading="status === 'pending'"
-              :icon="UserIcon"
-              :trailing-icon="Expand1Icon"
-              name="some_users"
-              placeholder="Search users&hellip;"
-              aria-label="Search users"
-              :size="size"
-              class="w-[240px]"
-              arrow
-            >
-              <template #leading="{ modelValue, b24ui }">
-                <B24Avatar
-                  v-if="modelValue"
-                  v-bind="getUserAvatar(modelValue)"
-                  :size="b24ui.leadingAvatarSize() as AvatarProps['size']"
-                  :class="b24ui.leadingAvatar()"
-                />
-              </template>
-            </B24Select>
-          </div>
-          <div>
-            <B24Select
-              v-model="chipValue"
-              :items="chipItems"
-              name="some_chips"
-              aria-label="Search chips"
-              :size="size"
-              class="w-[240px]"
-              arrow
-              :b24ui="{
-                base: ['xss'].includes(size) ? 'ps-[25px]' : ''
-              }"
-            >
-              <template #leading="{ modelValue, b24ui }">
-                <B24Chip
-                  v-if="modelValue"
-                  v-bind="getChip(modelValue as string)"
-                  standalone
-                  :size="['xl', 'lg'].includes(size) ? 'lg' : (['md'].includes(size) ? 'md' : 'sm')"
-                  :class="b24ui.itemLeadingChip()"
-                />
-              </template>
-            </B24Select>
-          </div>
+        <div class="flex flex-col gap-4">
+          <B24Select
+            v-model="value"
+            :items="items"
+            autofocus
+            v-bind="props"
+            placeholder="Choose a value…"
+            aria-label="Choose a value"
+          />
+          <B24Select :default-value="value" :items="items" v-bind="props" tag="tag" :tag-color="props?.color" />
+          <B24Select placeholder="Highlight" highlight :items="items" v-bind="props" />
+          <B24Select placeholder="Search..." :avatar="{ src: '/b24ui/demo/avatar/employee.png' }" :items="items" v-bind="props" />
+          <B24Select placeholder="Loading trailing" v-bind="props" trailing :items="items" />
+          <B24Select placeholder="Trailing icon" :trailing-icon="RocketIcon" v-bind="props" :items="items" />
+          <B24Select placeholder="Underline" underline v-bind="props" :items="items" />
+          <B24Select placeholder="Rounded" rounded v-bind="props" :items="items" />
+          <B24Select placeholder="No border" no-border v-bind="props" :items="items" />
+          <B24Select placeholder="No padding" no-padding v-bind="props" :items="items" />
+          <B24Select
+            v-if="props?.multiple === false"
+            :items="statuses"
+            :icon="Search2Icon"
+            v-bind="props"
+            name="some_value"
+            placeholder="Search status&hellip;"
+            aria-label="Search status"
+            arrow
+          >
+            <template #leading="{ modelValue, b24ui }">
+              <Component
+                :is="getStatusIcon(modelValue)"
+                v-if="modelValue"
+                :class="b24ui.leadingIcon()"
+              />
+            </template>
+          </B24Select>
+          <B24Select
+            v-if="props?.multiple === false"
+            :items="users || []"
+            :icon="UserIcon"
+            :trailing-icon="Expand1Icon"
+            v-bind="props"
+            :loading="status === 'pending'"
+            name="some_users"
+            placeholder="Search users&hellip;"
+            aria-label="Search users"
+            arrow
+          >
+            <template #leading="{ modelValue, b24ui }">
+              <B24Avatar
+                v-if="modelValue"
+                v-bind="getUserAvatar(modelValue)"
+                :size="b24ui.leadingAvatarSize() as AvatarProps['size']"
+                :class="b24ui.leadingAvatar()"
+              />
+            </template>
+          </B24Select>
         </div>
-      </template>
-    </ExampleCard>
-  </ExampleGrid>
+      </PlaygroundCard>
+    </Matrix>
+  </PlaygroundPage>
 </template>
