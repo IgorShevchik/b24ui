@@ -5,6 +5,7 @@ import type { JSONContent } from '@tiptap/vue-3'
 import { mapEditorItems } from '@bitrix24/b24ui-nuxt/utils/editor'
 import { Emoji, gitHubEmojis } from '@tiptap/extension-emoji'
 import { TextAlign } from '@tiptap/extension-text-align'
+import Navbar from '../../components/Navbar.vue'
 import { ImageUpload } from '../../../../../docs/app/components/content/examples/editor/EditorImageUpload'
 // import { useEditorCompletion } from '../../../../../docs/app/components/content/examples/editor/EditorUseCompletion'
 import EditorLinkPopover from '../../../../../docs/app/components/content/examples/editor/EditorLinkPopover.vue'
@@ -581,8 +582,8 @@ const emojiItems: EditorEmojiMenuItem[] = gitHubEmojis.filter(emoji => !emoji.na
 </script>
 
 <template>
-  <div
-    class="isolate mt-[24px] relative h-[calc(100vh-var(--topbar-height)-56px)] !p-0 rounded-md bg-(--ui-color-design-outline-a1-bg) border-(--ui-color-design-outline-stroke) border-(length:--ui-design-outline-stroke-weight)"
+  <B24Card
+    class="isolate relative h-[calc(100vh-var(--topbar-height)-56px)] p-0! backdrop-blur-[20px]"
   >
     <B24Editor
       ref="editorRef"
@@ -600,18 +601,21 @@ const emojiItems: EditorEmojiMenuItem[] = gitHubEmojis.filter(emoji => !emoji.na
       content-type="markdown"
       autofocus
       placeholder="Write, type '/' for commands..."
-      :b24ui="{ base: 'p-8 sm:px-16 py-24' }"
+      :b24ui="{ base: 'p-8 sm:px-16 pt-36' }"
       class="w-full h-[calc(100vh-var(--topbar-height)-56px)] overflow-y-auto scrollbar-thin scrollbar-transparent"
     >
-      <B24EditorToolbar
-        :editor="editor"
-        :items="toolbarItems"
-        class="border-b border-(--ui-color-design-tinted-na-stroke) backdrop-blur-3xl bg-(--ui-color-bg-content-primary) absolute top-0 inset-x-0 px-8 mr-2 sm:px-16 py-2 z-20 overflow-x-auto rounded-t-md"
-      >
-        <template #link>
-          <EditorLinkPopover :editor="editor" auto-open />
+      <Navbar container-class="absolute top-0 inset-x-0 z-30">
+        <template #controls>
+          <B24EditorToolbar
+            :editor="editor"
+            :items="toolbarItems"
+          >
+            <template #link>
+              <EditorLinkPopover :editor="editor" auto-open />
+            </template>
+          </B24EditorToolbar>
         </template>
-      </B24EditorToolbar>
+      </Navbar>
 
       <B24EditorToolbar
         :editor="editor"
@@ -676,5 +680,5 @@ const emojiItems: EditorEmojiMenuItem[] = gitHubEmojis.filter(emoji => !emoji.na
       <B24EditorMentionMenu :editor="editor" :items="mentionItems" />
       <B24EditorEmojiMenu :editor="editor" :items="emojiItems" />
     </B24Editor>
-  </div>
+  </B24Card>
 </template>

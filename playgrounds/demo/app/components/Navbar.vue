@@ -10,6 +10,7 @@ const router = useRouter()
 
 defineProps<{
   to?: string
+  containerClass?: string
 }>()
 
 const componentName = computed(() => route.path.split('/').filter(Boolean).pop() ?? '')
@@ -36,7 +37,7 @@ defineShortcuts({
 </script>
 
 <template>
-  <B24Card variant="outline-alt" class="backdrop-blur-[14px] border-0">
+  <B24Card variant="outline-alt" class="backdrop-blur-[14px] border-0" :class="containerClass">
     <template #header>
       <div class="w-full flex flex-row items-center justify-between gap-1">
         <div class="flex flex-row items-center justify-start gap-3">
