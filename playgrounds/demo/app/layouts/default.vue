@@ -30,6 +30,8 @@ const route = useRoute()
 const router = useRouter()
 
 const { groups } = useNavigation()
+const searchTerm = ref('')
+const input = useTemplateRef('input')
 
 const isDark = computed({
   get() {
@@ -66,17 +68,23 @@ const getLightContent = computed(() => {
 })
 
 defineShortcuts({
-  ctrl_arrowleft: () => {
+  'ctrl_arrowleft': () => {
     if (route.path === '/') {
       return
     }
     router.push('/')
   },
-  shift_L: () => {
+  'shift_L': () => {
     toggleDir()
   },
-  shift_D: () => {
+  'shift_D': () => {
     toggleMode()
+  },
+  '/': {
+    usingInput: false,
+    handler: () => {
+      input?.value?.inputRef?.focus()
+    }
   }
 })
 
@@ -93,6 +101,25 @@ const menuTop = computed<NavigationMenuItem[]>(() => {
       }
     }))
   ]
+})
+
+const contains = (value: string, search: string) => value.toLowerCase().includes(search.toLowerCase())
+
+const filteredGroups = computed(() => {
+  if (!searchTerm.value) {
+    return groups.value
+  }
+
+  return groups.value.map((group) => {
+    if (!group.id.includes('component')) {
+      return group
+    }
+
+    return {
+      ...group,
+      items: group.items.filter(item => contains(String(item.label), searchTerm.value))
+    }
+  })
 })
 </script>
 
@@ -128,6 +155,13 @@ const menuTop = computed<NavigationMenuItem[]>(() => {
               </NuxtLink>
             </B24Tooltip>
           </div>
+          <div class="mt-4 ps-[25px] pe-xs rtl:pe-[25px] pb-[12px]">
+            <B24Input ref="input" v-model="searchTerm" placeholder="Filter..." class="group">
+              <template #trailing>
+                <B24Kbd value="/" dd-class="ring-(--ui-color-design-plain-na-content-secondary) bg-transparent text-muted" />
+              </template>
+            </B24Input>
+          </div>
         </B24SidebarHeader>
         <B24SidebarBody>
           <B24RadioGroup
@@ -140,8 +174,9 @@ const menuTop = computed<NavigationMenuItem[]>(() => {
             indicator="hidden"
             @change="toggleModeContext"
           />
-          <template v-for="group in groups" :key="group.id">
+          <template v-for="group in filteredGroups" :key="group.id">
             <B24NavigationMenu
+              v-if="group.items.length > 0"
               :items="[
                 ...(group.label ? [{ label: group.label, type: 'label' as NavigationMenuItem['type'] }] : []),
                 ...group.items

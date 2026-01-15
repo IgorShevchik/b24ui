@@ -5,6 +5,7 @@ export type MatrixAttrs = Record<string, readonly unknown[]>
 
 export interface MatrixProps<T extends MatrixAttrs> {
   attrs: T
+  headerSeparator?: string
   containerClass?: string
   contentClass?: string
 }
@@ -15,7 +16,9 @@ export type MatrixSlotProps<T extends MatrixAttrs> = {
 </script>
 
 <script setup lang="ts" generic="T extends MatrixAttrs">
-const props = defineProps<MatrixProps<T>>()
+const props = withDefaults(defineProps<MatrixProps<T>>(), {
+  headerSeparator: ' | '
+})
 
 defineSlots<{
   default: (props?: MatrixSlotProps<T>) => any
@@ -56,9 +59,11 @@ const combinations = computed(() => {
   return result
 })
 
-function getDefaultHeader(combination: { [K in keyof T]?: MatrixValue<T[K]> }): string {
-  return Object.values(combination).join(' | ')
-}
+const headers = computed(() => {
+  return combinations.value.map((combination) => {
+    return Object.values(combination).join(props.headerSeparator)
+  })
+})
 </script>
 
 <template>
@@ -68,7 +73,7 @@ function getDefaultHeader(combination: { [K in keyof T]?: MatrixValue<T[K]> }): 
         <template #header>
           <slot name="header" v-bind="combination">
             <ProseH5 class="mb-0">
-              {{ getDefaultHeader(combination) }}
+              {{ headers[index] }}
             </ProseH5>
           </slot>
         </template>
