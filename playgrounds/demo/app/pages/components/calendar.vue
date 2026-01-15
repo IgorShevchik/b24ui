@@ -6,9 +6,12 @@ import type { DateValue } from '@internationalized/date'
 const colors = Object.keys(theme.variants.color)
 const sizes = Object.keys(theme.variants.size)
 
-const attrs = reactive({
+const multipleAttrs = reactive({
   color: [theme.defaultVariants.color],
-  size: [theme.defaultVariants.size],
+  size: [theme.defaultVariants.size]
+})
+
+const singleAttrs = reactive({
   disabled: false,
   numberOfMonths: 1
 })
@@ -62,19 +65,19 @@ const isDateUnavailable = (date: DateValue) => {
 <template>
   <PlaygroundPage>
     <template #controls>
-      <B24Select v-model="attrs.color" class="w-44" :items="airColors" placeholder="Color" multiple />
-      <B24Select v-model="attrs.size" class="w-32" :items="sizes" placeholder="Size" multiple />
-      <B24InputNumber v-model="attrs.numberOfMonths" class="w-24" placeholder="Number of months" />
+      <B24Select v-model="multipleAttrs.color" class="w-44" :items="airColors" placeholder="Color" multiple />
+      <B24Select v-model="multipleAttrs.size" class="w-32" :items="sizes" placeholder="Size" multiple />
+      <B24InputNumber v-model="singleAttrs.numberOfMonths" class="w-24" placeholder="Number of months" />
       <B24Separator orientation="vertical" class="h-10" />
       <B24Switch v-model="multiple" label="Multiple" size="xs" />
       <B24Switch v-model="range" label="Range" size="xs" />
-      <B24Switch v-model="attrs.disabled" label="Disabled" size="xs" />
+      <B24Switch v-model="singleAttrs.disabled" label="Disabled" size="xs" />
     </template>
 
-    <Matrix v-slot="props" :attrs="attrs">
-      <B24Calendar v-if="range" v-model="valueRange" range :is-date-disabled="isDateDisabled" v-bind="props" />
-      <B24Calendar v-else-if="multiple" v-model="valueMultiple" multiple :is-date-unavailable="isDateUnavailable" v-bind="props" />
-      <B24Calendar v-else v-model="value" v-bind="props">
+    <Matrix v-slot="props" :attrs="multipleAttrs">
+      <B24Calendar v-if="range" v-model="valueRange" range :is-date-disabled="isDateDisabled" v-bind="{ ...singleAttrs, ...props }" />
+      <B24Calendar v-else-if="multiple" v-model="valueMultiple" multiple :is-date-unavailable="isDateUnavailable" v-bind="{ ...singleAttrs, ...props }" />
+      <B24Calendar v-else v-model="value" v-bind="{ ...singleAttrs, ...props }">
         <template #day="{ day }">
           <B24Chip
             :show="!!getColorByDate(day.toDate('UTC'))"

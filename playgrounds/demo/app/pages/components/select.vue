@@ -18,9 +18,12 @@ import CancelIcon from '@bitrix24/b24icons-vue/button/CancelIcon'
 const colors = Object.keys(theme.variants.color)
 const sizes = Object.keys(theme.variants.size)
 
-const attrs = reactive({
+const multipleAttrs = reactive({
   color: [theme.defaultVariants.color],
-  size: [theme.defaultVariants.size],
+  size: [theme.defaultVariants.size]
+})
+
+const singleAttrs = reactive({
   multiple: false,
   disabled: false,
   loading: false
@@ -107,37 +110,36 @@ function getUserAvatar(value: string) {
 <template>
   <PlaygroundPage>
     <template #controls>
-      <B24Select v-model="attrs.color" class="w-44" :items="airColors" placeholder="Color" multiple />
-      <B24Select v-model="attrs.size" class="w-32" :items="sizes" placeholder="Size" multiple />
+      <B24Select v-model="multipleAttrs.color" class="w-44" :items="airColors" placeholder="Color" multiple />
+      <B24Select v-model="multipleAttrs.size" class="w-32" :items="sizes" placeholder="Size" multiple />
       <B24Separator orientation="vertical" class="h-10" />
-      <B24Switch v-model="attrs.multiple" label="Multiple" size="xs" />
-      <B24Switch v-model="attrs.disabled" label="Disabled" size="xs" />
-      <B24Switch v-model="attrs.loading" label="Loading" size="xs" />
+      <B24Switch v-model="singleAttrs.multiple" label="Multiple" size="xs" />
+      <B24Switch v-model="singleAttrs.disabled" label="Disabled" size="xs" />
+      <B24Switch v-model="singleAttrs.loading" label="Loading" size="xs" />
     </template>
 
-    <Matrix v-slot="props" :attrs="attrs" container-class="w-[240px]">
+    <Matrix v-slot="props" :attrs="multipleAttrs" container-class="w-[240px]">
       <B24Select
         v-model="value"
         :items="items"
         autofocus
-        v-bind="props"
+        v-bind="{ ...singleAttrs, ...props }"
         placeholder="Choose a value…"
         aria-label="Choose a value"
       />
-      <B24Select :default-value="value" :items="items" v-bind="props" tag="tag" :tag-color="props?.color" />
-      <B24Select placeholder="Highlight" highlight :items="items" v-bind="props" />
-      <B24Select placeholder="Search..." :avatar="{ src: '/b24ui/demo/avatar/employee.png' }" :items="items" v-bind="props" />
-      <B24Select placeholder="Loading trailing" v-bind="props" trailing :items="items" />
-      <B24Select placeholder="Trailing icon" :trailing-icon="RocketIcon" v-bind="props" :items="items" />
-      <B24Select placeholder="Underline" underline v-bind="props" :items="items" />
-      <B24Select placeholder="Rounded" rounded v-bind="props" :items="items" />
-      <B24Select placeholder="No border" no-border v-bind="props" :items="items" />
-      <B24Select placeholder="No padding" no-padding v-bind="props" :items="items" />
+      <B24Select :default-value="value" :items="items" v-bind="{ ...singleAttrs, ...props }" tag="tag" :tag-color="props?.color" />
+      <B24Select placeholder="Highlight" highlight :items="items" v-bind="{ ...singleAttrs, ...props }" />
+      <B24Select placeholder="Search..." :avatar="{ src: '/b24ui/demo/avatar/employee.png' }" :items="items" v-bind="{ ...singleAttrs, ...props }" />
+      <B24Select placeholder="Loading trailing" v-bind="{ ...singleAttrs, ...props }" trailing :items="items" />
+      <B24Select placeholder="Trailing icon" :trailing-icon="RocketIcon" v-bind="{ ...singleAttrs, ...props }" :items="items" />
+      <B24Select placeholder="Underline" underline v-bind="{ ...singleAttrs, ...props }" :items="items" />
+      <B24Select placeholder="Rounded" rounded v-bind="{ ...singleAttrs, ...props }" :items="items" />
+      <B24Select placeholder="No border" no-border v-bind="{ ...singleAttrs, ...props }" :items="items" />
+      <B24Select placeholder="No padding" no-padding v-bind="{ ...singleAttrs, ...props }" :items="items" />
       <B24Select
-        v-if="props?.multiple === false"
         :items="statuses"
         :icon="Search2Icon"
-        v-bind="props"
+        v-bind="{ ...singleAttrs, ...props }"
         name="some_value"
         placeholder="Search status&hellip;"
         aria-label="Search status"
@@ -152,12 +154,11 @@ function getUserAvatar(value: string) {
         </template>
       </B24Select>
       <B24Select
-        v-if="props?.multiple === false"
         :items="users || []"
         :icon="UserIcon"
         :trailing-icon="Expand1Icon"
-        v-bind="props"
-        :loading="status === 'pending'"
+        v-bind="{ ...singleAttrs, ...props }"
+        :loading="singleAttrs.loading || status === 'pending'"
         name="some_users"
         placeholder="Search users&hellip;"
         aria-label="Search users"

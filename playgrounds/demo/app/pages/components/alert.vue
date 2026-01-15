@@ -7,11 +7,12 @@ import MoreMIcon from '@bitrix24/b24icons-vue/outline/MoreMIcon'
 const colors = Object.keys(theme.variants.color)
 const sizes = Object.keys(theme.variants.size)
 
-const attrs = reactive({
+const multipleAttrs = reactive({
   color: [theme.defaultVariants.color],
-  size: [theme.defaultVariants.size],
-  inverted: false
+  size: [theme.defaultVariants.size]
 })
+
+const inverted = ref(false)
 
 const airColors = computed(() => {
   return colors.filter((color) => {
@@ -80,43 +81,43 @@ const multipleActions = () => [
 <template>
   <PlaygroundPage>
     <template #controls>
-      <B24Select v-model="attrs.color" class="w-44" :items="airColors" placeholder="Color" multiple />
-      <B24Select v-model="attrs.size" class="w-32" :items="sizes" placeholder="Size" multiple />
+      <B24Select v-model="multipleAttrs.color" class="w-44" :items="airColors" placeholder="Color" multiple />
+      <B24Select v-model="multipleAttrs.size" class="w-32" :items="sizes" placeholder="Size" multiple />
       <B24Separator orientation="vertical" class="h-10" />
-      <B24Switch v-model="attrs.inverted" class="w-24" placeholder="Inverted" />
+      <B24Switch v-model="inverted" class="w-24" placeholder="Inverted" />
     </template>
-    <Matrix v-slot="props" :attrs="attrs" container-class="max-w-80">
-      <B24Alert :title="data.title" v-bind="props" />
-      <B24Alert :title="data.title" :icon="data.icon" v-bind="props" />
-      <B24Alert :title="data.title" :icon="data.icon" :close="data.close" v-bind="props" />
+    <Matrix v-slot="props" :attrs="multipleAttrs" container-class="max-w-80">
+      <B24Alert :title="data.title" v-bind="{ ...props, inverted }" />
+      <B24Alert :title="data.title" :icon="data.icon" v-bind="{ ...props, inverted }" />
+      <B24Alert :title="data.title" :icon="data.icon" :close="data.close" v-bind="{ ...props, inverted }" />
       <B24Alert
         :title="data.title"
         :icon="data.icon"
         :close="data.close"
         :actions="action()"
         orientation="horizontal"
-        v-bind="props"
+        v-bind="{ ...props, inverted }"
       />
       <B24Alert
         :title="data.title"
         :icon="data.icon"
         :close="data.close"
         :description="data.description"
-        v-bind="props"
+        v-bind="{ ...props, inverted }"
       />
       <B24Alert
         :title="data.title"
         :avatar="{ src: '/b24ui/demo/avatar/employee.png' }"
         :close="data.close"
         :description="data.description"
-        v-bind="props"
+        v-bind="{ ...props, inverted }"
       />
       <B24Alert
         :title="data.title"
         :icon="data.icon"
         description="Example with multiple actions."
         :actions="multipleActions()"
-        v-bind="props"
+        v-bind="{ ...props, inverted }"
       />
     </Matrix>
   </PlaygroundPage>

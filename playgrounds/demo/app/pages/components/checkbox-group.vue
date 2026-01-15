@@ -8,11 +8,14 @@ const variants = Object.keys(theme.variants.variant)
 const indicators = Object.keys(themeCheckbox.variants.indicator)
 const orientations = Object.keys(theme.variants.orientation) as Array<keyof typeof theme.variants.orientation>
 
-const attrs = reactive({
+const multipleAttrs = reactive({
   color: [theme.defaultVariants.color],
   size: [theme.defaultVariants.size],
   variant: [theme.defaultVariants.variant],
-  indicator: [themeCheckbox.defaultVariants.indicator],
+  indicator: [themeCheckbox.defaultVariants.indicator]
+})
+
+const singleAttrs = reactive({
   orientation: orientations[0],
   disabled: false
 })
@@ -51,20 +54,20 @@ const airColors = computed(() => {
 <template>
   <PlaygroundPage>
     <template #controls>
-      <B24Select v-model="attrs.color" class="w-44" :items="airColors" placeholder="Color" multiple />
-      <B24Select v-model="attrs.size" class="w-32" :items="sizes" placeholder="Size" multiple />
-      <B24Select v-model="attrs.variant" class="w-32" :items="variants" placeholder="Variant" multiple />
-      <B24Select v-model="attrs.indicator" class="w-32" :items="indicators" placeholder="Indicator" multiple />
-      <B24Select v-model="attrs.orientation" class="w-32" :items="orientations" placeholder="Orientation" />
+      <B24Select v-model="multipleAttrs.color" class="w-44" :items="airColors" placeholder="Color" multiple />
+      <B24Select v-model="multipleAttrs.size" class="w-32" :items="sizes" placeholder="Size" multiple />
+      <B24Select v-model="multipleAttrs.variant" class="w-32" :items="variants" placeholder="Variant" multiple />
+      <B24Select v-model="multipleAttrs.indicator" class="w-32" :items="indicators" placeholder="Indicator" multiple />
+      <B24Select v-model="singleAttrs.orientation" class="w-32" :items="orientations" placeholder="Orientation" />
       <B24Separator orientation="vertical" class="h-10" />
-      <B24Switch v-model="attrs.disabled" class="w-24" label="Disabled" />
+      <B24Switch v-model="singleAttrs.disabled" class="w-24" label="Disabled" />
     </template>
-    <Matrix v-slot="props" :attrs="attrs">
-      <B24CheckboxGroup v-model="value" :items="items" v-bind="props" />
-      <B24CheckboxGroup :items="items" :default-value="value" v-bind="props" />
-      <B24CheckboxGroup :items="itemsWithDesc" v-bind="props" />
-      <B24CheckboxGroup v-model="value" :items="items" legend="Legend" v-bind="props" required />
-      <B24CheckboxGroup v-model="value" :items="items" v-bind="props">
+    <Matrix v-slot="props" :attrs="multipleAttrs">
+      <B24CheckboxGroup v-model="value" :items="items" v-bind="{ ...singleAttrs, ...props }" />
+      <B24CheckboxGroup :items="items" :default-value="value" v-bind="{ ...singleAttrs, ...props }" />
+      <B24CheckboxGroup :items="itemsWithDesc" v-bind="{ ...singleAttrs, ...props }" />
+      <B24CheckboxGroup v-model="value" :items="items" legend="Legend" v-bind="{ ...singleAttrs, ...props }" required />
+      <B24CheckboxGroup v-model="value" :items="items" v-bind="{ ...singleAttrs, ...props }">
         <template #legend>
           <span class="italic font-bold">
             Legend with slots

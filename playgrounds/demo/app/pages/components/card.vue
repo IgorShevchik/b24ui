@@ -19,20 +19,22 @@ const attrs = reactive({
       <B24Switch v-model="withFooter" label="Footer" size="xs" />
     </template>
 
-    <Matrix v-slot="props" :attrs="attrs" layout="bare">
-      <B24Card v-bind="props" class="w-60">
-        <template v-if="withHeader" #header>
-          <ProseH5 class="mb-0">
-            {{ props?.variant }}
-          </ProseH5>
-        </template>
+    <Matrix :attrs="attrs">
+      <template #clear="props">
+        <B24Card v-bind="props" class="w-60">
+          <template v-if="withHeader" #header>
+            <ProseH5 class="mb-0">
+              {{ props?.variant }}
+            </ProseH5>
+          </template>
 
-        <Placeholder class="h-32" />
+          <Placeholder class="h-32" />
 
-        <template v-if="withFooter" #footer>
-          <Placeholder class="h-8" />
-        </template>
-      </B24Card>
+          <template v-if="withFooter" #footer>
+            <Placeholder class="h-8" />
+          </template>
+        </B24Card>
+      </template>
     </Matrix>
   </PlaygroundPage>
 </template>

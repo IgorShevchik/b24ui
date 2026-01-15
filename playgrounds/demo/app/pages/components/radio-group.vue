@@ -8,11 +8,14 @@ const variants = Object.keys(theme.variants.variant)
 const indicators = Object.keys(theme.variants.indicator)
 const orientations = Object.keys(theme.variants.orientation)
 
-const attrs = reactive({
+const multipleAttrs = reactive({
   color: [theme.defaultVariants.color],
   size: [theme.defaultVariants.size],
   variant: [theme.defaultVariants.variant],
-  indicator: [theme.defaultVariants.indicator],
+  indicator: [theme.defaultVariants.indicator]
+})
+
+const singleAttrs = reactive({
   orientation: theme.defaultVariants.orientation,
   required: false,
   disabled: false
@@ -44,20 +47,20 @@ const airColors = computed(() => {
 <template>
   <PlaygroundPage>
     <template #controls>
-      <B24Select v-model="attrs.color" class="w-44" :items="airColors" placeholder="Color" multiple />
-      <B24Select v-model="attrs.size" class="w-32" :items="sizes" placeholder="Size" multiple />
-      <B24Select v-model="attrs.variant" class="w-32" :items="variants" placeholder="Variant" multiple />
-      <B24Select v-model="attrs.indicator" class="w-32" :items="indicators" placeholder="Indicator" multiple />
-      <B24Select v-model="attrs.orientation" class="w-32" :items="orientations" placeholder="Orientation" />
+      <B24Select v-model="multipleAttrs.color" class="w-44" :items="airColors" placeholder="Color" multiple />
+      <B24Select v-model="multipleAttrs.size" class="w-32" :items="sizes" placeholder="Size" multiple />
+      <B24Select v-model="multipleAttrs.variant" class="w-32" :items="variants" placeholder="Variant" multiple />
+      <B24Select v-model="multipleAttrs.indicator" class="w-32" :items="indicators" placeholder="Indicator" multiple />
+      <B24Select v-model="singleAttrs.orientation" class="w-32" :items="orientations" placeholder="Orientation" />
       <B24Separator orientation="vertical" class="h-10" />
-      <B24Switch v-model="attrs.required" label="Required" size="xs" />
-      <B24Switch v-model="attrs.disabled" label="Disabled" size="xs" />
+      <B24Switch v-model="singleAttrs.required" label="Required" size="xs" />
+      <B24Switch v-model="singleAttrs.disabled" label="Disabled" size="xs" />
     </template>
 
-    <Matrix v-slot="props" :attrs="attrs">
-      <B24RadioGroup v-model="value" :items="items" default-value="2" v-bind="props" />
-      <B24RadioGroup v-model="value" legend="Items with description" :items="itemsWithDescription" v-bind="props" />
-      <B24RadioGroup v-model="value" :items="items" v-bind="props">
+    <Matrix v-slot="props" :attrs="multipleAttrs">
+      <B24RadioGroup v-model="value" :items="items" default-value="2" v-bind="{ ...singleAttrs, ...props }" />
+      <B24RadioGroup v-model="value" legend="Items with description" :items="itemsWithDescription" v-bind="{ ...singleAttrs, ...props }" />
+      <B24RadioGroup v-model="value" :items="items" v-bind="{ ...singleAttrs, ...props }">
         <template #legend>
           <span class="italic font-(--ui-font-weight-bold)">
             With legend and label slots

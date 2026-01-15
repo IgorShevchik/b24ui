@@ -8,9 +8,12 @@ const toast = useToast()
 const sizes = Object.keys(theme.variants.size)
 const colors = Object.keys(theme.variants.color)
 
-const attrs = reactive({
+const multipleAttrs = reactive({
   color: [theme.defaultVariants.color],
-  size: [theme.defaultVariants.size],
+  size: [theme.defaultVariants.size]
+})
+
+const singleAttrs = reactive({
   inverted: false,
   useLink: false,
   useClose: false,
@@ -49,31 +52,31 @@ function onCloseClick(event: MouseEvent) {
 <template>
   <PlaygroundPage>
     <template #controls>
-      <B24Select v-model="attrs.color" class="w-44" :items="airColors" placeholder="Color" multiple />
-      <B24Select v-model="attrs.size" class="w-24" :items="sizes" placeholder="Size" multiple />
+      <B24Select v-model="multipleAttrs.color" class="w-44" :items="airColors" placeholder="Color" multiple />
+      <B24Select v-model="multipleAttrs.size" class="w-24" :items="sizes" placeholder="Size" multiple />
       <B24Separator orientation="vertical" class="h-10" />
-      <B24Switch v-model="attrs.inverted" label="Inverted" size="xs" />
-      <B24Switch v-model="attrs.square" label="Square" size="xs" />
-      <B24Switch v-model="attrs.useLink" label="useLink" size="xs" />
-      <B24Switch v-model="attrs.useClose" label="useClose" size="xs" />
+      <B24Switch v-model="singleAttrs.inverted" label="Inverted" size="xs" />
+      <B24Switch v-model="singleAttrs.square" label="Square" size="xs" />
+      <B24Switch v-model="singleAttrs.useLink" label="useLink" size="xs" />
+      <B24Switch v-model="singleAttrs.useClose" label="useClose" size="xs" />
     </template>
 
-    <Matrix v-slot="props" :attrs="attrs">
+    <Matrix v-slot="props" :attrs="multipleAttrs">
       <B24Badge
         label="Badge"
-        v-bind="props"
+        v-bind="{ ...singleAttrs, ...props }"
         :on-close-click="onCloseClick"
         @click="onClick"
       />
       <B24Badge
-        :label="props?.square ? '' : 'Icon'"
+        :label="singleAttrs.square ? '' : 'Icon'"
         :icon="InfoIcon"
-        v-bind="props"
+        v-bind="{ ...singleAttrs, ...props }"
         :on-close-click="onCloseClick"
       />
       <B24Badge
         label="With avatar"
-        v-bind="props"
+        v-bind="{ ...singleAttrs, ...props }"
         :avatar="{ src: '/b24ui/demo/avatar/employee.png', text: 'Employee' }"
         :on-close-click="onCloseClick"
       />

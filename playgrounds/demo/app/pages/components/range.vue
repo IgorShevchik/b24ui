@@ -11,9 +11,12 @@ const sizes = Object.keys(theme.variants.size)
 const colors = Object.keys(theme.variants.color)
 const orientations = Object.keys(theme.variants.orientation) as Array<keyof typeof theme.variants.orientation>
 
-const attrs = reactive({
+const multipleAttrs = reactive({
   color: [theme.defaultVariants.color],
-  size: [theme.defaultVariants.size],
+  size: [theme.defaultVariants.size]
+})
+
+const singleAttrs = reactive({
   orientation: orientations[0],
   inverted: false,
   disabled: false
@@ -29,24 +32,24 @@ const airColors = computed(() => {
 <template>
   <PlaygroundPage>
     <template #controls>
-      <B24Select v-model="attrs.color" class="w-44" :items="airColors" placeholder="Color" multiple />
-      <B24Select v-model="attrs.size" class="w-32" :items="sizes" placeholder="Size" multiple />
-      <B24Select v-model="attrs.orientation" class="w-44" :items="orientations" placeholder="Orientation" />
+      <B24Select v-model="multipleAttrs.color" class="w-44" :items="airColors" placeholder="Color" multiple />
+      <B24Select v-model="multipleAttrs.size" class="w-32" :items="sizes" placeholder="Size" multiple />
+      <B24Select v-model="singleAttrs.orientation" class="w-44" :items="orientations" placeholder="Orientation" />
       <B24Separator orientation="vertical" class="h-10" />
-      <B24Switch v-model="attrs.inverted" label="Inverted" size="xs" />
-      <B24Switch v-model="attrs.disabled" label="Disabled" size="xs" />
+      <B24Switch v-model="singleAttrs.inverted" label="Inverted" size="xs" />
+      <B24Switch v-model="singleAttrs.disabled" label="Disabled" size="xs" />
     </template>
 
-    <Matrix v-slot="props" :attrs="attrs" :content-class="attrs.orientation === 'vertical' ? 'h-48 flex flex-row w-max' : 'w-64'">
-      <B24Range v-model="value" v-bind="props" />
-      <B24Range :default-value="80" v-bind="props" />
-      <B24Separator label="Multiple" :orientation="props?.orientation" />
-      <B24Range :default-value="value2" v-bind="props" />
-      <B24Range :model-value="value22" v-bind="props" />
-      <B24Range :model-value="value3" v-bind="props" />
-      <B24Separator label="Steps" :orientation="props?.orientation" />
-      <B24Range :min="4" :max="12" :step="2" :model-value="6" v-bind="props" />
-      <B24Range :min-steps-between-thumbs="20" :model-value="value3" v-bind="props" />
+    <Matrix v-slot="props" :attrs="multipleAttrs" :content-class="singleAttrs.orientation === 'vertical' ? 'h-48 flex flex-row w-max' : 'w-64'">
+      <B24Range v-model="value" v-bind="{ ...singleAttrs, ...props }" />
+      <B24Range :default-value="80" v-bind="{ ...singleAttrs, ...props }" />
+      <B24Separator label="Multiple" :orientation="singleAttrs.orientation" />
+      <B24Range :default-value="value2" v-bind="{ ...singleAttrs, ...props }" />
+      <B24Range :model-value="value22" v-bind="{ ...singleAttrs, ...props }" />
+      <B24Range :model-value="value3" v-bind="{ ...singleAttrs, ...props }" />
+      <B24Separator label="Steps" :orientation="singleAttrs.orientation" />
+      <B24Range :min="4" :max="12" :step="2" :model-value="6" v-bind="{ ...singleAttrs, ...props }" />
+      <B24Range :min-steps-between-thumbs="20" :model-value="value3" v-bind="{ ...singleAttrs, ...props }" />
     </Matrix>
   </PlaygroundPage>
 </template>
