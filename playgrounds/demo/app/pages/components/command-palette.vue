@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import ExampleGrid from '../../components/ExampleGrid.vue'
-import ExampleCard from '../../components/ExampleCard.vue'
 // import { createReusableTemplate, refDebounced } from '@vueuse/core'
 import { createReusableTemplate } from '@vueuse/core'
 import type { IUser } from '~/types'
@@ -12,8 +10,6 @@ import ShareIcon from '@bitrix24/b24icons-vue/button/ShareIcon'
 import UserCompanyIcon from '@bitrix24/b24icons-vue/common-b24/UserCompanyIcon'
 import Bitrix24Icon from '@bitrix24/b24icons-vue/common-service/Bitrix24Icon'
 import MoreLIcon from '@bitrix24/b24icons-vue/outline/MoreLIcon'
-
-const isUseBg = ref(true)
 
 const [DefineTemplate, ReuseTemplate] = createReusableTemplate()
 const toast = useToast()
@@ -228,47 +224,40 @@ defineShortcuts({
     </B24CommandPalette>
   </DefineTemplate>
 
-  <ExampleGrid v-once>
-    <ExampleCard title="simple" :use-bg="isUseBg">
-      <B24Separator class="my-3" type="dotted" />
-      <div class="mb-4 flex flex-wrap items-center justify-start gap-4">
-        <B24Switch v-model="virtualize" label="Virtualize" />
-        <B24Switch v-model="preserveGroupOrder" label="Preserve order" />
+  <PlaygroundPage>
+    <template #controls>
+      <B24Switch v-model="virtualize" label="Virtualize" />
+      <B24Switch v-model="preserveGroupOrder" label="Preserve order" />
+      <B24separator orientation="vertical" class="h-10" />
 
-        <B24Modal v-model:open="open" :b24ui="{ content: 'p-0 pt-0 pb-[0px]' }">
-          <B24Button label="Open modal" />
+      <B24Modal v-model:open="open" :b24ui="{ content: 'p-0 pt-0 pb-[0px]' }">
+        <B24Button label="Open modal" />
 
-          <template #content>
-            <ReuseTemplate :close="true" @update:open="open = $event" />
-          </template>
-        </B24Modal>
+        <template #content>
+          <ReuseTemplate :close="true" @update:open="open = $event" />
+        </template>
+      </B24Modal>
 
-        <B24Popover :content="{ side: 'right', align: 'start' }">
-          <B24Button label="Select label (popover)" />
+      <B24Popover :content="{ side: 'right', align: 'start' }">
+        <B24Button label="Select label (popover)" />
 
-          <template #content>
-            <B24CommandPalette v-model="label" placeholder="Search labels..." :groups="[{ id: 'labels', items: labels }]" :ui="{ input: '[&>input]:h-8 [&>input]:text-sm' }" />
-          </template>
-        </B24Popover>
-      </div>
-    </ExampleCard>
+        <template #content>
+          <B24CommandPalette v-model="label" placeholder="Search labels..." :groups="[{ id: 'labels', items: labels }]" :ui="{ input: '[&>input]:h-8 [&>input]:text-sm' }" />
+        </template>
+      </B24Popover>
+    </template>
 
-    <ExampleCard title="ver-2" :use-bg="isUseBg" class="sm:col-span-3">
-      <B24Separator class="my-3" type="dotted" />
-      <div class="mb-4 flex flex-wrap items-center justify-start gap-4">
-        <B24Card class="w-full" :b24ui="{ body: '!p-0' }">
-          <B24CommandPalette
-            v-if="virtualize"
-            virtualize
-            :fuse="{ resultLimit: 1000 }"
-            placeholder="Search virtualized items..."
-            :groups="[{ id: 'items', items: Array(1000).fill(0).map((_, i) => ({ label: `item-${i}`, value: i, icon: FileUploadIcon })) }]"
-            class="sm:max-h-96"
-          />
+    <B24Card class="w-full" :b24ui="{ body: '!p-0' }">
+      <B24CommandPalette
+        v-if="virtualize"
+        virtualize
+        :fuse="{ resultLimit: 1000 }"
+        placeholder="Search virtualized items..."
+        :groups="[{ id: 'items', items: Array(1000).fill(0).map((_, i) => ({ label: `item-${i}`, value: i, icon: FileUploadIcon })) }]"
+        class="sm:max-h-96"
+      />
 
-          <ReuseTemplate v-else />
-        </B24Card>
-      </div>
-    </ExampleCard>
-  </ExampleGrid>
+      <ReuseTemplate v-else />
+    </B24Card>
+  </PlaygroundPage>
 </template>
