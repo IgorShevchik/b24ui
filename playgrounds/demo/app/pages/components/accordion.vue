@@ -52,30 +52,35 @@ const attrs = reactive({
     <template #controls>
       <B24Select v-model="attrs.type" class="w-44" :items="types" placeholder="Type" />
       <B24Separator orientation="vertical" class="h-10" />
-      <B24Switch v-if="attrs.type === 'single'" v-model="attrs.collapsible" label="Collapsible" />
-      <B24Switch v-model="attrs.disabled" label="Disabled" />
-      <B24Switch v-model="attrs.unmountOnHide" label="Unmount on hide" />
+      <B24Switch v-if="attrs.type === 'single'" v-model="attrs.collapsible" label="Collapsible" size="xs" />
+      <B24Switch v-model="attrs.disabled" label="Disabled" size="xs" />
+      <B24Switch v-model="attrs.unmountOnHide" label="Unmount on hide" size="xs" />
     </template>
 
-    <PlaygroundCard class="my-auto">
-      <B24Accordion
-        :key="`${attrs.type}-${attrs.collapsible}-${attrs.disabled}-${attrs.unmountOnHide}`"
-        v-bind="attrs"
-        :items="items"
-        class="w-96"
+    <template #default="{ cardVariant, cardClass }">
+      <B24Card
+        :variant="cardVariant"
+        :class="[cardClass, 'mx-auto']"
       >
-        <template #body="{ item }">
-          <p class="text-muted">
-            {{ item.content }}
-          </p>
-        </template>
+        <B24Accordion
+          :key="`${attrs.type}-${attrs.collapsible}-${attrs.disabled}-${attrs.unmountOnHide}`"
+          v-bind="attrs"
+          :items="items"
+          class="w-96"
+        >
+          <template #body="{ item }">
+            <p class="text-muted">
+              {{ item.content }}
+            </p>
+          </template>
 
-        <template #custom="{ item }">
-          <p class="text-muted">
-            Custom: {{ item.content }}
-          </p>
-        </template>
-      </B24Accordion>
-    </PlaygroundCard>
+          <template #custom="{ item }">
+            <p class="text-muted">
+              Custom: {{ item.content }}
+            </p>
+          </template>
+        </B24Accordion>
+      </B24Card>
+    </template>
   </PlaygroundPage>
 </template>

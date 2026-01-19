@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { CardProps } from '@bitrix24/b24ui-nuxt'
 import { useRoute, useRouter } from '#imports'
 import { upperName } from '../utils'
 import ChevronLeftLIcon from '@bitrix24/b24icons-vue/outline/ChevronLeftLIcon'
@@ -10,7 +11,7 @@ const router = useRouter()
 
 defineProps<{
   to?: string
-  containerClass?: string
+  b24ui?: CardProps['b24ui']
 }>()
 
 const componentName = computed(() => route.path.split('/').filter(Boolean).pop() ?? '')
@@ -37,7 +38,7 @@ defineShortcuts({
 </script>
 
 <template>
-  <B24Card variant="outline-alt" class="backdrop-blur-[14px] border-0" :class="containerClass">
+  <B24Card variant="outline-alt" class="backdrop-blur-[14px] border-0" :b24ui="b24ui">
     <template #header>
       <div class="w-full flex flex-row items-center justify-between gap-1">
         <div class="flex flex-row items-center justify-start gap-3">

@@ -26,21 +26,26 @@ const classes = reactive({
       <B24Switch v-model="attrs.disabled" label="disabled" size="xs" />
     </template>
 
-    <PlaygroundCard class="w-96">
-      <template #header>
-        <ProseH5 class="mb-0">
-          {{ attrs.to ? 'As link (tag <a>)' : 'As tag <button>' }}
-        </ProseH5>
-      </template>
+    <template #default="{ cardVariant, cardClass }">
+      <B24Card
+        :variant="cardVariant"
+        :class="[cardClass, 'mx-auto']"
+      >
+        <template #header>
+          <ProseH5 class="mb-0">
+            {{ attrs.to ? 'As link (tag <a>)' : 'As tag <button>' }}
+          </ProseH5>
+        </template>
 
-      <div class="flex flex-col items-start gap-3 text-(length:--ui-font-size-sm)">
-        <B24Link v-bind="attrs">
-          {{ `${attrs.to ? 'Link' : 'Button'} preview` }}
-        </B24Link>
-        <B24Link v-bind="{ ...attrs, ...classes }">
-          {{ `${attrs.to ? 'Link' : 'Button'} preview (with classes)` }}
-        </B24Link>
-      </div>
-    </PlaygroundCard>
+        <div class="flex flex-col items-start gap-3 text-(length:--ui-font-size-sm)">
+          <B24Link v-bind="attrs">
+            {{ `${attrs.to ? 'Link' : 'Button'} preview` }}
+          </B24Link>
+          <B24Link v-bind="{ ...attrs, ...classes }">
+            {{ `${attrs.to ? 'Link' : 'Button'} preview (with classes)` }}
+          </B24Link>
+        </div>
+      </B24Card>
+    </template>
   </PlaygroundPage>
 </template>

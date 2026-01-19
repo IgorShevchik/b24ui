@@ -604,7 +604,7 @@ const emojiItems: EditorEmojiMenuItem[] = gitHubEmojis.filter(emoji => !emoji.na
       :b24ui="{ base: 'p-8 sm:px-16 pt-36' }"
       class="w-full h-[calc(100vh-var(--topbar-height)-56px)] overflow-y-auto scrollbar-thin scrollbar-transparent"
     >
-      <Navbar container-class="absolute top-0 inset-x-0 z-30">
+      <Navbar :b24ui="{ root: 'absolute top-0 inset-x-0 z-30' }">
         <template #controls>
           <B24EditorToolbar
             :editor="editor"

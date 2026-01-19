@@ -1,13 +1,25 @@
 <script lang="ts">
+import type { CardProps } from '@bitrix24/b24ui-nuxt'
+
 export type MatrixValue<V> = V extends readonly (infer U)[] ? U : V
 
 export type MatrixAttrs = Record<string, readonly unknown[]>
 
+/**
+ * Matrix component props for generating combinations of attributes
+ */
 export interface MatrixProps<T extends MatrixAttrs> {
+  /**
+   * Object containing attribute keys and their possible values
+   * Used to generate all possible combinations
+   */
   attrs: T
+  /**
+   * Separator string used when joining attribute values in header
+   * @defaultValue ' | '
+   */
   headerSeparator?: string
-  containerClass?: string
-  contentClass?: string
+  b24ui?: CardProps['b24ui']
 }
 
 export type MatrixSlotProps<T extends MatrixAttrs> = {
@@ -16,13 +28,17 @@ export type MatrixSlotProps<T extends MatrixAttrs> = {
 </script>
 
 <script setup lang="ts" generic="T extends MatrixAttrs">
+import { usePlaygroundCardStyles } from '../composables/usePlaygroundContext'
+
+const { cardVariant, cardClass } = usePlaygroundCardStyles()
+
 const props = withDefaults(defineProps<MatrixProps<T>>(), {
   headerSeparator: ' | '
 })
 
 defineSlots<{
   default: (props?: MatrixSlotProps<T>) => any
-  clear: (props?: MatrixSlotProps<T>) => any
+  item: (props?: MatrixSlotProps<T>) => any
   header: (props?: MatrixSlotProps<T>) => any
 }>()
 
@@ -68,8 +84,12 @@ const headers = computed(() => {
 
 <template>
   <template v-for="(combination, index) in combinations" :key="index">
-    <slot name="clear" v-bind="combination">
-      <PlaygroundCard :class="props.containerClass">
+    <slot name="item" v-bind="combination">
+      <B24Card
+        :variant="cardVariant"
+        :class="cardClass"
+        :b24ui="{ ...props.b24ui, body: ['flex flex-col items-start justify-start gap-4', props.b24ui?.body] }"
+      >
         <template #header>
           <slot name="header" v-bind="combination">
             <ProseH5 class="mb-0">
@@ -78,10 +98,8 @@ const headers = computed(() => {
           </slot>
         </template>
 
-        <div :class="['flex flex-col items-start justify-start gap-4', props.contentClass]">
-          <slot v-bind="combination" />
-        </div>
-      </PlaygroundCard>
+        <slot v-bind="combination" />
+      </B24Card>
     </slot>
   </template>
 </template>

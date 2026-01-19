@@ -39,7 +39,7 @@ const airColors = computed(() => {
       <B24Switch v-model="singleAttrs.hideZero" label="Hide zero" size="xs" />
     </template>
 
-    <Matrix v-slot="props" :attrs="multipleAttrs" content-class="flex-row flex-wrap">
+    <Matrix v-slot="props" :attrs="multipleAttrs" :b24ui="{ body: 'flex-row flex-wrap' }">
       <B24Chip :text="53" :trailing-icon="TrendUpIcon" v-bind="{ ...singleAttrs, ...props }">
         <B24Button :icon="MailIcon" color="air-secondary-no-accent" />
       </B24Chip>

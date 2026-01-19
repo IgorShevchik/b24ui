@@ -40,7 +40,7 @@ const airColors = computed(() => {
       <B24Switch v-model="singleAttrs.disabled" label="Disabled" size="xs" />
     </template>
 
-    <Matrix v-slot="props" :attrs="multipleAttrs" :content-class="singleAttrs.orientation === 'vertical' ? 'h-48 flex flex-row w-max' : 'w-64'">
+    <Matrix v-slot="props" :attrs="multipleAttrs" :b24ui="{ body: singleAttrs.orientation === 'vertical' ? 'h-48 flex flex-row w-max' : 'w-64' }">
       <B24Range v-model="value" v-bind="{ ...singleAttrs, ...props }" />
       <B24Range :default-value="80" v-bind="{ ...singleAttrs, ...props }" />
       <B24Separator label="Multiple" :orientation="singleAttrs.orientation" />

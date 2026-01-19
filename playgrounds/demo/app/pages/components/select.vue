@@ -118,7 +118,7 @@ function getUserAvatar(value: string) {
       <B24Switch v-model="singleAttrs.loading" label="Loading" size="xs" />
     </template>
 
-    <Matrix v-slot="props" :attrs="multipleAttrs" container-class="w-[240px]">
+    <Matrix v-slot="props" :attrs="multipleAttrs" :b24ui="{ root: 'w-[240px]' }">
       <B24Select
         v-model="value"
         :items="items"

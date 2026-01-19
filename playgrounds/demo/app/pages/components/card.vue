@@ -20,7 +20,7 @@ const attrs = reactive({
     </template>
 
     <Matrix :attrs="attrs">
-      <template #clear="props">
+      <template #item="props">
         <B24Card v-bind="props" class="w-60">
           <template v-if="withHeader" #header>
             <ProseH5 class="mb-0">
