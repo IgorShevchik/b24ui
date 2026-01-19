@@ -41,7 +41,7 @@ defineShortcuts({
   <B24Card variant="outline-alt" class="backdrop-blur-[14px] border-0" :b24ui="b24ui">
     <template #header>
       <div class="w-full flex flex-row items-center justify-between gap-1">
-        <div class="flex flex-row items-center justify-start gap-3">
+        <div class="flex flex-row items-center justify-start">
           <B24FieldGroup size="sm">
             <B24Button
               :icon="ChevronLeftLIcon"
@@ -57,7 +57,7 @@ defineShortcuts({
             />
           </B24FieldGroup>
 
-          <ProseH1 class="text-label leading-7 font-(--ui-font-weight-semi-bold) mb-0">
+          <ProseH1 class="text-label leading-7 font-(--ui-font-weight-semi-bold) mb-0 ml-3">
             {{ title }}
           </ProseH1>
 

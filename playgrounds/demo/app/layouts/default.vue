@@ -88,21 +88,6 @@ defineShortcuts({
   }
 })
 
-const menuTop = computed<NavigationMenuItem[]>(() => {
-  return [
-    ...(groups.value.filter(group => group.label).map((group) => {
-      return {
-        label: group.label,
-        type: 'trigger' as NavigationMenuItem['type'],
-        active: (group.id === 'components' && (route.path.includes(`content/`) || route.path.includes(`prose/`)))
-          ? false
-          : route.path.includes(`${group.id}`),
-        children: group.items
-      }
-    }))
-  ]
-})
-
 const contains = (value: string, search: string) => value.toLowerCase().includes(search.toLowerCase())
 
 const filteredGroups = computed(() => {
@@ -164,16 +149,6 @@ const filteredGroups = computed(() => {
           </div>
         </B24SidebarHeader>
         <B24SidebarBody>
-          <B24RadioGroup
-            v-model="modeContext"
-            class="lg:hidden inline-flex m-auto pb-3"
-            :items="['dark', 'light', 'edge-dark', 'edge-light']"
-            size="xs"
-            orientation="horizontal"
-            variant="table"
-            indicator="hidden"
-            @change="toggleModeContext"
-          />
           <template v-for="group in filteredGroups" :key="group.id">
             <B24NavigationMenu
               v-if="group.items.length > 0"
@@ -193,17 +168,11 @@ const filteredGroups = computed(() => {
       </template>
 
       <template #navbar>
-        <B24NavbarSection class="hidden sm:inline-flex">
-          <B24NavigationMenu
-            :items="menuTop"
-            orientation="horizontal"
-          />
-        </B24NavbarSection>
         <B24NavbarSpacer />
         <B24NavbarSection class="flex-row items-center justify-start gap-4">
           <B24DashboardSearchButton size="sm" rounded :collapsed="false" :kbds="[{ value: 'meta', size: 'sm' }, { value: 'K', size: 'sm' }]" />
           <B24Tooltip :content="{ side: 'bottom' }" text="Switch color mode" :kbds="['shift', 'D']">
-            <B24ColorModeSelect rounded size="sm" class="w-[100px]" :content="{ align: 'end', side: 'bottom' }" />
+            <B24ColorModeSwitch size="sm" />
           </B24Tooltip>
           <B24RadioGroup
             v-model="modeContext"
