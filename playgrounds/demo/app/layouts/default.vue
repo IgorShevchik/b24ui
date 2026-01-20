@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useColorMode } from '#imports'
 import { useTextDirection } from '@vueuse/core'
 import AlignRightIcon from '@bitrix24/b24icons-vue/outline/AlignRightIcon'
@@ -12,6 +12,29 @@ const dir = useTextDirection()
 const colorMode = useColorMode()
 
 const modeContext = ref<string>((appConfig?.colorModeTypeLight || 'light') as string)
+
+watch(() => colorMode.preference, (newPreference) => {
+  const isEdge = modeContext.value.startsWith('edge-')
+  if (newPreference === 'dark') {
+    modeContext.value = isEdge ? 'edge-dark' : 'dark'
+  } else if (newPreference === 'light') {
+    modeContext.value = isEdge ? 'edge-light' : 'light'
+  }
+  nextTick(() => {
+    syncHtmlClass()
+  })
+}, { immediate: true, flush: 'post' })
+
+function syncHtmlClass() {
+  if (import.meta.client && typeof document !== 'undefined') {
+    const htmlElement = document.documentElement
+    const themeClasses = ['dark', 'light', 'edge-dark', 'edge-light']
+    themeClasses.forEach(themeClass => htmlElement.classList.remove(themeClass))
+    htmlElement.classList.add(modeContext.value)
+  }
+}
+
+watch(modeContext, syncHtmlClass, { immediate: true, flush: 'post' })
 
 useHead({
   title: 'Bitrix24 UI - Playground',
@@ -39,7 +62,6 @@ const isDark = computed({
   },
   set(_isDark: boolean) {
     colorMode.preference = _isDark ? 'dark' : 'light'
-    modeContext.value = _isDark ? 'dark' : appConfig.colorModeTypeLight
   }
 })
 
@@ -52,7 +74,11 @@ function toggleDir() {
 }
 
 function toggleModeContext() {
-  colorMode.preference = modeContext.value === 'dark' ? 'dark' : 'light'
+  if (modeContext.value === 'dark' || modeContext.value === 'edge-dark') {
+    colorMode.preference = 'dark'
+  } else if (modeContext.value === 'light' || modeContext.value === 'edge-light') {
+    colorMode.preference = 'light'
+  }
 }
 
 const getLightContent = computed(() => {
@@ -61,7 +87,8 @@ const getLightContent = computed(() => {
     contentWrapper: 'flex-1 min-h-0',
     pageWrapper: 'px-(--content-area-shift) flex-1 min-h-0 max-lg:overflow-y-auto mt-lg',
     container: 'gap-[22px] h-full min-h-0',
-    containerWrapper: `${isDark.value ? 'dark' : 'light'} h-full min-h-0 bg-transparent lg:p-0 p-0`
+    containerWrapper: `h-full min-h-0 bg-transparent lg:p-0 p-0`,
+    containerWrapperInner: 'flex flex-col gap-5'
   }
 
   return result
@@ -112,6 +139,8 @@ const filteredGroups = computed(() => {
   <B24DashboardGroup>
     <!-- // @see playgrounds/demo/app/assets/css/main.css -->
     <B24SidebarLayout
+
+      :use-light-content="false"
       :b24ui="getLightContent"
     >
       <template #sidebar>
@@ -187,9 +216,7 @@ const filteredGroups = computed(() => {
         </B24NavbarSection>
       </template>
 
-      <template #content-top>
-        <slot />
-      </template>
+      <slot />
     </B24SidebarLayout>
 
     <B24DashboardSearch :groups="groups" :fuse="{ resultLimit: 100 }" :color-mode="false" />

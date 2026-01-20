@@ -38,7 +38,7 @@ defineShortcuts({
 </script>
 
 <template>
-  <B24Card variant="outline-alt" class="backdrop-blur-[14px] border-0" :b24ui="b24ui">
+  <B24Card class="backdrop-blur-xl backdrop-brightness-110 border-0" :b24ui="b24ui">
     <template #header>
       <div class="w-full flex flex-row items-center justify-between gap-1">
         <div class="flex flex-row items-center justify-start">
