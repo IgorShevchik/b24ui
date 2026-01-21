@@ -36,7 +36,7 @@ const shortcuts = computed(() => {
     }
     acc[key] = {
       handler: () => {
-        logs.value.push(`"${label}" triggered`)
+        logs.value.push(`"${label}" triggered at ${new Date().toLocaleTimeString()} ${usingInput ? 'using input' : ''}`)
         nextTick(() => {
           scrollToBottom()
         })
@@ -69,30 +69,15 @@ function scrollToBottom() {
 </script>
 
 <template>
-  <div class="relative h-full rounded-t-[12px] overflow-hidden">
-    <div class="absolute size-full rounded-t-[12px]">
+  <PlaygroundPage>
+    <div class="relative size-full rounded-lg overflow-hidden">
       <B24SidebarLayout
-        :use-light-content="false"
         is-inner
         off-content-scrollbar
         :b24ui="{
-          root: [
-            'edge-light',
-            '[--leftmenu-bg-expanded:#eef2f4!important]',
-            '[--air-theme-bg-color:#eef2f4]',
-            '[--air-theme-bg-size:240px_240px]',
-            '[--air-theme-bg-repeat:repeat]',
-            '[--air-theme-bg-position:0_0]',
-            '[--air-theme-bg-attachment:fixed]',
-            '[--air-theme-bg-image:url(/bg/edge-light-v1.svg)]',
-            '[--air-theme-bg-image-blurred:url(/bg/edge-light-v1-blurred.webp)]'
-          ].join(' '),
-          contentWrapper: [
-            'bg-[url(/bg/pattern-2.png)] bg-cover bg-center bg-fixed bg-no-repeat bg-[#76c68b]/10',
-            'p-0 px-0 ps-0 pe-0 lg:p-0 lg:px-0 lg:ps-0 lg:pe-0 '
-          ].join(' '),
-          containerWrapper: 'h-full relative',
-          containerWrapperInner: 'flex flex-col items-center justify-center'
+          containerWrapper: 'h-full relative mt-4',
+          containerWrapperInner: 'flex flex-col items-center justify-center',
+          pageWrapper: 'size-full'
         }"
       >
         <template #sidebar>
@@ -158,7 +143,6 @@ function scrollToBottom() {
               <B24Button
                 :icon="TrashBinIcon"
                 color="air-secondary-no-accent"
-                size="xs"
                 @click="logs = []"
               />
               <B24Kbd value="ctrl" size="md" accent="less" />
@@ -166,42 +150,37 @@ function scrollToBottom() {
             </div>
           </B24NavbarSection>
         </template>
-        <template #default>
-          <div
-            v-if="logs.length < 1"
-            class="text-(--ui-color-design-filled-market-content) max-w-[550px] mx-(--content-area-shift) px-[60px] py-[40px] rounded-[24px] bg-[#525c69]/20 flex flex-col items-center justify-center gap-[20px]"
-          >
-            <B24Avatar
-              :icon="KeyboardIcon"
-              alt="defineShortcuts"
-              size="3xl"
-              :b24ui="{
-                root: 'bg-transparent ring-2 ring-(--ui-color-design-filled-market-content)/50',
-                icon: 'size-[74px] text-(--ui-color-design-filled-market-content)'
-              }"
-            />
-            <ProseH2 class="text-center text-(--ui-color-design-filled-market-content) leading-[29px] mb-0">
-              A composable to assign keyboard shortcuts in your app
-            </ProseH2>
-          </div>
-          <div
-            v-else
-            ref="messagesContainer"
-            class="absolute inset-0 py-[6px] px-[15px] scrollbar-thin scrollbar-transparent overflow-y-scroll"
-          >
-            <div class="w-full min-h-full flex flex-col items-start justify-end gap-[6px]">
-              <B24Advice
-                v-for="(log, index) of logs"
-                :key="index"
-                class="w-full"
-                :description="log"
-                :b24ui="{ descriptionWrapper: 'w-full' }"
-                :avatar="{ src: '/b24ui/demo/avatar/assistant.png' }"
-              />
-            </div>
-          </div>
-        </template>
+        <div
+          v-if="logs.length < 1"
+          class="text-(--ui-color-design-filled-market-content) max-w-[550px] mx-(--content-area-shift) px-[60px] py-5xl rounded-[24px] bg-[#525c69]/20 flex flex-col items-center justify-center gap-lg"
+        >
+          <B24Avatar
+            :icon="KeyboardIcon"
+            alt="defineShortcuts"
+            size="3xl"
+            :b24ui="{
+              root: 'bg-transparent ring-2 ring-(--ui-color-design-filled-market-content)/50',
+              icon: 'size-[74px] text-(--ui-color-design-filled-market-content)'
+            }"
+          />
+          <ProseH2 class="text-center text-(--ui-color-design-filled-market-content) leading-[29px] mb-0">
+            A composable to assign keyboard shortcuts in your app
+          </ProseH2>
+        </div>
+        <div
+          v-else
+          ref="messagesContainer"
+          class="w-full flex flex-col gap-4 scrollbar-thin scrollbar-transparent overflow-y-scroll"
+        >
+          <B24Advice
+            v-for="(log, index) of logs"
+            :key="index"
+            :description="log"
+            :avatar="{ src: '/b24ui/demo/avatar/assistant.png' }"
+            :b24ui="{ description: 'w-fit grow-0' }"
+          />
+        </div>
       </B24SidebarLayout>
     </div>
-  </div>
+  </PlaygroundPage>
 </template>
