@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { CardProps } from '@bitrix24/b24ui-nuxt'
 import { useRoute, useRouter } from '#imports'
+import { useMediaQuery } from '@vueuse/core'
 import { upperName } from '../utils'
 import ChevronLeftLIcon from '@bitrix24/b24icons-vue/outline/ChevronLeftLIcon'
 import ChevronRightLIcon from '@bitrix24/b24icons-vue/outline/ChevronRightLIcon'
@@ -9,12 +10,14 @@ import GoToLIcon from '@bitrix24/b24icons-vue/outline/GoToLIcon'
 const route = useRoute()
 const router = useRouter()
 
+const isLargeScreen = useMediaQuery('(min-width: 1024px)')
+
 defineProps<{
   to?: string
   b24ui?: CardProps['b24ui']
 }>()
 
-defineSlots<{
+const slots = defineSlots<{
   controls?: () => any
   trailing?: () => any
 }>()
@@ -44,8 +47,8 @@ defineShortcuts({
 
 // TODO: remove duplicate code
 <template>
-  <Teleport to="header">
-    <div class="flex lg:hidden flex-row items-center justify-start absolute top-1/2 -translate-y-1/2 left-14 z-20">
+  <Teleport to="body" :disabled="isLargeScreen">
+    <div class="flex lg:hidden flex-row items-center justify-start absolute top-3 left-14 z-20">
       <B24FieldGroup size="sm">
         <B24Button
           :icon="ChevronLeftLIcon"
@@ -111,7 +114,7 @@ defineShortcuts({
         />
       </div>
     </template>
-    <template #default>
+    <template v-if="slots.controls || slots.trailing" #default>
       <div class="w-full flex flex-row flex-wrap items-center justify-between gap-3">
         <slot name="controls" />
         <div class="flex flex-wrap flex-row items-center justify-end gap-3">
