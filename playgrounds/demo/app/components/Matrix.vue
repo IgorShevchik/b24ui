@@ -87,8 +87,11 @@ const headers = computed(() => {
     <slot name="item" v-bind="combination">
       <B24Card
         :variant="cardVariant"
-        :class="cardClass"
-        :b24ui="{ ...props.b24ui, body: ['flex flex-col items-start justify-start gap-4', props.b24ui?.body] }"
+        :b24ui="{
+          ...props.b24ui,
+          root: ['grow', cardClass, props.b24ui?.root],
+          body: ['flex flex-col items-start justify-start gap-4', props.b24ui?.body]
+        }"
       >
         <template #header>
           <slot name="header" v-bind="combination">

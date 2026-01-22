@@ -83,12 +83,12 @@ function toggleModeContext() {
 
 const getLightContent = computed(() => {
   const result = {
-    root: 'max-lg:h-[100dvh] max-lg:min-h-[100dvh]',
-    contentWrapper: 'flex-1 min-h-0',
-    pageWrapper: 'px-(--content-area-shift) flex-1 min-h-0 max-lg:overflow-y-auto mt-lg',
-    container: 'gap-[22px] h-full min-h-0',
-    containerWrapper: `h-full min-h-0 bg-transparent lg:p-0 p-0`,
-    containerWrapperInner: 'flex flex-col gap-5'
+    // root: 'max-lg:h-[100dvh] max-lg:min-h-[100dvh]',
+    // contentWrapper: 'flex-1 min-h-screen',
+    pageWrapper: 'px-0 lg:px-(--content-area-shift)',
+    // container: 'h-full min-h-0',
+    // containerWrapper: `h-full min-h-0 bg-transparent`,
+    containerWrapperInner: 'flex flex-col lg:gap-4 lg:mt-lg'
   }
 
   return result
@@ -144,7 +144,7 @@ const filteredGroups = computed(() => {
     >
       <template #sidebar>
         <B24SidebarHeader>
-          <div class="h-full flex items-center gap-x-sm relative my-0 ps-[25px] pe-xs rtl:pe-[25px]">
+          <div class="h-full flex items-center gap-x-sm relative my-0 ps-6 pe-xs rtl:pe-6">
             <B24Tooltip :content="{ side: 'bottom' }" :text="`Switch to ${dir === 'ltr' ? 'Right-to-left' : 'Left-to-right'} mode`" :kbds="['shift', 'L']">
               <B24Button
                 :icon="dir === 'ltr' ? AlignRightIcon : AlignLeftIcon"
@@ -168,7 +168,7 @@ const filteredGroups = computed(() => {
               </NuxtLink>
             </B24Tooltip>
           </div>
-          <div class="mt-4 ps-[25px] pe-xs rtl:pe-[25px] pb-[12px]">
+          <div class="mt-4 ps-6 pe-xs rtl:pe-6 pb-3">
             <B24Input ref="input" v-model="searchTerm" placeholder="Filter..." class="group">
               <template #trailing>
                 <B24Kbd value="/" dd-class="ring-(--ui-color-design-plain-na-content-secondary) bg-transparent text-muted" />
@@ -198,7 +198,7 @@ const filteredGroups = computed(() => {
       <template #navbar>
         <B24NavbarSpacer />
         <B24NavbarSection class="flex-row items-center justify-start gap-4">
-          <B24DashboardSearchButton size="sm" rounded :collapsed="false" :kbds="[{ value: 'meta', size: 'sm' }, { value: 'K', size: 'sm' }]" />
+          <B24DashboardSearchButton size="sm" class="hidden sm:inline-flex" rounded :collapsed="false" :kbds="[{ value: 'meta', size: 'sm' }, { value: 'K', size: 'sm' }]" />
           <B24Tooltip :content="{ side: 'bottom' }" text="Switch color mode" :kbds="['shift', 'D']">
             <B24ColorModeSwitch size="sm" />
           </B24Tooltip>

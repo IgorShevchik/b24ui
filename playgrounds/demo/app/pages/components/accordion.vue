@@ -60,13 +60,13 @@ const attrs = reactive({
     <template #default="{ cardVariant, cardClass }">
       <B24Card
         :variant="cardVariant"
-        :class="[cardClass, 'mx-auto']"
+        :class="[cardClass, 'mx-auto max-w-96 w-full']"
       >
         <B24Accordion
           :key="`${attrs.type}-${attrs.collapsible}-${attrs.disabled}-${attrs.unmountOnHide}`"
           v-bind="attrs"
           :items="items"
-          class="w-96"
+          class="w-full"
         >
           <template #body="{ item }">
             <p class="text-muted">

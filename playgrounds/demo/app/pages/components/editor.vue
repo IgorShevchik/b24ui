@@ -583,7 +583,8 @@ const emojiItems: EditorEmojiMenuItem[] = gitHubEmojis.filter(emoji => !emoji.na
 
 <template>
   <B24Card
-    class="isolate relative h-[calc(100vh-var(--topbar-height)-56px)] p-0! backdrop-blur-[20px]"
+    class="isolate relative h-screen p-0! backdrop-blur-[20px] rounded-none lg:rounded-(--ui-border-radius-md) border-0"
+    :b24ui="{ body: 'mt-20 lg:mt-36' }"
   >
     <B24Editor
       ref="editorRef"
@@ -601,14 +602,15 @@ const emojiItems: EditorEmojiMenuItem[] = gitHubEmojis.filter(emoji => !emoji.na
       content-type="markdown"
       autofocus
       placeholder="Write, type '/' for commands..."
-      :b24ui="{ base: 'p-8 sm:px-16 pt-36' }"
+      :b24ui="{ base: 'p-8 sm:px-16' }"
       class="w-full h-[calc(100vh-var(--topbar-height)-56px)] overflow-y-auto scrollbar-thin scrollbar-transparent"
     >
-      <Navbar :b24ui="{ root: 'absolute top-0 inset-x-0 z-30' }">
+      <Navbar :b24ui="{ root: 'absolute top-0 inset-x-0 z-30 border-0' }">
         <template #controls>
           <B24EditorToolbar
             :editor="editor"
             :items="toolbarItems"
+            class="overflow-x-auto py-2"
           >
             <template #link>
               <EditorLinkPopover :editor="editor" auto-open />
