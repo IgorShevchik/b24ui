@@ -2,8 +2,6 @@
 import { computed, ref, watch } from 'vue'
 import { useColorMode } from '#imports'
 import { useTextDirection } from '@vueuse/core'
-import AlignRightIcon from '@bitrix24/b24icons-vue/outline/AlignRightIcon'
-import AlignLeftIcon from '@bitrix24/b24icons-vue/outline/AlignLeftIcon'
 import type { NavigationMenuItem } from '@bitrix24/b24ui-nuxt'
 import { useNavigation } from '~/composables/useNavigation'
 
@@ -85,6 +83,7 @@ const getLightContent = computed(() => {
   const result = {
     // root: 'max-lg:h-[100dvh] max-lg:min-h-[100dvh]',
     // contentWrapper: 'flex-1 min-h-screen',
+    sidebarSlideoverContainer: 'z-2',
     pageWrapper: 'px-0 lg:px-(--content-area-shift)',
     // container: 'h-full min-h-0',
     // containerWrapper: `h-full min-h-0 bg-transparent`,
@@ -145,16 +144,6 @@ const filteredGroups = computed(() => {
       <template #sidebar>
         <B24SidebarHeader>
           <div class="h-full flex items-center gap-x-sm relative my-0 ps-6 pe-xs rtl:pe-6">
-            <B24Tooltip :content="{ side: 'bottom' }" :text="`Switch to ${dir === 'ltr' ? 'Right-to-left' : 'Left-to-right'} mode`" :kbds="['shift', 'L']">
-              <B24Button
-                :icon="dir === 'ltr' ? AlignRightIcon : AlignLeftIcon"
-                :aria-label="`Switch to ${dir === 'ltr' ? 'Right-to-left' : 'Left-to-right'} mode`"
-                color="air-secondary-accent"
-                rounded
-                size="xs"
-                @click="toggleDir"
-              />
-            </B24Tooltip>
             <B24Tooltip
               class="flex-0 mt-1"
               :content="{ side: 'bottom', align: 'start' }"
