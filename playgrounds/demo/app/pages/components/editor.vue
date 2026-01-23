@@ -584,7 +584,7 @@ const emojiItems: EditorEmojiMenuItem[] = gitHubEmojis.filter(emoji => !emoji.na
 <template>
   <B24Card
     class="isolate relative h-screen p-0! backdrop-blur-[20px] rounded-none lg:rounded-(--ui-border-radius-md) border-0"
-    :b24ui="{ body: 'mt-20 lg:mt-36' }"
+    :b24ui="{ body: 'mt-16 lg:mt-34 pt-0' }"
   >
     <B24Editor
       ref="editorRef"
@@ -610,7 +610,7 @@ const emojiItems: EditorEmojiMenuItem[] = gitHubEmojis.filter(emoji => !emoji.na
           <B24EditorToolbar
             :editor="editor"
             :items="toolbarItems"
-            class="overflow-x-auto py-2"
+            class="overflow-x-auto py-2 mx-auto"
           >
             <template #link>
               <EditorLinkPopover :editor="editor" auto-open />
@@ -623,6 +623,7 @@ const emojiItems: EditorEmojiMenuItem[] = gitHubEmojis.filter(emoji => !emoji.na
         :editor="editor"
         :items="toolbarItems"
         layout="bubble"
+        :b24ui="{ base: 'edge-dark:bg-[#21334cf0] edge-light:bg-(--ui-color-base-white-fixed) shadow-sm' }"
         :should-show="({ editor, view, state }) => {
           if (editor.isActive('imageUpload') || editor.isActive('image')) {
             return false
@@ -640,6 +641,7 @@ const emojiItems: EditorEmojiMenuItem[] = gitHubEmojis.filter(emoji => !emoji.na
         :editor="editor"
         :items="imageToolbarItems(editor)"
         layout="bubble"
+        :b24ui="{ base: 'edge-dark:bg-[#21334cf0] edge-light:bg-(--ui-color-base-white-fixed) shadow-sm' }"
         :should-show="({ editor, view }) => {
           return editor.isActive('image') && view.hasFocus()
         }"

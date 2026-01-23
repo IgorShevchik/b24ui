@@ -49,7 +49,7 @@ defineShortcuts({
       />
     </B24FieldGroup>
 
-    <ProseH1 class="text-label leading-7 font-(--ui-font-weight-semi-bold) mb-0 ml-3 text-(length:--ui-font-size-3xl) lg:text-(length:--ui-font-size-5xl)">
+    <ProseH1 class="text-label leading-7 font-(--ui-font-weight-semi-bold) mb-0 ml-3 max-lg:text-(length:--ui-font-size-4xl)">
       {{ title }}
     </ProseH1>
 

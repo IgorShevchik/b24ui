@@ -143,7 +143,7 @@ const filteredGroups = computed(() => {
     >
       <template #sidebar>
         <B24SidebarHeader>
-          <div class="h-full flex items-center gap-x-sm relative my-0 ps-6 pe-xs rtl:pe-6">
+          <div class="h-full flex items-center justify-between gap-x-sm relative my-0 ps-6 pe-xs rtl:pe-6">
             <B24Tooltip
               class="flex-0 mt-1"
               :content="{ side: 'bottom', align: 'start' }"
@@ -156,6 +156,11 @@ const filteredGroups = computed(() => {
                 </ProseH3>
               </NuxtLink>
             </B24Tooltip>
+            <div class="inline-flex min-[400px]:hidden">
+              <B24Tooltip :content="{ side: 'bottom' }" text="Switch color mode" :kbds="['shift', 'D']">
+                <B24ColorModeSwitch class="m[400px]:hidden" />
+              </B24Tooltip>
+            </div>
           </div>
           <div class="mt-4 ps-6 pe-xs rtl:pe-6 pb-3">
             <B24Input ref="input" v-model="searchTerm" placeholder="Filter..." class="group">
@@ -186,10 +191,10 @@ const filteredGroups = computed(() => {
 
       <template #navbar>
         <B24NavbarSpacer />
-        <B24NavbarSection class="flex-row items-center justify-start gap-4">
+        <B24NavbarSection class="flex-row items-center justify-start gap-4 max-[400px]:hidden">
           <B24DashboardSearchButton size="sm" class="hidden sm:inline-flex" rounded :collapsed="false" :kbds="[{ value: 'meta', size: 'sm' }, { value: 'K', size: 'sm' }]" />
           <B24Tooltip :content="{ side: 'bottom' }" text="Switch color mode" :kbds="['shift', 'D']">
-            <B24ColorModeSwitch size="sm" />
+            <B24ColorModeSwitch />
           </B24Tooltip>
           <B24RadioGroup
             v-model="modeContext"
