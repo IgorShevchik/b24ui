@@ -2,6 +2,10 @@
 import type { CardProps } from '@bitrix24/b24ui-nuxt'
 import { createPlaygroundContext, providePlaygroundContext, usePlaygroundCardStyles } from '../composables/usePlaygroundContext'
 
+const props = defineProps<{
+  b24ui?: CardProps['b24ui']
+}>()
+
 const slots = defineSlots<{
   controls?: () => any
   trailing?: () => any
@@ -26,10 +30,10 @@ const { cardVariant, cardClass } = usePlaygroundCardStyles(playgroundContext)
 
   <B24Card
     :variant="cardVariant"
-    :class="{ 'backdrop-blur-xl': playgroundContext.isUseBg.value }"
     :b24ui="{
-      root: 'border-0 border-t-2 rounded-none lg:rounded-(--ui-border-radius-md)',
-      body: 'flex items-stretch flex-wrap justify-center md:justify-start gap-4 min-h-0 p-4'
+      root: [playgroundContext.isUseBg.value ? 'backdrop-blur-xl' : '', 'border-0 border-t-2 rounded-none lg:rounded-(--ui-border-radius-md)'],
+      body: 'flex items-stretch flex-wrap justify-center md:justify-start gap-4 min-h-0 p-4',
+      ...props.b24ui
     }"
   >
     <slot v-bind="{ playgroundContext, cardVariant, cardClass }" />
