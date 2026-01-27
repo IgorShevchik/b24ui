@@ -22,10 +22,11 @@ const reverse = ref(false)
   <PlaygroundPage :b24ui="{ body: 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5' }">
     <template #controls>
       <B24Select v-model="attrs.variant" class="w-32" :items="variants" multiple placeholder="Variant" />
-      <B24Switch v-model="highlight" label="Highlight" size="xs" />
       <B24Select v-model="highlightColor" class="w-44" :items="colors" placeholder="Highlight color" />
       <B24Select v-model="orientation" class="w-44" :items="orientations" placeholder="Orientation" />
-      <B24Switch v-model="reverse" label="Reverse" size="xs" />
+      <B24Separator orientation="vertical" class="h-10" />
+      <B24Switch v-model="highlight" label="Highlight" size="sm" />
+      <B24Switch v-model="reverse" label="Reverse" size="sm" />
     </template>
 
     <Matrix v-slot="props" :attrs="attrs" :b24ui="{ root: 'w-full max-w-[520px]' }">

@@ -19,7 +19,7 @@ const modal = ref(false)
 </script>
 
 <template>
-  <PlaygroundPage :b24ui="{ body: 'flex flex-col items-center gap-5 mx-auto' }">
+  <PlaygroundPage :b24ui="{ body: 'flex flex-col max-w-60 gap-4 mx-auto' }">
     <template #controls>
       <B24FormField label="content.align" name="sideOffset">
         <B24Select v-model="align" placeholder="content.align" :items="contentAligns" />
