@@ -87,7 +87,7 @@ const getLightContent = computed(() => {
     pageWrapper: 'px-0 lg:px-(--content-area-shift)',
     // container: 'h-full min-h-0',
     // containerWrapper: `h-full min-h-0 bg-transparent`,
-    containerWrapperInner: 'flex flex-col lg:gap-4 lg:mt-lg'
+    containerWrapperInner: 'flex flex-col lg:gap-4 lg:pt-lg'
   }
 
   return result

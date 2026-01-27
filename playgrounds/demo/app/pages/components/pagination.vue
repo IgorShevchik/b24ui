@@ -1,22 +1,47 @@
 <script setup lang="ts">
-import ExampleGrid from '../../components/ExampleGrid.vue'
-import ExampleCard from '../../components/ExampleCard.vue'
-
 const page = ref(5)
-const isUseBg = ref(true)
+const siblingCount = ref(1)
+const showEdges = ref(true)
 </script>
 
 <template>
-  <ExampleGrid v-once>
-    <ExampleCard title="With buttons (default)" :use-bg="isUseBg" class="sm:col-span-2">
-      <div class="flex flex-col gap-2">
-        <B24Pagination v-model:page="page" :total="100" :sibling-count="1" show-edges />
-      </div>
-    </ExampleCard>
-    <ExampleCard title="With links" :use-bg="isUseBg" class="sm:col-span-2">
-      <div class="flex flex-col gap-2">
-        <B24Pagination v-model:page="page" :total="100" :to="page => ({ query: { page } })" :sibling-count="1" show-edges />
-      </div>
-    </ExampleCard>
-  </ExampleGrid>
+  <PlaygroundPage>
+    <template #controls>
+      <B24Switch v-model="showEdges" label="Show edges" size="sm" />
+      <B24Separator orientation="vertical" class="h-10" />
+      <B24FormField label="Siblings" orientation="horizontal">
+        <B24InputNumber v-model="siblingCount" class="w-20" :min="0" :max="3" />
+      </B24FormField>
+    </template>
+
+    <template #default="{ cardVariant, cardClass }">
+      <B24Card :variant="cardVariant" :class="[cardClass]">
+        <template #header>
+          <ProseH5 class="mb-0">
+            With buttons
+          </ProseH5>
+        </template>
+        <B24Pagination
+          v-model:page="page"
+          :total="100"
+          :sibling-count="siblingCount"
+          :show-edges="showEdges"
+        />
+      </B24Card>
+      <B24Card :variant="cardVariant" :class="[cardClass]">
+        <template #header>
+          <ProseH5 class="mb-0">
+            With links
+          </ProseH5>
+        </template>
+        <B24Pagination
+          v-model:page="page"
+          :total="100"
+          :to="page => ({ query: { page } })"
+          :sibling-count="siblingCount"
+          :show-edges="showEdges"
+        />
+      </B24Card>
+    </template>
+  </PlaygroundPage>
 </template>
