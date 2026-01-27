@@ -22,7 +22,7 @@ const { cardVariant, cardClass } = usePlaygroundCardStyles(playgroundContext)
       <B24Switch v-model="playgroundContext.isUseBg.value" label="isUseBg" size="xs" />
     </template>
     <template v-if="slots.controls" #controls>
-      <div class="flex items-center gap-2 overflow-x-auto py-2">
+      <div class="flex items-center gap-2 overflow-x-auto py-2 pr-3 max-w-full">
         <slot name="controls" :playground="playgroundContext" />
       </div>
     </template>

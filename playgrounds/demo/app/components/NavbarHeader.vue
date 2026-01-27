@@ -8,6 +8,10 @@ import GoToLIcon from '@bitrix24/b24icons-vue/outline/GoToLIcon'
 const route = useRoute()
 const router = useRouter()
 
+defineProps<{
+  to?: string
+}>()
+
 const componentName = computed(() => route.path.split('/').filter(Boolean).pop() ?? '')
 
 const title = computed(() => {
@@ -55,7 +59,7 @@ defineShortcuts({
 
     <B24Button
       :icon="GoToLIcon"
-      :to="`https://bitrix24.github.io/b24ui/docs/components/${componentName}/`"
+      :to="to || `https://bitrix24.github.io/b24ui/docs/components/${componentName}/`"
       target="_blank"
       color="air-tertiary"
     />
