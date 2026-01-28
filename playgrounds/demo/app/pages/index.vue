@@ -1,5 +1,5 @@
 <template>
-  <B24Card class="min-h-full text-center backdrop-blur-xl">
+  <B24Card class="text-center backdrop-blur-xl">
     <template #header>
       <ProseH1 class="text-2xl font-bold">
         Demo Playground
