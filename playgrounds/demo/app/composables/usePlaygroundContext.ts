@@ -33,7 +33,7 @@ export interface PlaygroundCardStyles {
   /**
    * Additional CSS classes for card border styling
    */
-  cardClass: ComputedRef<string>
+  cardBorderClass: ComputedRef<string>
 }
 
 const playgroundContextInjectionKey: InjectionKey<PlaygroundContext> = Symbol.for('playground.context')
@@ -68,19 +68,19 @@ export function usePlaygroundCardStyles(fallbackContext?: PlaygroundContext): Pl
   if (!context) {
     return {
       cardVariant: computed(() => 'outline-no-accent' as const),
-      cardClass: computed(() => '')
+      cardBorderClass: computed(() => '')
     }
   }
 
   const cardVariant = computed<CardProps['variant']>(() =>
     context.isUseBg.value ? 'outline-no-accent' : 'plain-no-accent'
   )
-  const cardClass = computed(() =>
+  const cardBorderClass = computed(() =>
     context.isUseBg.value ? '' : 'border-(length:--ui-design-outline-na-stroke-weight) border-transparent'
   )
 
   return {
     cardVariant,
-    cardClass
+    cardBorderClass
   }
 }

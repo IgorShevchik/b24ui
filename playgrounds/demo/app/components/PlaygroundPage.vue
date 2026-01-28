@@ -2,24 +2,27 @@
 import type { CardProps } from '@bitrix24/b24ui-nuxt'
 import { createPlaygroundContext, providePlaygroundContext, usePlaygroundCardStyles } from '../composables/usePlaygroundContext'
 
-const props = defineProps<{
+defineProps<{
+  /**
+   * B24UI props for the playground area card
+   */
   b24ui?: CardProps['b24ui']
 }>()
 
 const slots = defineSlots<{
   controls?: () => any
   trailing?: () => any
-  default?: (props: { playgroundContext: PlaygroundContext, cardVariant: CardProps['variant'], cardClass: string }) => any
+  default?: (props: { playgroundContext: PlaygroundContext, cardVariant: CardProps['variant'], cardBorderClass: string }) => any
 }>()
 
 const playgroundContext = providePlaygroundContext(createPlaygroundContext())
-const { cardVariant, cardClass } = usePlaygroundCardStyles(playgroundContext)
+const { cardVariant, cardBorderClass } = usePlaygroundCardStyles(playgroundContext)
 </script>
 
 <template>
   <Navbar>
     <template #trailing>
-      <B24Switch v-model="playgroundContext.isUseBg.value" label="isUseBg" size="xs" />
+      <B24Switch v-model="playgroundContext.isUseBg.value" label="isUseBg" size="sm" />
     </template>
     <template v-if="slots.controls" #controls>
       <div class="flex items-center gap-2 overflow-x-auto py-2 pr-3 max-w-full">
@@ -31,11 +34,11 @@ const { cardVariant, cardClass } = usePlaygroundCardStyles(playgroundContext)
   <B24Card
     :variant="cardVariant"
     :b24ui="{
-      root: [playgroundContext.isUseBg.value ? 'backdrop-blur-xl' : '', 'border-0 border-t-2 rounded-none lg:rounded-(--ui-border-radius-md)'],
-      body: 'flex items-stretch flex-wrap justify-center md:justify-start gap-4 min-h-0 p-4',
-      ...props.b24ui
+      ...b24ui,
+      root: [playgroundContext.isUseBg.value ? 'backdrop-blur-xl' : '', 'border-0 border-t-2 lg:border-t-0 rounded-none lg:rounded-(--ui-border-radius-md)', b24ui?.root],
+      body: ['flex items-stretch flex-wrap justify-center md:justify-start gap-4 min-h-0 p-4', b24ui?.body]
     }"
   >
-    <slot v-bind="{ playgroundContext, cardVariant, cardClass }" />
+    <slot v-bind="{ playgroundContext, cardVariant, cardBorderClass }" />
   </B24Card>
 </template>

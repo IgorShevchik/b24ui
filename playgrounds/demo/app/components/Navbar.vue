@@ -13,6 +13,9 @@ const slots = defineSlots<{
   controls?: () => any
   trailing?: () => any
 }>()
+
+const hasTrailingInBody = computed(() => slots.trailing && !isLargeScreen.value)
+const hasBodyContent = computed(() => slots.controls || hasTrailingInBody.value)
 </script>
 
 <template>
@@ -21,21 +24,20 @@ const slots = defineSlots<{
   </Teleport>
   <B24Card
     :b24ui="{
-      root: 'backdrop-blur-xl border-0 md:sticky top-0 z-10 rounded-none lg:rounded-(--ui-border-radius-md)',
-      header: 'flex items-center justify-between p-0 sm:p-0 border-b-0 lg:border-b-1',
-      body: 'w-full flex flex-row flex-wrap items-center justify-between gap-3 py-3',
-      ...b24ui
+      root: ['backdrop-blur-xl border-0 md:sticky top-0 z-10 rounded-none lg:rounded-(--ui-border-radius-md)', b24ui?.root],
+      header: ['flex items-center justify-between', b24ui?.header],
+      body: ['w-full flex flex-row flex-wrap items-center justify-between gap-3 py-3', b24ui?.body]
     }"
   >
-    <template #header>
-      <NavbarHeader :to="to" class="hidden lg:flex p-4" />
-      <div v-if="slots.trailing && isLargeScreen" class="flex flex-wrap flex-row items-center justify-end gap-3 p-4">
+    <template v-if="isLargeScreen" #header>
+      <NavbarHeader :to="to" class="hidden lg:flex" />
+      <div v-if="slots.trailing" class="flex flex-wrap flex-row items-center justify-end gap-3">
         <slot name="trailing" />
       </div>
     </template>
-    <template v-if="slots.controls || (slots.trailing && !isLargeScreen)" #default>
+    <template v-if="hasBodyContent" #default>
       <slot name="controls" />
-      <div v-if="!isLargeScreen" class="flex flex-wrap flex-row items-center justify-end gap-3">
+      <div v-if="hasTrailingInBody" class="flex flex-wrap flex-row items-center justify-end gap-3">
         <slot name="trailing" />
       </div>
     </template>

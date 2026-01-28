@@ -19,6 +19,9 @@ export interface MatrixProps<T extends MatrixAttrs> {
    * @defaultValue ' | '
    */
   headerSeparator?: string
+  /**
+   * B24UI props for the combination card
+   */
   b24ui?: CardProps['b24ui']
 }
 
@@ -30,7 +33,7 @@ export type MatrixSlotProps<T extends MatrixAttrs> = {
 <script setup lang="ts" generic="T extends MatrixAttrs">
 import { usePlaygroundCardStyles } from '../composables/usePlaygroundContext'
 
-const { cardVariant, cardClass } = usePlaygroundCardStyles()
+const { cardVariant, cardBorderClass } = usePlaygroundCardStyles()
 
 const props = withDefaults(defineProps<MatrixProps<T>>(), {
   headerSeparator: ' | '
@@ -89,7 +92,7 @@ const headers = computed(() => {
         :variant="cardVariant"
         :b24ui="{
           ...props.b24ui,
-          root: ['grow', cardClass, props.b24ui?.root],
+          root: ['grow', cardBorderClass, props.b24ui?.root],
           body: ['flex flex-col items-start justify-start gap-4', props.b24ui?.body]
         }"
       >

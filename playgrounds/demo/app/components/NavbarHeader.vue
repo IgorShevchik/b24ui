@@ -36,7 +36,7 @@ defineShortcuts({
 </script>
 
 <template>
-  <div :class="['flex flex-row items-center justify-start', $attrs.class]">
+  <div :class="['flex flex-row items-center justify-start pr-2', $attrs.class]">
     <B24FieldGroup size="sm">
       <B24Button
         :icon="ChevronLeftLIcon"
