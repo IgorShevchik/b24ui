@@ -20,11 +20,11 @@ const hasBodyContent = computed(() => slots.controls || hasTrailingInBody.value)
 
 <template>
   <Teleport to="body" :disabled="isLargeScreen">
-    <NavbarHeader :to="to" class="lg:hidden absolute top-3 left-14" />
+    <NavbarHeader :to="to" class="lg:hidden absolute top-3 left-14 z-2" />
   </Teleport>
   <B24Card
     :b24ui="{
-      root: ['backdrop-blur-xl border-0 md:sticky top-0 z-10 rounded-none lg:rounded-(--ui-border-radius-md)', b24ui?.root],
+      root: ['backdrop-blur-xl border-0 sm:sticky top-0 z-10 rounded-none lg:rounded-(--ui-border-radius-md)', b24ui?.root],
       header: ['flex items-center justify-between', b24ui?.header],
       body: ['w-full flex flex-row flex-wrap items-center justify-between gap-3 py-3', b24ui?.body]
     }"

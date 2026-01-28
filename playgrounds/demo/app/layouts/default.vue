@@ -5,11 +5,26 @@ import { useTextDirection } from '@vueuse/core'
 import type { NavigationMenuItem } from '@bitrix24/b24ui-nuxt'
 import { useNavigation } from '~/composables/useNavigation'
 
+const route = useRoute()
+const router = useRouter()
 const appConfig = useAppConfig()
 const dir = useTextDirection()
 const colorMode = useColorMode()
 
 const modeContext = ref<string>((appConfig?.colorModeTypeLight || 'light') as string)
+
+useHead({
+  title: 'Bitrix24 UI - Demo Playground',
+  meta: [
+    { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+    { name: 'description', content: 'Explore and test all Bitrix24 UI components in an interactive environment' }
+  ],
+  htmlAttrs: {
+    lang: 'en',
+    dir: computed(() => appConfig.dir as 'ltr' | 'rtl'),
+    class: computed(() => [modeContext.value])
+  }
+})
 
 watch(() => colorMode.preference, (newPreference) => {
   const isEdge = modeContext.value.startsWith('edge-')
@@ -23,36 +38,32 @@ watch(() => colorMode.preference, (newPreference) => {
   })
 }, { immediate: true, flush: 'post' })
 
-function syncHtmlClass() {
-  if (import.meta.client && typeof document !== 'undefined') {
-    const htmlElement = document.documentElement
-    const themeClasses = ['dark', 'light', 'edge-dark', 'edge-light']
-    themeClasses.forEach(themeClass => htmlElement.classList.remove(themeClass))
-    htmlElement.classList.add(modeContext.value)
-  }
-}
-
 watch(modeContext, syncHtmlClass, { immediate: true, flush: 'post' })
 
-useHead({
-  title: 'Bitrix24 UI - Playground',
-  meta: [
-    { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-    { name: 'description', content: 'Explore and test all Bitrix24 UI components in an interactive environment' }
-  ],
-  htmlAttrs: {
-    lang: 'en',
-    dir: computed(() => appConfig.dir as 'ltr' | 'rtl'),
-    class: computed(() => [modeContext.value])
-  }
-})
+const { components, groups } = useNavigation()
+provide('components', components)
 
-const route = useRoute()
-const router = useRouter()
-
-const { groups } = useNavigation()
 const searchTerm = ref('')
 const input = useTemplateRef('input')
+
+const contains = (value: string, search: string) => value.toLowerCase().includes(search.toLowerCase())
+
+const filteredGroups = computed(() => {
+  if (!searchTerm.value) {
+    return groups.value
+  }
+
+  return groups.value.map((group) => {
+    if (!group.id.includes('component')) {
+      return group
+    }
+
+    return {
+      ...group,
+      items: group.items.filter(item => contains(String(item.label), searchTerm.value))
+    }
+  })
+})
 
 const isDark = computed({
   get() {
@@ -62,6 +73,15 @@ const isDark = computed({
     colorMode.preference = _isDark ? 'dark' : 'light'
   }
 })
+
+function syncHtmlClass() {
+  if (import.meta.client && typeof document !== 'undefined') {
+    const htmlElement = document.documentElement
+    const themeClasses = ['dark', 'light', 'edge-dark', 'edge-light']
+    themeClasses.forEach(themeClass => htmlElement.classList.remove(themeClass))
+    htmlElement.classList.add(modeContext.value)
+  }
+}
 
 function toggleMode() {
   isDark.value = !isDark.value
@@ -81,12 +101,8 @@ function toggleModeContext() {
 
 const getLightContent = computed(() => {
   const result = {
-    // root: 'max-lg:h-[100dvh] max-lg:min-h-[100dvh]',
-    // contentWrapper: 'flex-1 min-h-screen',
-    sidebarSlideoverContainer: 'z-2',
+    sidebarSlideoverContainer: 'z-3',
     pageWrapper: 'px-0 lg:px-(--content-area-shift)',
-    // container: 'h-full min-h-0',
-    // containerWrapper: `h-full min-h-0 bg-transparent`,
     containerWrapperInner: 'flex flex-col lg:gap-4 lg:pt-lg'
   }
 
@@ -112,25 +128,6 @@ defineShortcuts({
       input?.value?.inputRef?.focus()
     }
   }
-})
-
-const contains = (value: string, search: string) => value.toLowerCase().includes(search.toLowerCase())
-
-const filteredGroups = computed(() => {
-  if (!searchTerm.value) {
-    return groups.value
-  }
-
-  return groups.value.map((group) => {
-    if (!group.id.includes('component')) {
-      return group
-    }
-
-    return {
-      ...group,
-      items: group.items.filter(item => contains(String(item.label), searchTerm.value))
-    }
-  })
 })
 </script>
 
