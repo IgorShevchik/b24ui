@@ -23,10 +23,10 @@ function handleColorChange(event: Event) {
         <B24Button>
           <span :style="{ backgroundColor: colorHex }" class="inline-flex size-5 rounded-sm" />
         </B24Button>
-        <B24Input :model-value="colorHex" @change="handleColorChange" />
+        <B24Input :model-value="colorHex" class="w-28" @change="handleColorChange" />
       </B24FieldGroup>
       <B24Separator orientation="vertical" class="h-10" />
-      <B24Switch v-model="disabled" label="Disabled" size="xs" />
+      <B24Switch v-model="disabled" label="Disabled" size="sm" />
     </template>
 
     <Matrix v-slot="props" :attrs="attrs">

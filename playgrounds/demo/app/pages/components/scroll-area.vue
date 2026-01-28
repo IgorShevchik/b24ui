@@ -46,7 +46,7 @@ const virtualizeOptions = computed(() => {
 <template>
   <PlaygroundPage>
     <template #controls>
-      <B24Switch v-model="virtualize" label="Virtualize" size="xs" />
+      <B24Switch v-model="virtualize" label="Virtualize" size="sm" />
       <B24FieldGroup>
         <B24Button
           active-color="air-primary"

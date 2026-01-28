@@ -58,13 +58,13 @@ const openSliderTopAndBottom = async () => {
 </script>
 
 <template>
-  <PlaygroundPage :b24ui="{ body: 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5' }">
+  <PlaygroundPage :b24ui="{ body: 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4' }">
     <template #controls>
-      <B24Switch v-model="inset" label="Inset" size="xs" />
+      <B24Switch v-model="inset" label="Inset" size="sm" />
     </template>
 
-    <template #default="{ cardVariant, cardClass }">
-      <B24Card :variant="cardVariant" :class="cardClass">
+    <template #default="{ cardVariant, cardBorderClass }">
+      <B24Card :variant="cardVariant" :class="cardBorderClass">
         <template #header>
           <div class="flex flex-row items-center justify-between gap-2">
             <ProseH5 class="mb-0">
@@ -181,7 +181,7 @@ const openSliderTopAndBottom = async () => {
         </div>
       </B24Card>
 
-      <B24Card :variant="cardVariant" :class="cardClass">
+      <B24Card :variant="cardVariant" :class="cardBorderClass">
         <template #header>
           <div class="flex flex-row items-center justify-between gap-2">
             <ProseH5 class="mb-0">
@@ -232,7 +232,7 @@ const openSliderTopAndBottom = async () => {
         </div>
       </B24Card>
 
-      <B24Card :variant="cardVariant" :class="cardClass">
+      <B24Card :variant="cardVariant" :class="cardBorderClass">
         <template #header>
           <div class="flex flex-row items-center justify-between gap-2">
             <ProseH5 class="mb-0">
@@ -269,7 +269,7 @@ const openSliderTopAndBottom = async () => {
         </div>
       </B24Card>
 
-      <B24Card :variant="cardVariant" :class="cardClass">
+      <B24Card :variant="cardVariant" :class="cardBorderClass">
         <template #header>
           <div class="flex flex-row items-center justify-between gap-2">
             <ProseH5 class="mb-0">
@@ -341,7 +341,7 @@ const openSliderTopAndBottom = async () => {
         </div>
       </B24Card>
 
-      <B24Card :variant="cardVariant" :class="cardClass">
+      <B24Card :variant="cardVariant" :class="cardBorderClass">
         <template #header>
           <div class="flex flex-row items-center justify-between gap-2">
             <ProseH5 class="mb-0">
@@ -693,7 +693,7 @@ const openSliderTopAndBottom = async () => {
         </div>
       </B24Card>
 
-      <B24Card :variant="cardVariant" :class="cardClass">
+      <B24Card :variant="cardVariant" :class="cardBorderClass">
         <template #header>
           <div class="flex flex-row items-center justify-between gap-2">
             <ProseH5 class="mb-0">

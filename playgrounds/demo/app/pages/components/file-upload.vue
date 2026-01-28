@@ -12,11 +12,11 @@ const layouts = Object.keys(theme.variants.layout)
 const positions = Object.keys(theme.variants.position)
 
 const attrs = reactive({
+  color: [theme.defaultVariants.color],
   size: [theme.defaultVariants.size]
 })
 
 const singleAttrs = reactive({
-  color: theme.defaultVariants.color,
   variant: theme.defaultVariants.variant,
   layout: 'grid' as keyof typeof theme.variants.layout,
   position: 'outside' as keyof typeof theme.variants.position,
@@ -94,12 +94,12 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
   <PlaygroundPage>
     <template #controls>
       <B24Select v-model="attrs.size" class="w-32" :items="sizes" placeholder="Size" multiple />
-      <B24Select v-model="singleAttrs.color" class="w-44" :items="colors" placeholder="Color" />
+      <B24Select v-model="attrs.color" class="w-44" :items="colors" placeholder="Color" multiple />
       <B24Select v-model="singleAttrs.variant" class="w-32" :items="variants" placeholder="Variant" />
       <B24Select v-model="singleAttrs.layout" class="w-32" :items="layouts" placeholder="Layout" />
       <B24Select v-model="singleAttrs.position" class="w-32" :items="positions" placeholder="Position" />
       <B24Separator orientation="vertical" class="h-10" />
-      <B24Switch v-model="singleAttrs.preview" label="preview" size="xs" />
+      <B24Switch v-model="singleAttrs.preview" label="preview" size="sm" />
     </template>
 
     <Matrix v-slot="props" :attrs="attrs" :b24ui="{ root: 'w-80' }">
@@ -123,7 +123,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
               <B24Button
                 label="Remove"
                 color="air-primary-alert"
-                size="xs"
+                size="sm"
                 class="p-0"
                 @click="removeFile()"
               />

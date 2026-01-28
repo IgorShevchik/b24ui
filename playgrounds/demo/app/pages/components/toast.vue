@@ -160,9 +160,6 @@ function removeToast() {
   <PlaygroundPage>
     <template #controls>
       <B24Select v-model="appConfig.toaster.position" placeholder="Position" :items="positions" />
-      <B24Switch v-model="appConfig.toaster.disableSwipe" label="Disable swipe" size="sm" />
-      <B24Switch v-model="appConfig.toaster.expand" label="Expand" size="sm" />
-      <B24Switch v-model="isShowProgress" label="isShowProgress" size="sm" />
       <B24FormField
         label="Duration"
         :hint="`${appConfig.toaster.duration} ms.`"
@@ -178,6 +175,10 @@ function removeToast() {
         />
       </B24FormField>
       <B24Input v-model="appConfig.toaster.max" placeholder="Max" type="number" class="min-w-24 w-24" />
+      <B24Separator orientation="vertical" class="h-10" />
+      <B24Switch v-model="appConfig.toaster.disableSwipe" label="DisableSwipe" size="sm" />
+      <B24Switch v-model="appConfig.toaster.expand" label="Expand" size="sm" />
+      <B24Switch v-model="isShowProgress" label="isShowProgress" size="sm" />
     </template>
 
     <div

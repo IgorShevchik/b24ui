@@ -71,10 +71,10 @@ const itemsObj = ref([
       <B24Select v-model="attrs.color" class="w-44" :items="airColors" placeholder="Color" multiple />
       <B24Select v-model="attrs.size" class="w-32" :items="sizes" placeholder="Size" multiple />
       <B24Separator orientation="vertical" class="h-10" />
-      <B24Switch v-model="singleAttrs.disabled" label="Disabled" size="xs" />
-      <B24Switch v-model="singleAttrs.loading" label="Loading" size="xs" />
-      <B24Switch v-model="singleAttrs.highlight" label="Highlight" size="xs" />
-      <B24Switch v-model="singleAttrs.rounded" label="Rounded" size="xs" />
+      <B24Switch v-model="singleAttrs.disabled" label="Disabled" size="sm" />
+      <B24Switch v-model="singleAttrs.loading" label="Loading" size="sm" />
+      <B24Switch v-model="singleAttrs.highlight" label="Highlight" size="sm" />
+      <B24Switch v-model="singleAttrs.rounded" label="Rounded" size="sm" />
     </template>
 
     <Matrix v-slot="props" :attrs="attrs">
@@ -184,6 +184,7 @@ const itemsObj = ref([
         tag-color="air-primary-copilot"
         :create-item="{ position: 'bottom', when: 'always' }"
         v-bind="{ ...singleAttrs, ...props }"
+        class="max-w-80"
         @create="onCreateMultiple"
       />
       <B24InputMenu

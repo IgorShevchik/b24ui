@@ -45,13 +45,13 @@ const value = ref('design')
 </script>
 
 <template>
-  <PlaygroundPage>
+  <PlaygroundPage :b24ui="{ body: 'overflow-x-auto' }">
     <template #controls>
       <B24Select v-model="color" class="w-44" :items="colors" placeholder="Color" />
       <B24Select v-model="size" class="w-32" :items="sizes" placeholder="Size" />
       <B24Select v-model="orientation" class="w-44" :items="orientations" placeholder="Orientation" />
       <B24Select v-model="value" class="w-32" :items="items.map(item => item.value)" placeholder="Value" />
-      <B24Switch v-model="reverse" label="Reverse" size="xs" />
+      <B24Switch v-model="reverse" label="Reverse" size="sm" />
     </template>
 
     <B24Timeline

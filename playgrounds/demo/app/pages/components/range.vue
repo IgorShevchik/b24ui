@@ -36,11 +36,18 @@ const airColors = computed(() => {
       <B24Select v-model="multipleAttrs.size" class="w-32" :items="sizes" placeholder="Size" multiple />
       <B24Select v-model="singleAttrs.orientation" class="w-44" :items="orientations" placeholder="Orientation" />
       <B24Separator orientation="vertical" class="h-10" />
-      <B24Switch v-model="singleAttrs.inverted" label="Inverted" size="xs" />
-      <B24Switch v-model="singleAttrs.disabled" label="Disabled" size="xs" />
+      <B24Switch v-model="singleAttrs.inverted" label="Inverted" size="sm" />
+      <B24Switch v-model="singleAttrs.disabled" label="Disabled" size="sm" />
     </template>
 
-    <Matrix v-slot="props" :attrs="multipleAttrs" :b24ui="{ body: singleAttrs.orientation === 'vertical' ? 'h-48 flex flex-row w-max' : 'w-64' }">
+    <Matrix
+      v-slot="props"
+      :attrs="multipleAttrs"
+      :b24ui="{
+        root: ' overflow-x-auto',
+        body: singleAttrs.orientation === 'vertical' ? 'h-48 flex flex-row w-max' : 'w-64'
+      }"
+    >
       <B24Range v-model="value" v-bind="{ ...singleAttrs, ...props }" />
       <B24Range :default-value="80" v-bind="{ ...singleAttrs, ...props }" />
       <B24Separator label="Multiple" :orientation="singleAttrs.orientation" />

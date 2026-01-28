@@ -190,7 +190,7 @@ const onCountdownRoundStop = () => {
       <div class="mb-4 flex flex-wrap flex-col items-start justify-start gap-4">
         <B24Button
           color="air-primary"
-          size="xs"
+          size="sm"
           :disabled="counting"
           @click="startCountdown"
         >
@@ -222,7 +222,7 @@ const onCountdownRoundStop = () => {
         <B24Button
           color="air-secondary"
           label="Some action"
-          size="xs"
+          size="sm"
           :disabled="countingV2"
           @click="startCountdownV2"
         />

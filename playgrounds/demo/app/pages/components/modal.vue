@@ -36,7 +36,7 @@ function openModal() {
 </script>
 
 <template>
-  <PlaygroundPage :b24ui="{ body: 'flex flex-col gap-2 max-w-100 mx-auto' }">
+  <PlaygroundPage :b24ui="{ body: 'flex-col gap-2 max-w-100 mx-auto' }">
     <template #controls>
       <B24Switch v-model="attrs.overlay" label="Overlay" size="sm" />
       <B24Switch v-model="attrs.modal" label="Modal" size="sm" />
@@ -112,7 +112,7 @@ function openModal() {
       :b24ui="{ footer: 'border-t-0 pt-0' }"
       v-bind="{ ...attrs, dismissible: false, modal: false, overlay: false }"
     >
-      <B24Button label="Modal prevent close" color="air-secondary-accent" />
+      <B24Button label="Modal prevent close" />
 
       <template #body>
         <MockContentUploadFile />
@@ -133,9 +133,9 @@ function openModal() {
     </B24Modal>
 
     <B24Modal title="Modal with custom close button" description="The `close` prop inherits from the Button props." :close="{ color: 'air-boost', size: 'xs' }" :ui="{ close: 'top-3.5 rounded-full' }">
-      <B24Button label="Open with custom close button" />
+      <B24Button label="Open with custom close button" color="air-secondary-accent" />
     </B24Modal>
 
-    <B24Button label="Open programmatically" color="air-secondary-accent" @click="openModal" />
+    <B24Button label="Open programmatically" @click="openModal" />
   </PlaygroundPage>
 </template>

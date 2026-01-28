@@ -98,81 +98,77 @@ defineShortcuts({
       <B24Select v-model="attrs.color" class="w-44" :items="airColors" placeholder="Color" multiple />
       <B24Select v-model="attrs.size" class="w-32" :items="sizes" placeholder="Size" multiple />
       <B24Separator orientation="vertical" class="h-10" />
-      <B24Switch v-model="singleAttrs.disabled" label="Disabled" size="xs" />
-      <B24Switch v-model="singleAttrs.rounded" label="Rounded" size="xs" />
-      <B24Switch v-model="singleAttrs.loading" label="Loading" size="xs" />
+      <B24Switch v-model="singleAttrs.disabled" label="Disabled" size="sm" />
+      <B24Switch v-model="singleAttrs.rounded" label="Rounded" size="sm" />
+      <B24Switch v-model="singleAttrs.loading" label="Loading" size="sm" />
     </template>
 
     <Matrix v-slot="props" :attrs="attrs">
-      <B24Input v-model="value" autofocus class="w-full" v-bind="{ ...singleAttrs, ...props }" />
-      <B24Input :default-value="'Default value'" class="w-full" v-bind="{ ...singleAttrs, ...props }" />
-      <B24Input placeholder="Highlight" highlight class="w-full" v-bind="{ ...singleAttrs, ...props }" />
+      <B24Input v-model="value" autofocus v-bind="{ ...singleAttrs, ...props }" />
+      <B24Input :default-value="'Default value'" v-bind="{ ...singleAttrs, ...props }" />
+      <B24Input placeholder="Highlight" highlight v-bind="{ ...singleAttrs, ...props }" />
       <B24Input
         placeholder="Highlight with error"
         highlight
         v-bind="{ ...singleAttrs, ...props }"
         color="air-primary-alert"
         aria-invalid="true"
-        class="w-full"
       />
-      <B24Input placeholder="Required" required class="w-full" v-bind="{ ...singleAttrs, ...props }" />
-      <B24Input placeholder="No Padding" no-padding class="w-full" v-bind="{ ...singleAttrs, ...props }" />
-      <B24Input placeholder="No Border" no-border class="w-full" v-bind="{ ...singleAttrs, ...props }" />
-      <B24Input placeholder="Underline" underline class="w-full" v-bind="{ ...singleAttrs, ...props }" />
-      <B24Input placeholder="Search..." :icon="ALetterIcon" class="w-full" v-bind="{ ...singleAttrs, ...props }" />
-      <B24Input placeholder="Search..." :trailing-icon="Search2Icon" class="w-full" v-bind="{ ...singleAttrs, ...props }" />
-      <B24Input :avatar="{ src: '/b24ui/demo/avatar/employee.png' }" placeholder="Search..." class="w-full" v-bind="{ ...singleAttrs, ...props }" />
-      <B24Input placeholder="Trailing loading..." trailing class="w-full" v-bind="{ ...singleAttrs, ...props }" />
+      <B24Input placeholder="Required" required v-bind="{ ...singleAttrs, ...props }" />
+      <B24Input placeholder="No Padding" no-padding v-bind="{ ...singleAttrs, ...props }" />
+      <B24Input placeholder="No Border" no-border v-bind="{ ...singleAttrs, ...props }" />
+      <B24Input placeholder="Underline" underline v-bind="{ ...singleAttrs, ...props }" />
+      <B24Input placeholder="Search..." :icon="ALetterIcon" v-bind="{ ...singleAttrs, ...props }" />
+      <B24Input placeholder="Search..." :trailing-icon="Search2Icon" v-bind="{ ...singleAttrs, ...props }" />
+      <B24Input :avatar="{ src: '/b24ui/demo/avatar/employee.png' }" placeholder="Search..." v-bind="{ ...singleAttrs, ...props }" />
+      <B24Input placeholder="Trailing loading..." trailing v-bind="{ ...singleAttrs, ...props }" />
       <B24Input
         placeholder="Loading..."
         :icon="RocketIcon"
         :trailing-icon="TaskIcon"
-        class="w-full"
         v-bind="{ ...singleAttrs, ...props }"
       />
-      <B24Input :icon="CalculatorIcon" type="number" :model-value="10" class="w-full" v-bind="{ ...singleAttrs, ...props }" />
-      <B24Input :icon="CalendarIcon" type="date" :model-value="new Date().toISOString().substring(0, 10)" class="w-full" v-bind="{ ...singleAttrs, ...props }" />
-      <B24Input :icon="CrossedEye2Icon" type="password" model-value="password" class="w-full" v-bind="{ ...singleAttrs, ...props }" />
+      <B24Input :icon="CalculatorIcon" type="number" :model-value="10" v-bind="{ ...singleAttrs, ...props }" />
+      <B24Input :icon="CalendarIcon" type="date" :model-value="new Date().toISOString().substring(0, 10)" v-bind="{ ...singleAttrs, ...props }" />
+      <B24Input :icon="CrossedEye2Icon" type="password" model-value="password" v-bind="{ ...singleAttrs, ...props }" />
 
-      <div class="w-full">
-        <div class="relative flex items-center gap-2 bg-(--ui-color-bg-content-secondary) rounded-xs ring-1 ring-ai-250 hover:ring-ai-350">
-          <B24Input
-            v-model="input"
-            placeholder="Try use speech recognition..."
-            no-border
-            class="flex-1 resize-none px-2.5"
-            v-bind="{ ...singleAttrs, ...props }"
+      <div class="relative flex items-center gap-2 bg-(--ui-color-bg-content-secondary) rounded-xs ring-1 ring-ai-250 hover:ring-ai-350">
+        <B24Input
+          v-model="input"
+          placeholder="Try use speech recognition..."
+          no-border
+          class="flex-1 resize-none px-2.5"
+          v-bind="{ ...singleAttrs, ...props }"
+        />
+        <template v-if="speechIsAvailable">
+          <B24Button
+            v-if="!speechIsListening"
+            :icon="MicrophoneOnIcon"
+            color="air-tertiary-no-accent"
+            size="sm"
+            class="shrink-0"
+            @click="startDictation"
           />
-          <template v-if="speechIsAvailable">
-            <B24Button
-              v-if="!speechIsListening"
-              :icon="MicrophoneOnIcon"
-              color="air-tertiary-no-accent"
-              size="sm"
-              class="shrink-0"
-              @click="startDictation"
-            />
-            <B24Button
-              v-if="speechIsListening"
-              :icon="StopLIcon"
-              color="air-secondary"
-              size="sm"
-              class="shrink-0 rounded-lg"
-              @click="stopDictation"
-            />
-          </template>
+          <B24Button
+            v-if="speechIsListening"
+            :icon="StopLIcon"
+            color="air-secondary"
+            size="sm"
+            class="shrink-0 rounded-lg"
+            @click="stopDictation"
+          />
+        </template>
+      </div>
+      <div class="flex flex-col justify-between items-start gap-4 mt-2 px-1 text-xs text-dimmed">
+        <div class="flex items-center gap-1">
+          <span>Use en-US for speech</span>
+          <B24Kbd value="e" accent="less" size="sm" />
+          <B24Kbd value="e" accent="less" size="sm" />
         </div>
-        <div class="flex flex-col justify-between items-start gap-4 mt-2 px-1 text-xs text-dimmed">
-          <div class="flex items-center gap-1">
-            <span>Use en-US for speech</span>
-            <B24Kbd value="e" accent="less" size="sm" />
-            <B24Kbd value="e" accent="less" size="sm" />
-          </div>
-          <div class="flex items-center gap-1">
-            <span>Use ru-RU for speech</span>
-            <B24Kbd value="r" accent="less" size="sm" />
-            <B24Kbd value="r" accent="less" size="sm" />
-          </div>
+        <div class="flex items-center gap-1">
+          <span>Use ru-RU for speech</span>
+          <B24Kbd value="r" accent="less" size="sm" />
+          <B24Kbd value="r" accent="less" size="sm" />
         </div>
       </div>
     </Matrix>

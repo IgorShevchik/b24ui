@@ -34,7 +34,7 @@ const items = [
 
 <template>
   <PlaygroundPage>
-    <B24Breadcrumb :items="items">
+    <B24Breadcrumb :items="items" class="mx-auto mt-4">
       <template #dropdown="{ item }">
         <B24DropdownMenu :items="item.children">
           <B24Button :icon="item.icon" color="air-tertiary-no-accent" class="p-0.5" />

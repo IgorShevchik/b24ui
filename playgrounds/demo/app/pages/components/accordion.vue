@@ -52,15 +52,15 @@ const attrs = reactive({
     <template #controls>
       <B24Select v-model="attrs.type" class="w-44" :items="types" placeholder="Type" />
       <B24Separator orientation="vertical" class="h-10" />
-      <B24Switch v-if="attrs.type === 'single'" v-model="attrs.collapsible" label="Collapsible" size="xs" />
-      <B24Switch v-model="attrs.disabled" label="Disabled" size="xs" />
-      <B24Switch v-model="attrs.unmountOnHide" label="Unmount on hide" size="xs" />
+      <B24Switch v-if="attrs.type === 'single'" v-model="attrs.collapsible" label="Collapsible" size="sm" />
+      <B24Switch v-model="attrs.disabled" label="Disabled" size="sm" />
+      <B24Switch v-model="attrs.unmountOnHide" label="UnmountOnHide" size="sm" />
     </template>
 
-    <template #default="{ cardVariant, cardClass }">
+    <template #default="{ cardVariant, cardBorderClass }">
       <B24Card
         :variant="cardVariant"
-        :class="[cardClass, 'mx-auto max-w-96 w-full']"
+        :class="[cardBorderClass, 'mx-auto max-w-96 w-full']"
       >
         <B24Accordion
           :key="`${attrs.type}-${attrs.collapsible}-${attrs.disabled}-${attrs.unmountOnHide}`"

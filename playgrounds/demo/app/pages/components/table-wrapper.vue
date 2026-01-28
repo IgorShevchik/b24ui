@@ -361,7 +361,7 @@ const isUseBg = ref(true)
       <B24Separator class="my-3" type="dotted" />
       <B24TableWrapper
         class="overflow-x-auto w-full h-[400px]"
-        size="xs"
+        size="sm"
         pin-rows
         :scrollbar-thin="false"
       >
@@ -532,7 +532,7 @@ const isUseBg = ref(true)
       <B24Separator class="my-3" type="dotted" />
       <B24TableWrapper
         class="overflow-x-auto w-full h-[400px]"
-        size="xs"
+        size="sm"
         pin-cols
         pin-rows
       >
@@ -848,7 +848,7 @@ const isUseBg = ref(true)
       <B24Separator class="my-3" type="dotted" />
       <B24TableWrapper
         class="overflow-x-auto w-full h-[400px]"
-        size="xs"
+        size="sm"
         pin-rows
         rounded
         bordered

@@ -14,8 +14,8 @@ const showEdges = ref(true)
       </B24FormField>
     </template>
 
-    <template #default="{ cardVariant, cardClass }">
-      <B24Card :variant="cardVariant" :class="[cardClass]">
+    <template #default="{ cardVariant, cardBorderClass }">
+      <B24Card :variant="cardVariant" :class="[cardBorderClass]">
         <template #header>
           <ProseH5 class="mb-0">
             With buttons
@@ -28,7 +28,7 @@ const showEdges = ref(true)
           :show-edges="showEdges"
         />
       </B24Card>
-      <B24Card :variant="cardVariant" :class="[cardClass]">
+      <B24Card :variant="cardVariant" :class="[cardBorderClass]">
         <template #header>
           <ProseH5 class="mb-0">
             With links

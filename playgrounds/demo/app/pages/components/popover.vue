@@ -19,7 +19,7 @@ const modal = ref(false)
 </script>
 
 <template>
-  <PlaygroundPage :b24ui="{ body: 'flex flex-col max-w-60 gap-4 mx-auto' }">
+  <PlaygroundPage :b24ui="{ body: 'flex-col max-w-60 mx-auto' }">
     <template #controls>
       <B24FormField label="content.align" name="sideOffset">
         <B24Select v-model="align" placeholder="content.align" :items="contentAligns" />
@@ -60,7 +60,7 @@ const modal = ref(false)
         <div class="flex justify-center gap-2 p-4 w-48">
           <B24Button label="Close" @click="close" />
         </div>
-        <div class="max-w-[192px] max-h-[192px] overflow-y-auto scrollbar-thin scrollbar-transparent">
+        <div class="max-w-48 max-h-48 overflow-y-auto scrollbar-thin scrollbar-transparent">
           <MockContentLongText />
         </div>
       </template>
@@ -83,7 +83,7 @@ const modal = ref(false)
       <B24Button label="Hover me" />
 
       <template #content>
-        <div class="max-w-[192px] max-h-[292px]">
+        <div class="max-w-48 max-h-73">
           <MockContentUploadFile />
         </div>
 
@@ -137,7 +137,7 @@ const modal = ref(false)
             @click="openCustomAnchor = false"
           />
         </div>
-        <Placeholder class="w-full h-[192px]" />
+        <Placeholder class="w-full h-48" />
       </template>
     </B24Popover>
   </PlaygroundPage>

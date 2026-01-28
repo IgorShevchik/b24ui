@@ -10,7 +10,7 @@ defineShortcuts({
 <template>
   <PlaygroundPage>
     <template #controls>
-      <B24Switch v-model="disabled" label="Disabled" size="xs" />
+      <B24Switch v-model="disabled" label="Disabled" size="sm" />
     </template>
 
     <B24Collapsible

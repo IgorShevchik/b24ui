@@ -27,7 +27,7 @@ const inverted = ref(false)
       <B24Select v-model="attrs.color" class="w-44" :items="airColors" multiple placeholder="Color" />
       <B24Select v-model="attrs.size" class="w-32" :items="sizes" multiple placeholder="Size" />
       <B24Separator orientation="vertical" class="h-10" />
-      <B24Switch v-model="inverted" label="Inverted" size="xs" />
+      <B24Switch v-model="inverted" label="Inverted" size="sm" />
     </template>
 
     <Matrix v-slot="props" :attrs="attrs" :b24ui="{ root: 'w-full max-w-[520px]' }">

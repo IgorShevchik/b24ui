@@ -26,10 +26,10 @@ const singleAttrs = reactive({
       <B24Select v-model="multipleAttrs.accent" class="w-44" :items="accents" placeholder="Accent" multiple />
       <B24Select v-model="multipleAttrs.type" class="w-32" :items="types" placeholder="Type" multiple />
       <B24Separator orientation="vertical" class="h-10" />
-      <B24Input v-model="singleAttrs.label" placeholder="Label" />
+      <B24Input v-model="singleAttrs.label" class="min-w-32 w-32" placeholder="Label" />
       <B24Separator orientation="vertical" class="h-10" />
-      <B24Switch v-model="singleAttrs.useIcon" label="icon" size="xs" />
-      <B24Switch v-model="singleAttrs.useLabel" label="label" size="xs" />
+      <B24Switch v-model="singleAttrs.useIcon" label="Icon" size="sm" />
+      <B24Switch v-model="singleAttrs.useLabel" label="Label" size="sm" />
     </template>
 
     <Matrix v-slot="props" :attrs="multipleAttrs">

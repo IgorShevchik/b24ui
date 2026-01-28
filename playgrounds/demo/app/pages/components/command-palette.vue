@@ -242,8 +242,8 @@ defineShortcuts({
       </B24Popover>
 
       <B24separator orientation="vertical" class="h-10" />
-      <B24Switch v-model="virtualize" label="Virtualize" size="xs" />
-      <B24Switch v-model="preserveGroupOrder" label="Preserve order" size="xs" />
+      <B24Switch v-model="virtualize" label="Virtualize" size="sm" />
+      <B24Switch v-model="preserveGroupOrder" label="PreserveOrder" size="sm" />
     </template>
 
     <B24Card class="w-full max-w-150 mx-auto" :b24ui="{ body: '!p-0' }">

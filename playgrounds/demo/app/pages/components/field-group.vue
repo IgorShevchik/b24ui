@@ -32,7 +32,7 @@ const singleAttrs = reactive({
       <B24Select v-model="attrs.size" class="w-32" :items="sizes" placeholder="Size" multiple />
       <B24Select v-model="singleAttrs.orientation" class="w-44" :items="orientations" placeholder="Orientation" />
       <B24Separator orientation="vertical" class="h-10" />
-      <B24Switch v-model="singleAttrs.noSplit" label="No split" size="xs" />
+      <B24Switch v-model="singleAttrs.noSplit" label="NoSplit" size="sm" />
     </template>
 
     <Matrix v-slot="props" :attrs="attrs">

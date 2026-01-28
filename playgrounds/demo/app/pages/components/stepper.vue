@@ -45,67 +45,64 @@ const stepper = useTemplateRef('stepper')
 </script>
 
 <template>
-  <PlaygroundPage>
+  <PlaygroundPage :b24ui="{ body: 'flex-col gap-10 overflow-x-auto flex-nowrap justify-start p-0' }">
     <template #controls>
       <B24Select v-model="color" class="w-44" :items="colors" placeholder="Color" />
       <B24Select v-model="size" class="w-32" :items="sizes" placeholder="Size" />
       <B24Select v-model="orientation" class="w-44" :items="orientations" placeholder="Orientation" />
     </template>
 
-    <div class="flex flex-col gap-10 min-h-0 mx-auto">
-      <B24Stepper
-        ref="stepper"
-        :items="items"
-        :color="color"
-        :orientation="orientation"
-        :size="size"
+    <B24Stepper
+      ref="stepper"
+      :items="items"
+      :orientation="orientation"
+      :size="size"
+    >
+      <template #address="{ item }">
+        <Placeholder class="size-full min-h-80 min-w-60">
+          {{ item.title }}
+        </Placeholder>
+      </template>
+
+      <template #shipping="{ item }">
+        <Placeholder class="size-full min-h-80 min-w-60">
+          {{ item.title }}
+        </Placeholder>
+      </template>
+
+      <template #payment="{ item }">
+        <Placeholder class="size-full min-h-80 min-w-60">
+          {{ item.title }}
+        </Placeholder>
+      </template>
+
+      <template #checkout="{ item }">
+        <Placeholder class="size-full min-h-80 min-w-60">
+          {{ item.title }}
+        </Placeholder>
+      </template>
+    </B24Stepper>
+
+    <div class="flex gap-2 justify-between">
+      <B24Button
+        :disabled="!stepper?.hasPrev"
+        label="Prev"
+        @click="stepper?.prev()"
       >
-        <template #address="{ item }">
-          <Placeholder class="size-full min-h-60 min-w-60">
-            {{ item.title }}
-          </Placeholder>
+        <template #leading>
+          <ArrowLeftLIcon class="text-(--ui-btn-color) size-(--ui-btn-icon-size)" />
         </template>
+      </B24Button>
 
-        <template #shipping="{ item }">
-          <Placeholder class="size-full min-h-60 min-w-60">
-            {{ item.title }}
-          </Placeholder>
+      <B24Button
+        :disabled="!stepper?.hasNext"
+        label="Next"
+        @click="stepper?.next()"
+      >
+        <template #trailing>
+          <ArrowRightLIcon class="text-(--ui-btn-color) size-(--ui-btn-icon-size)" />
         </template>
-
-        <template #payment="{ item }">
-          <Placeholder class="size-full min-h-60 min-w-60">
-            {{ item.title }}
-          </Placeholder>
-        </template>
-
-        <template #checkout="{ item }">
-          <Placeholder class="size-full min-h-60 min-w-60">
-            {{ item.title }}
-          </Placeholder>
-        </template>
-      </B24Stepper>
-
-      <div class="flex gap-2 justify-between">
-        <B24Button
-          :disabled="!stepper?.hasPrev"
-          label="Prev"
-          @click="stepper?.prev()"
-        >
-          <template #leading>
-            <ArrowLeftLIcon class="text-(--ui-btn-color) size-(--ui-btn-icon-size)" />
-          </template>
-        </B24Button>
-
-        <B24Button
-          :disabled="!stepper?.hasNext"
-          label="Next"
-          @click="stepper?.next()"
-        >
-          <template #trailing>
-            <ArrowRightLIcon class="text-(--ui-btn-color) size-(--ui-btn-icon-size)" />
-          </template>
-        </B24Button>
-      </div>
+      </B24Button>
     </div>
   </PlaygroundPage>
 </template>

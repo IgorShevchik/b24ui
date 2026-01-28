@@ -15,7 +15,7 @@ const showGroup = ref(false)
     <template #controls>
       <B24Select v-model="attrs.size" class="w-32" :items="sizes" placeholder="Size" multiple />
       <B24Separator orientation="vertical" class="h-10" />
-      <B24Switch v-model="showGroup" label="Group" size="xs" />
+      <B24Switch v-model="showGroup" label="Group" size="sm" />
     </template>
 
     <Matrix v-slot="props" :attrs="attrs">

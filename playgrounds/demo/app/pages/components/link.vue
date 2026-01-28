@@ -16,20 +16,20 @@ const classes = reactive({
 <template>
   <PlaygroundPage>
     <template #controls>
-      <B24Input v-model="attrs.to" class="w-56" type="url" placeholder="to" />
-      <B24Input v-model="classes.activeClass" class="w-56" placeholder="activeClass" />
-      <B24Input v-model="classes.inactiveClass" class="w-56" placeholder="inactiveClass" />
+      <B24Input v-model="attrs.to" class="min-w-52" type="url" placeholder="to" />
+      <B24Input v-model="classes.activeClass" class="min-w-52" placeholder="activeClass" />
+      <B24Input v-model="classes.inactiveClass" class="min-w-52" placeholder="inactiveClass" />
       <B24Separator orientation="vertical" class="h-10" />
-      <B24Switch v-model="attrs.raw" label="raw" size="xs" />
-      <B24Switch v-model="attrs.isAction" label="isAction" size="xs" />
-      <B24Switch v-model="attrs.active" label="active" size="xs" />
-      <B24Switch v-model="attrs.disabled" label="disabled" size="xs" />
+      <B24Switch v-model="attrs.raw" label="raw" size="sm" />
+      <B24Switch v-model="attrs.isAction" label="isAction" size="sm" />
+      <B24Switch v-model="attrs.active" label="active" size="sm" />
+      <B24Switch v-model="attrs.disabled" label="disabled" size="sm" />
     </template>
 
-    <template #default="{ cardVariant, cardClass }">
+    <template #default="{ cardVariant, cardBorderClass }">
       <B24Card
         :variant="cardVariant"
-        :class="[cardClass, 'mx-auto']"
+        :class="[cardBorderClass, 'mx-auto']"
       >
         <template #header>
           <ProseH5 class="mb-0">

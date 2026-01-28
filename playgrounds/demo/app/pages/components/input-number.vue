@@ -32,10 +32,10 @@ const singleAttrs = reactive({
       <B24Select v-model="attrs.size" class="w-32" :items="sizes" placeholder="Size" multiple />
       <B24Select v-model="singleAttrs.orientation" class="w-44" :items="orientations" placeholder="Orientation" />
       <B24Separator orientation="vertical" class="h-10" />
-      <B24Switch v-model="singleAttrs.increment" label="Increment" size="xs" />
-      <B24Switch v-model="singleAttrs.decrement" label="Decrement" size="xs" />
-      <B24Switch v-model="singleAttrs.disabled" label="Disabled" size="xs" />
-      <B24Switch v-model="singleAttrs.rounded" label="Rounded" size="xs" />
+      <B24Switch v-model="singleAttrs.increment" label="Increment" size="sm" />
+      <B24Switch v-model="singleAttrs.decrement" label="Decrement" size="sm" />
+      <B24Switch v-model="singleAttrs.disabled" label="Disabled" size="sm" />
+      <B24Switch v-model="singleAttrs.rounded" label="Rounded" size="sm" />
     </template>
 
     <Matrix v-slot="props" :attrs="attrs">

@@ -603,14 +603,14 @@ const emojiItems: EditorEmojiMenuItem[] = gitHubEmojis.filter(emoji => !emoji.na
       autofocus
       placeholder="Write, type '/' for commands..."
       :b24ui="{ base: 'p-8 sm:px-16' }"
-      class="w-full h-[calc(100vh-var(--topbar-height)-56px)] overflow-y-auto scrollbar-thin scrollbar-transparent"
+      class="w-full h-[calc(100vh-var(--topbar-height)-56px)] lg:h-[calc(100vh-var(--topbar-height)-100px)] overflow-y-auto scrollbar-thin scrollbar-transparent"
     >
-      <Navbar :b24ui="{ root: 'absolute top-0 inset-x-0 z-30 border-0' }">
+      <Navbar :b24ui="{ root: 'absolute md:absolute top-0 inset-x-0 z-30 backdrop-blur-none' }">
         <template #controls>
           <B24EditorToolbar
             :editor="editor"
             :items="toolbarItems"
-            class="overflow-x-auto py-2 mx-auto"
+            class="overflow-x-auto pb-3 mx-auto"
           >
             <template #link>
               <EditorLinkPopover :editor="editor" auto-open />

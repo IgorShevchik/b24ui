@@ -31,8 +31,8 @@ const onComplete = (value: string[]) => {
       <B24Select v-model="attrs.color" class="w-44" :items="airColors" placeholder="Color" multiple />
       <B24Select v-model="attrs.size" class="w-32" :items="sizes" placeholder="Size" multiple />
       <B24Separator orientation="vertical" class="h-10" />
-      <B24Switch v-model="singleAttrs.disabled" label="Disabled" size="xs" />
-      <B24Switch v-model="singleAttrs.highlight" label="Highlight" size="xs" />
+      <B24Switch v-model="singleAttrs.disabled" label="Disabled" size="sm" />
+      <B24Switch v-model="singleAttrs.highlight" label="Highlight" size="sm" />
     </template>
 
     <Matrix v-slot="props" :attrs="attrs">

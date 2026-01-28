@@ -51,7 +51,7 @@ const items = [
       <B24Select v-model="orientation" class="w-44" :items="orientations" placeholder="Orientation" />
     </template>
 
-    <Matrix v-slot="props" :attrs="attrs">
+    <Matrix v-slot="props" :attrs="attrs" :b24ui="{ body: 'overflow-x-auto' }">
       <B24Tabs
         :items="itemsSimple"
         :content="false"

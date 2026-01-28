@@ -67,11 +67,11 @@ const isDateUnavailable = (date: DateValue) => {
     <template #controls>
       <B24Select v-model="multipleAttrs.color" class="w-44" :items="airColors" placeholder="Color" multiple />
       <B24Select v-model="multipleAttrs.size" class="w-32" :items="sizes" placeholder="Size" multiple />
-      <B24InputNumber v-model="singleAttrs.numberOfMonths" class="w-24" placeholder="Number of months" />
+      <B24InputNumber v-model="singleAttrs.numberOfMonths" class="min-w-24 w-24" placeholder="Number of months" />
       <B24Separator orientation="vertical" class="h-10" />
-      <B24Switch v-model="multiple" label="Multiple" size="xs" />
-      <B24Switch v-model="range" label="Range" size="xs" />
-      <B24Switch v-model="singleAttrs.disabled" label="Disabled" size="xs" />
+      <B24Switch v-model="multiple" label="Multiple" size="sm" />
+      <B24Switch v-model="range" label="Range" size="sm" />
+      <B24Switch v-model="singleAttrs.disabled" label="Disabled" size="sm" />
     </template>
 
     <Matrix v-slot="props" :attrs="multipleAttrs">

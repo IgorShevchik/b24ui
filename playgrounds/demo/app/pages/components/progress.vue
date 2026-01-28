@@ -56,7 +56,7 @@ onMounted(() => {
       <B24Select v-model="attrs.animation" class="w-40" :items="animations" placeholder="Animation" multiple />
       <B24Select v-model="singleAttrs.orientation" class="w-40" :items="orientations" placeholder="Orientation" />
       <B24Separator orientation="vertical" class="h-10" />
-      <B24Switch v-model="singleAttrs.inverted" label="Inverted" size="xs" />
+      <B24Switch v-model="singleAttrs.inverted" label="Inverted" size="sm" />
     </template>
 
     <Matrix

@@ -332,13 +332,13 @@ onMounted(() => {
 </script>
 
 <template>
-  <PlaygroundPage :b24ui="{ root: 'bg-(--ui-color-design-outline-bg)' }">
+  <PlaygroundPage :b24ui="{ root: 'backdrop-blur-none' }">
     <template #controls>
-      <B24Switch v-model="virtualize" label="Virtualize" size="xs" />
+      <B24Switch v-model="virtualize" label="Virtualize" size="sm" />
 
       <B24Input
         :model-value="(table?.tableApi?.getColumn('email')?.getFilterValue() as string)"
-        class="max-w-[400px]"
+        class="min-w-44 w-44"
         placeholder="Filter emails..."
         @update:model-value="table?.tableApi?.getColumn('email')?.setFilterValue($event)"
       />
@@ -369,12 +369,11 @@ onMounted(() => {
       </B24DropdownMenu>
     </template>
 
-    <template #default="{ cardVariant, cardClass }">
+    <template #default="{ cardVariant, cardBorderClass }">
       <B24Card
         :variant="cardVariant"
-        :class="[cardClass, 'flex-1 w-full']"
+        :class="[cardBorderClass, 'flex-1 w-full']"
         :b24ui="{
-          header: 'p-[12px] px-[14px] py-[14px] sm:px-[14px] sm:py-[14px]',
           body: 'p-0 sm:px-0 sm:py-0',
           footer: 'p-[12px] px-[14px] py-[14px] sm:px-[14px] sm:py-[14px] text-(length:--ui-font-size-xs) text-(--b24ui-typography-legend-color)'
         }"
