@@ -5,8 +5,9 @@ import type { JSONContent } from '@tiptap/vue-3'
 import { mapEditorItems } from '@bitrix24/b24ui-nuxt/utils/editor'
 import { Emoji, gitHubEmojis } from '@tiptap/extension-emoji'
 import { TextAlign } from '@tiptap/extension-text-align'
+import Navbar from '../../components/Navbar.vue'
 import { ImageUpload } from '../../../../../docs/app/components/content/examples/editor/EditorImageUpload'
-import { useEditorCompletion } from '../../../../../docs/app/components/content/examples/editor/EditorUseCompletion'
+// import { useEditorCompletion } from '../../../../../docs/app/components/content/examples/editor/EditorUseCompletion'
 import EditorLinkPopover from '../../../../../docs/app/components/content/examples/editor/EditorLinkPopover.vue'
 import UndoIcon from '@bitrix24/b24icons-vue/outline/UndoIcon'
 import RedoIcon from '@bitrix24/b24icons-vue/outline/RedoIcon'
@@ -115,7 +116,7 @@ Whether you're working on a personal project or building an enterprise applicati
 Visit our [documentation](https://bitrix24.github.io/b24ui/) to learn more and explore all available components.
 `)
 
-const { extension: completionExtension, handlers: aiHandlers, isLoading: aiLoading } = useEditorCompletion(editorRef)
+// const { extension: completionExtension, handlers: aiHandlers, isLoading: aiLoading } = useEditorCompletion(editorRef)
 
 const customHandlers = {
   imageUpload: {
@@ -123,8 +124,8 @@ const customHandlers = {
     execute: (editor: any) => editor.chain().focus().insertContent({ type: 'imageUpload' }),
     isActive: (editor: any) => editor.isActive('imageUpload'),
     isDisabled: undefined
-  },
-  ...aiHandlers
+  }
+  // ...aiHandlers
 } satisfies EditorCustomHandlers
 
 const toolbarItems = computed(() => [
@@ -143,7 +144,8 @@ const toolbarItems = computed(() => [
   [
     {
       icon: CopilotIcon,
-      loading: aiLoading.value,
+      // loading: aiLoading.value,
+      disabled: true,
       content: { align: 'start' },
       b24ui: { leadingIcon: 'text-(--ui-color-copilot-accent-less-1)' },
       items: [
@@ -479,17 +481,17 @@ const handleItems = (editor: any): DropdownMenuItem[][] => {
 }
 
 const suggestionItems = [
-  [
-    {
-      type: 'label',
-      label: 'AI'
-    },
-    {
-      kind: 'aiContinue',
-      label: 'Continue writing',
-      icon: PenIcon
-    }
-  ],
+  // [
+  //   {
+  //     type: 'label',
+  //     label: 'AI'
+  //   },
+  //   {
+  //     kind: 'aiContinue',
+  //     label: 'Continue writing',
+  //     icon: PenIcon
+  //   }
+  // ],
   [
     {
       type: 'label',
@@ -568,11 +570,11 @@ const mentionItems: EditorMentionMenuItem[] = [
   },
   {
     label: 'Employee',
-    avatar: { src: '/avatar/employee.png' }
+    avatar: { src: '/b24ui/demo/avatar/employee.png' }
   },
   {
     label: 'Assistant',
-    avatar: { src: '/avatar/assistant.png' }
+    avatar: { src: '/b24ui/demo/avatar/assistant.png' }
   }
 ]
 
@@ -580,8 +582,9 @@ const emojiItems: EditorEmojiMenuItem[] = gitHubEmojis.filter(emoji => !emoji.na
 </script>
 
 <template>
-  <div
-    class="isolate mt-[24px] relative h-[calc(100vh-var(--topbar-height)-56px)] !p-0 rounded-md bg-(--ui-color-design-outline-a1-bg) border-(--ui-color-design-outline-stroke) border-(length:--ui-design-outline-stroke-weight)"
+  <B24Card
+    class="isolate relative h-screen p-0! backdrop-blur-[20px] rounded-none lg:rounded-(--ui-border-radius-md) border-0"
+    :b24ui="{ body: 'mt-16 lg:mt-34 pt-0' }"
   >
     <B24Editor
       ref="editorRef"
@@ -590,7 +593,7 @@ const emojiItems: EditorEmojiMenuItem[] = gitHubEmojis.filter(emoji => !emoji.na
       :extensions="[
         Emoji,
         ImageUpload,
-        completionExtension,
+        // completionExtension,
         TextAlign.configure({
           types: ['heading', 'paragraph']
         })
@@ -599,23 +602,28 @@ const emojiItems: EditorEmojiMenuItem[] = gitHubEmojis.filter(emoji => !emoji.na
       content-type="markdown"
       autofocus
       placeholder="Write, type '/' for commands..."
-      :b24ui="{ base: 'p-8 sm:px-16 py-24' }"
-      class="w-full h-[calc(100vh-var(--topbar-height)-56px)] overflow-y-auto scrollbar-thin scrollbar-transparent"
+      :b24ui="{ base: 'p-8 sm:px-16' }"
+      class="w-full h-[calc(100vh-var(--topbar-height)-56px)] lg:h-[calc(100vh-var(--topbar-height)-100px)] overflow-y-auto scrollbar-thin scrollbar-transparent"
     >
-      <B24EditorToolbar
-        :editor="editor"
-        :items="toolbarItems"
-        class="border-b border-(--ui-color-design-tinted-na-stroke) backdrop-blur-3xl bg-(--ui-color-bg-content-primary) absolute top-0 inset-x-0 px-8 mr-2 sm:px-16 py-2 z-20 overflow-x-auto rounded-t-md"
-      >
-        <template #link>
-          <EditorLinkPopover :editor="editor" auto-open />
+      <Navbar :b24ui="{ root: 'absolute md:absolute top-0 inset-x-0 z-30 backdrop-blur-none' }">
+        <template #controls>
+          <B24EditorToolbar
+            :editor="editor"
+            :items="toolbarItems"
+            class="overflow-x-auto pb-3 mx-auto"
+          >
+            <template #link>
+              <EditorLinkPopover :editor="editor" auto-open />
+            </template>
+          </B24EditorToolbar>
         </template>
-      </B24EditorToolbar>
+      </Navbar>
 
       <B24EditorToolbar
         :editor="editor"
         :items="toolbarItems"
         layout="bubble"
+        :b24ui="{ base: 'edge-dark:bg-[#21334cf0] edge-light:bg-(--ui-color-base-white-fixed) shadow-sm' }"
         :should-show="({ editor, view, state }) => {
           if (editor.isActive('imageUpload') || editor.isActive('image')) {
             return false
@@ -633,6 +641,7 @@ const emojiItems: EditorEmojiMenuItem[] = gitHubEmojis.filter(emoji => !emoji.na
         :editor="editor"
         :items="imageToolbarItems(editor)"
         layout="bubble"
+        :b24ui="{ base: 'edge-dark:bg-[#21334cf0] edge-light:bg-(--ui-color-base-white-fixed) shadow-sm' }"
         :should-show="({ editor, view }) => {
           return editor.isActive('image') && view.hasFocus()
         }"
@@ -675,5 +684,5 @@ const emojiItems: EditorEmojiMenuItem[] = gitHubEmojis.filter(emoji => !emoji.na
       <B24EditorMentionMenu :editor="editor" :items="mentionItems" />
       <B24EditorEmojiMenu :editor="editor" :items="emojiItems" />
     </B24Editor>
-  </div>
+  </B24Card>
 </template>

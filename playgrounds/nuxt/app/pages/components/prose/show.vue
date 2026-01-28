@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import usePageMeta from './../../../composables/usePageMeta'
 import ExampleGrid from '../../../components/ExampleGrid.vue'
 import ExampleCard from '../../../components/ExampleCard.vue'
 // import ExampleCardSubTitle from '../../../components/ExampleCardSubTitle.vue'
@@ -8,8 +7,6 @@ import InfoCircleIcon from '@bitrix24/b24icons-vue/outline/InfoCircleIcon'
 import IdeaLampIcon from '@bitrix24/b24icons-vue/outline/IdeaLampIcon'
 import WarningIcon from '@bitrix24/b24icons-vue/main/WarningIcon'
 import AlertIcon from '@bitrix24/b24icons-vue/outline/AlertIcon'
-
-usePageMeta.setPageTitle('Prose')
 
 const demoPreText = `
 | Analytics:| Data:    | Sample:    |
