@@ -22,22 +22,22 @@ const showGroup = ref(false)
       <template v-if="showGroup">
         <B24AvatarGroup :max="3" :size="props?.size">
           <B24Avatar
-            src="/b24ui/demo/avatar/employee.png"
+            src="/avatar/employee.png"
             alt="Employee Name"
             :chip="{ inset: true, text: '1', color: 'air-primary-alert' }"
           />
-          <B24Avatar src="/b24ui/demo/avatar/assistant.png" alt="Assistant Name" />
-          <B24Avatar src="/b24ui/demo/avatar/employee.png" alt="Employee Name" class="grayscale" />
-          <B24Avatar src="/b24ui/demo/avatar/employee.png" alt="Employee Name" />
-          <B24Avatar src="/b24ui/demo/avatar/assistant.png" alt="Assistant Name" />
+          <B24Avatar src="/avatar/assistant.png" alt="Assistant Name" />
+          <B24Avatar src="/avatar/employee.png" alt="Employee Name" class="grayscale" />
+          <B24Avatar src="/avatar/employee.png" alt="Employee Name" />
+          <B24Avatar src="/avatar/assistant.png" alt="Assistant Name" />
         </B24AvatarGroup>
         <B24AvatarGroup :max="2" v-bind="props">
-          <B24Avatar src="/b24ui/demo/avatar/employee.png" alt="Employee Name" />
-          <B24Avatar src="/b24ui/demo/avatar/assistant.png" alt="Assistant Name" />
+          <B24Avatar src="/avatar/employee.png" alt="Employee Name" />
+          <B24Avatar src="/avatar/assistant.png" alt="Assistant Name" />
         </B24AvatarGroup>
       </template>
       <template v-else>
-        <B24Avatar src="/b24ui/demo/avatar/employee.png" alt="Employee Name" v-bind="props" />
+        <B24Avatar src="/avatar/employee.png" alt="Employee Name" v-bind="props" />
         <B24Avatar :icon="IncertImageIcon" v-bind="props" />
         <B24Avatar alt="Assistant Name" v-bind="props" />
         <B24Avatar :text="props?.size" v-bind="props" />

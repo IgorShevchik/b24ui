@@ -570,11 +570,11 @@ const mentionItems: EditorMentionMenuItem[] = [
   },
   {
     label: 'Employee',
-    avatar: { src: '/b24ui/demo/avatar/employee.png' }
+    avatar: { src: '/avatar/employee.png' }
   },
   {
     label: 'Assistant',
-    avatar: { src: '/b24ui/demo/avatar/assistant.png' }
+    avatar: { src: '/avatar/assistant.png' }
   }
 ]
 

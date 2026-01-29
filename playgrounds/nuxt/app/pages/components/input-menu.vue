@@ -146,7 +146,7 @@ const itemsObj = ref([
       />
       <B24InputMenu
         :items="items"
-        :avatar="{ src: '/b24ui/demo/avatar/employee.png' }"
+        :avatar="{ src: '/avatar/employee.png' }"
         name="some_value"
         placeholder="Avatar"
         aria-label="Avatar"

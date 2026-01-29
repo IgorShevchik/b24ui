@@ -176,7 +176,7 @@ function scrollToBottom() {
             v-for="(log, index) of logs"
             :key="index"
             :description="log"
-            :avatar="{ src: '/b24ui/demo/avatar/assistant.png' }"
+            :avatar="{ src: '/avatar/assistant.png' }"
             :b24ui="{ description: 'w-fit grow-0' }"
           />
         </div>

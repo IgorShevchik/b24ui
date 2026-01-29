@@ -129,7 +129,7 @@ function getUserAvatar(value: string) {
       />
       <B24Select :default-value="value" :items="items" v-bind="{ ...singleAttrs, ...props }" tag="tag" :tag-color="props?.color" />
       <B24Select placeholder="Highlight" highlight :items="items" v-bind="{ ...singleAttrs, ...props }" />
-      <B24Select placeholder="Search..." :avatar="{ src: '/b24ui/demo/avatar/employee.png' }" :items="items" v-bind="{ ...singleAttrs, ...props }" />
+      <B24Select placeholder="Search..." :avatar="{ src: '/avatar/employee.png' }" :items="items" v-bind="{ ...singleAttrs, ...props }" />
       <B24Select placeholder="Loading trailing" v-bind="{ ...singleAttrs, ...props }" trailing :items="items" />
       <B24Select placeholder="Trailing icon" :trailing-icon="RocketIcon" v-bind="{ ...singleAttrs, ...props }" :items="items" />
       <B24Select placeholder="Underline" underline v-bind="{ ...singleAttrs, ...props }" :items="items" />

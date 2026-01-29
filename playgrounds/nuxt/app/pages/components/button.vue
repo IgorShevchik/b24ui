@@ -55,7 +55,7 @@ function onClick() {
       <B24Button label="Loading clock" use-clock loading-auto v-bind="{ ...singleAttrs, ...props }" @click="onClick" />
       <B24Button
         label="Avatar"
-        :avatar="{ src: '/b24ui/demo/avatar/employee.png' }"
+        :avatar="{ src: '/avatar/employee.png' }"
         loading-auto
         v-bind="{ ...singleAttrs, ...props }"
         @click="onClick"

@@ -22,7 +22,7 @@ const itemsSimple = [
 const items = [
   {
     label: 'General',
-    avatar: { src: '/b24ui/demo/avatar/employee.png' },
+    avatar: { src: '/avatar/employee.png' },
     content: 'This is the content for General'
   },
   {

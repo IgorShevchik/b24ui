@@ -227,7 +227,7 @@ function getFirstValue(value?: string | (string | undefined)[]) {
       />
       <B24SelectMenu
         :items="items"
-        :avatar="{ src: '/b24ui/demo/avatar/employee.png' }"
+        :avatar="{ src: '/avatar/employee.png' }"
         name="some_value"
         placeholder="Avatar"
         aria-label="Avatar"

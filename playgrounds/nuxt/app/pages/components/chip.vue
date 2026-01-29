@@ -47,10 +47,10 @@ const airColors = computed(() => {
         <B24Button :icon="BellIcon" color="air-secondary-no-accent" />
       </B24Chip>
       <B24Chip :text="0" v-bind="{ ...singleAttrs, ...props }">
-        <B24Avatar src="/b24ui/demo/avatar/employee.png" alt="Employee" />
+        <B24Avatar src="/avatar/employee.png" alt="Employee" />
       </B24Chip>
       <B24Chip :text="1000" v-bind="{ ...singleAttrs, ...props }">
-        <B24Avatar src="/b24ui/demo/avatar/assistant.png" alt="Assistant" />
+        <B24Avatar src="/avatar/assistant.png" alt="Assistant" />
       </B24Chip>
     </Matrix>
   </PlaygroundPage>

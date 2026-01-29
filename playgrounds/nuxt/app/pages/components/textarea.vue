@@ -126,7 +126,7 @@ defineShortcuts({
         v-bind="{ ...singleAttrs, ...props }"
       />
       <B24Textarea
-        :avatar="{ src: '/b24ui/demo/avatar/employee.png' }"
+        :avatar="{ src: '/avatar/employee.png' }"
         :trailing-icon="TaskIcon"
         placeholder="Avatar with trailing icon"
         v-bind="{ ...singleAttrs, ...props }"

@@ -120,7 +120,7 @@ defineShortcuts({
       <B24Input placeholder="Underline" underline v-bind="{ ...singleAttrs, ...props }" />
       <B24Input placeholder="Search..." :icon="ALetterIcon" v-bind="{ ...singleAttrs, ...props }" />
       <B24Input placeholder="Search..." :trailing-icon="Search2Icon" v-bind="{ ...singleAttrs, ...props }" />
-      <B24Input :avatar="{ src: '/b24ui/demo/avatar/employee.png' }" placeholder="Search..." v-bind="{ ...singleAttrs, ...props }" />
+      <B24Input :avatar="{ src: '/avatar/employee.png' }" placeholder="Search..." v-bind="{ ...singleAttrs, ...props }" />
       <B24Input placeholder="Trailing loading..." trailing v-bind="{ ...singleAttrs, ...props }" />
       <B24Input
         placeholder="Loading..."

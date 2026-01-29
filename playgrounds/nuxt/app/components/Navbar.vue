@@ -19,9 +19,11 @@ const hasBodyContent = computed(() => slots.controls || hasTrailingInBody.value)
 </script>
 
 <template>
+  <!-- <ClientOnly> -->
   <Teleport to="body" :disabled="isLargeScreen">
     <NavbarHeader :to="to" class="lg:hidden absolute top-3 left-14 z-2" />
   </Teleport>
+  <!-- </ClientOnly> -->
   <B24Card
     :b24ui="{
       root: ['backdrop-blur-xl border-0 sm:sticky top-0 z-10 rounded-none lg:rounded-(--ui-border-radius-md)', b24ui?.root],

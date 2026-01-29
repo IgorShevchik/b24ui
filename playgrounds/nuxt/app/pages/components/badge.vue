@@ -77,7 +77,7 @@ function onCloseClick(event: MouseEvent) {
       <B24Badge
         label="With avatar"
         v-bind="{ ...singleAttrs, ...props }"
-        :avatar="{ src: '/b24ui/demo/avatar/employee.png', text: 'Employee' }"
+        :avatar="{ src: '/avatar/employee.png', text: 'Employee' }"
         :on-close-click="onCloseClick"
       />
     </Matrix>

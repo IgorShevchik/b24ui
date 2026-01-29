@@ -107,7 +107,7 @@ const multipleActions = () => [
       />
       <B24Alert
         :title="data.title"
-        :avatar="{ src: '/b24ui/demo/avatar/employee.png' }"
+        :avatar="{ src: '/avatar/employee.png' }"
         :close="data.close"
         :description="data.description"
         v-bind="{ ...props, inverted }"

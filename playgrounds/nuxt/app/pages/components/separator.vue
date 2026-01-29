@@ -39,7 +39,7 @@ const singleAttrs = reactive({
         </div>
 
         <B24Separator
-          :avatar="singleAttrs.useIcon ? { src: '/b24ui/demo/avatar/assistant.png' } : undefined"
+          :avatar="singleAttrs.useIcon ? { src: '/avatar/assistant.png' } : undefined"
           v-bind="props"
           orientation="vertical"
           :label="singleAttrs.useLabel ? singleAttrs.label : undefined"
@@ -50,7 +50,7 @@ const singleAttrs = reactive({
         </div>
 
         <B24Separator v-bind="props" orientation="vertical" :label="singleAttrs.useLabel ? singleAttrs.label : undefined">
-          <B24Avatar v-if="singleAttrs.useIcon" size="sm" src="/b24ui/demo/avatar/employee.png" />
+          <B24Avatar v-if="singleAttrs.useIcon" size="sm" src="/avatar/employee.png" />
         </B24Separator>
 
         <div class="flex-1 text-center">

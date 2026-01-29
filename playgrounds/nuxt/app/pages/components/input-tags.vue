@@ -54,7 +54,7 @@ const tags = ref(['Bitrix24', 'Crm', 'Copilot'])
       <B24InputTags v-model="tags" placeholder="Trailing loading..." v-bind="{ ...singleAttrs, ...props }" />
       <B24InputTags v-model="tags" :icon="ALetterIcon" placeholder="Icon" v-bind="{ ...singleAttrs, ...props }" />
       <B24InputTags v-model="tags" :trailing-icon="Search2Icon" placeholder="Trailing icon" v-bind="{ ...singleAttrs, ...props }" />
-      <B24InputTags v-model="tags" :avatar="{ src: '/b24ui/demo/avatar/employee.png' }" placeholder="Avatar" v-bind="{ ...singleAttrs, ...props }" />
+      <B24InputTags v-model="tags" :avatar="{ src: '/avatar/employee.png' }" placeholder="Avatar" v-bind="{ ...singleAttrs, ...props }" />
     </Matrix>
   </PlaygroundPage>
 </template>
