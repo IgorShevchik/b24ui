@@ -133,7 +133,7 @@ defineShortcuts({
 
 <template>
   <B24DashboardGroup>
-    <!-- // @see playgrounds/demo/app/assets/css/main.css -->
+    <!-- // @see playgrounds/nuxt/app/assets/css/main.css -->
     <B24SidebarLayout
       :use-light-content="false"
       :b24ui="getLightContent"

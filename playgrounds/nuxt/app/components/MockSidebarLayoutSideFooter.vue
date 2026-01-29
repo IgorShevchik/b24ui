@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import RocketIcon from '@bitrix24/b24icons-vue/outline/RocketIcon'
-import { useNavigation } from '~/composables/useNavigation'
+import { useNavigation } from './../composables/useNavigation'
 
 const props = withDefaults(defineProps<{
   framework?: 'nuxt' | 'vue'
