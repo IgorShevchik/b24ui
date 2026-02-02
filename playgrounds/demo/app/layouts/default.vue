@@ -1,17 +1,22 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
-import { useColorMode } from '#imports'
+import { computed, ref } from 'vue'
 import { useTextDirection } from '@vueuse/core'
 import type { NavigationMenuItem } from '@bitrix24/b24ui-nuxt'
 import { useNavigation } from '~/composables/useNavigation'
+import { useThemeMode } from '~/composables/useThemeMode'
+import type { LightThemeClass } from '~/composables/useThemeMode'
 
 const route = useRoute()
 const router = useRouter()
 const appConfig = useAppConfig()
 const dir = useTextDirection()
-const colorMode = useColorMode()
 
-const modeContext = ref<string>((appConfig?.colorModeTypeLight || 'light') as string)
+const {
+  modeContext,
+  syncColorModePreference,
+  toggleDarkMode,
+  themeItems
+} = useThemeMode((appConfig?.colorModeTypeLight || 'light') as LightThemeClass)
 
 useHead({
   title: 'Bitrix24 UI - Demo Playground',
@@ -21,24 +26,9 @@ useHead({
   ],
   htmlAttrs: {
     lang: 'en',
-    dir: computed(() => appConfig.dir as 'ltr' | 'rtl'),
-    class: computed(() => [modeContext.value])
+    dir: computed(() => appConfig.dir as 'ltr' | 'rtl')
   }
 })
-
-watch(() => colorMode.preference, (newPreference) => {
-  const isEdge = modeContext.value.startsWith('edge-')
-  if (newPreference === 'dark') {
-    modeContext.value = isEdge ? 'edge-dark' : 'dark'
-  } else if (newPreference === 'light') {
-    modeContext.value = isEdge ? 'edge-light' : 'light'
-  }
-  nextTick(() => {
-    syncHtmlClass()
-  })
-}, { immediate: true, flush: 'post' })
-
-watch(modeContext, syncHtmlClass, { immediate: true, flush: 'post' })
 
 const { components, groups } = useNavigation()
 provide('components', components)
@@ -65,38 +55,8 @@ const filteredGroups = computed(() => {
   })
 })
 
-const isDark = computed({
-  get() {
-    return colorMode.value === 'dark'
-  },
-  set(_isDark: boolean) {
-    colorMode.preference = _isDark ? 'dark' : 'light'
-  }
-})
-
-function syncHtmlClass() {
-  if (import.meta.client && typeof document !== 'undefined') {
-    const htmlElement = document.documentElement
-    const themeClasses = ['dark', 'light', 'edge-dark', 'edge-light']
-    themeClasses.forEach(themeClass => htmlElement.classList.remove(themeClass))
-    htmlElement.classList.add(modeContext.value)
-  }
-}
-
-function toggleMode() {
-  isDark.value = !isDark.value
-}
-
 function toggleDir() {
   dir.value = dir.value === 'ltr' ? 'rtl' : 'ltr'
-}
-
-function toggleModeContext() {
-  if (modeContext.value === 'dark' || modeContext.value === 'edge-dark') {
-    colorMode.preference = 'dark'
-  } else if (modeContext.value === 'light' || modeContext.value === 'edge-light') {
-    colorMode.preference = 'light'
-  }
 }
 
 const getLightContent = computed(() => {
@@ -120,7 +80,7 @@ defineShortcuts({
     toggleDir()
   },
   'shift_D': () => {
-    toggleMode()
+    toggleDarkMode()
   },
   '/': {
     usingInput: false,
@@ -140,7 +100,7 @@ defineShortcuts({
     >
       <template #sidebar>
         <B24SidebarHeader>
-          <div class="h-full flex items-center justify-between gap-x-sm relative my-0 ps-6 pe-xs rtl:pe-6">
+          <div class="h-full flex items-center gap-x-sm relative my-0 ps-6 pe-xs rtl:pe-6">
             <B24Tooltip
               class="flex-0 mt-1"
               :content="{ side: 'bottom', align: 'start' }"
@@ -153,11 +113,6 @@ defineShortcuts({
                 </ProseH3>
               </NuxtLink>
             </B24Tooltip>
-            <div class="inline-flex min-[400px]:hidden">
-              <B24Tooltip :content="{ side: 'bottom' }" text="Switch color mode" :kbds="['shift', 'D']">
-                <B24ColorModeSwitch class="m[400px]:hidden" />
-              </B24Tooltip>
-            </div>
           </div>
           <div class="mt-4 ps-6 pe-xs rtl:pe-6 pb-3">
             <B24Input ref="input" v-model="searchTerm" placeholder="Filter..." class="group">
@@ -188,20 +143,20 @@ defineShortcuts({
 
       <template #navbar>
         <B24NavbarSpacer />
-        <B24NavbarSection class="flex-row items-center justify-start gap-4 max-[400px]:hidden">
-          <B24DashboardSearchButton size="sm" class="hidden sm:inline-flex" rounded :collapsed="false" :kbds="[{ value: 'meta', size: 'sm' }, { value: 'K', size: 'sm' }]" />
+        <B24NavbarSection class="flex-row items-center justify-start gap-4">
+          <B24DashboardSearchButton size="sm" rounded :collapsed="false" :kbds="[{ value: 'meta', size: 'sm' }, { value: 'K', size: 'sm' }]" />
           <B24Tooltip :content="{ side: 'bottom' }" text="Switch color mode" :kbds="['shift', 'D']">
             <B24ColorModeSwitch />
           </B24Tooltip>
           <B24RadioGroup
             v-model="modeContext"
             class="hidden lg:inline-flex"
-            :items="['dark', 'light', 'edge-dark', 'edge-light']"
+            :items="themeItems"
             size="xs"
             orientation="horizontal"
             variant="table"
             indicator="hidden"
-            @change="toggleModeContext"
+            @change="syncColorModePreference"
           />
         </B24NavbarSection>
       </template>

@@ -1,17 +1,22 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
-import { useColorMode } from '#imports'
+import { computed, ref } from 'vue'
 import { useTextDirection } from '@vueuse/core'
 import type { NavigationMenuItem } from '@bitrix24/b24ui-nuxt'
 import { useNavigation } from '~/composables/useNavigation'
+import { useThemeMode } from '~/composables/useThemeMode'
+import type { LightThemeClass } from '~/composables/useThemeMode'
 
 const route = useRoute()
 const router = useRouter()
 const appConfig = useAppConfig()
 const dir = useTextDirection()
-const colorMode = useColorMode()
 
-const modeContext = ref<string>((appConfig?.colorModeTypeLight || 'light') as string)
+const {
+  modeContext,
+  syncColorModePreference,
+  toggleDarkMode,
+  themeItems
+} = useThemeMode((appConfig?.colorModeTypeLight || 'light') as LightThemeClass)
 
 useHead({
   title: 'Bitrix24 UI - Playground',
@@ -21,24 +26,9 @@ useHead({
   ],
   htmlAttrs: {
     lang: 'en',
-    dir: computed(() => appConfig.dir as 'ltr' | 'rtl'),
-    class: computed(() => [modeContext.value])
+    dir: computed(() => appConfig.dir as 'ltr' | 'rtl')
   }
 })
-
-watch(() => colorMode.preference, (newPreference) => {
-  const isEdge = modeContext.value.startsWith('edge-')
-  if (newPreference === 'dark') {
-    modeContext.value = isEdge ? 'edge-dark' : 'dark'
-  } else if (newPreference === 'light') {
-    modeContext.value = isEdge ? 'edge-light' : 'light'
-  }
-  nextTick(() => {
-    syncHtmlClass()
-  })
-}, { immediate: true, flush: 'post' })
-
-watch(modeContext, syncHtmlClass, { immediate: true, flush: 'post' })
 
 const { groups, components } = useNavigation()
 provide('components', components)
@@ -65,38 +55,8 @@ const filteredGroups = computed(() => {
   })
 })
 
-const isDark = computed({
-  get() {
-    return colorMode.value === 'dark'
-  },
-  set(_isDark: boolean) {
-    colorMode.preference = _isDark ? 'dark' : 'light'
-  }
-})
-
-function toggleMode() {
-  isDark.value = !isDark.value
-}
-
 function toggleDir() {
   dir.value = dir.value === 'ltr' ? 'rtl' : 'ltr'
-}
-
-function toggleModeContext() {
-  if (modeContext.value === 'dark' || modeContext.value === 'edge-dark') {
-    colorMode.preference = 'dark'
-  } else if (modeContext.value === 'light' || modeContext.value === 'edge-light') {
-    colorMode.preference = 'light'
-  }
-}
-
-function syncHtmlClass() {
-  if (import.meta.client && typeof document !== 'undefined') {
-    const htmlElement = document.documentElement
-    const themeClasses = ['dark', 'light', 'edge-dark', 'edge-light']
-    themeClasses.forEach(themeClass => htmlElement.classList.remove(themeClass))
-    htmlElement.classList.add(modeContext.value)
-  }
 }
 
 const getLightContent = computed(() => {
@@ -120,7 +80,7 @@ defineShortcuts({
     toggleDir()
   },
   'shift_D': () => {
-    toggleMode()
+    toggleDarkMode()
   },
   '/': {
     usingInput: false,
@@ -196,12 +156,12 @@ defineShortcuts({
           <B24RadioGroup
             v-model="modeContext"
             class="hidden lg:inline-flex"
-            :items="['dark', 'light', 'edge-dark', 'edge-light']"
+            :items="themeItems"
             size="xs"
             orientation="horizontal"
             variant="table"
             indicator="hidden"
-            @change="toggleModeContext"
+            @change="syncColorModePreference"
           />
         </B24NavbarSection>
       </template>
