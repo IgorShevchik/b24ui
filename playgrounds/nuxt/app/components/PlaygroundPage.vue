@@ -22,10 +22,10 @@ const { cardVariant, cardBorderClass } = usePlaygroundCardStyles(playgroundConte
 <template>
   <Navbar>
     <template #trailing>
-      <B24Switch v-model="playgroundContext.isUseBg.value" label="isUseBg" size="sm" />
+      <B24Switch v-model="playgroundContext.isUseBg.value" label="isUseBg" />
     </template>
     <template v-if="slots.controls" #controls>
-      <div class="flex items-center gap-2 overflow-x-auto py-2 pr-3 max-w-full">
+      <div class="flex items-center flex-wrap gap-2 py-2 pr-3 max-w-full">
         <slot name="controls" :playground="playgroundContext" />
       </div>
     </template>
