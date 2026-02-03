@@ -37,10 +37,10 @@ const modal = ref(false)
       <B24FormField label="Close delay(hover)" name="closeDelay">
         <B24InputNumber v-model="closeDelay" placeholder="closeDelay" class="w-30" />
       </B24FormField>
-      <B24Separator orientation="vertical" class="h-10" />
+
       <div class="flex flex-col gap-5">
-        <B24Switch v-model="arrow" label="Arrow" size="sm" />
-        <B24Switch v-model="modal" label="Modal" size="sm" />
+        <B24Switch v-model="arrow" label="Arrow" />
+        <B24Switch v-model="modal" label="Modal" />
       </div>
     </template>
 
@@ -57,10 +57,18 @@ const modal = ref(false)
       <B24Button label="Click me" />
 
       <template #content="{ close }">
-        <div class="flex justify-center gap-2 p-4 w-48">
-          <B24Button label="Close" @click="close" />
+        <div class="flex items-center justify-between gap-4 mb-2xs border-b">
+          <ProseH4 class="mb-0.5">
+            Popover with long text
+          </ProseH4>
+
+          <B24Button
+            color="air-tertiary"
+            :icon="Cross50Icon"
+            @click="close"
+          />
         </div>
-        <div class="max-w-48 max-h-48 overflow-y-auto scrollbar-thin scrollbar-transparent">
+        <div class="max-w-60 max-h-48 overflow-y-auto scrollbar-thin scrollbar-transparent">
           <MockContentLongText />
         </div>
       </template>
@@ -116,7 +124,7 @@ const modal = ref(false)
         side,
         sideOffset
       }"
-      :b24ui="{ content: 'w-[calc(var(--reka-popper-anchor-width)+10px)] p-[10px]' }"
+      :b24ui="{ content: 'p-[10px]' }"
     >
       <template #anchor>
         <B24Input
@@ -127,9 +135,9 @@ const modal = ref(false)
 
       <template #content>
         <div class="flex items-center justify-between gap-4 mb-2xs">
-          <ProseH2 class="mb-0.5">
+          <ProseH4 class="mb-0.5">
             Popover non-dismissible
-          </ProseH2>
+          </ProseH4>
 
           <B24Button
             color="air-tertiary"
@@ -137,7 +145,7 @@ const modal = ref(false)
             @click="openCustomAnchor = false"
           />
         </div>
-        <Placeholder class="w-full h-48" />
+        <Placeholder class="w-60 h-48" />
       </template>
     </B24Popover>
   </PlaygroundPage>

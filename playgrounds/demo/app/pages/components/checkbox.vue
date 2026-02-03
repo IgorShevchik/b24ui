@@ -34,13 +34,13 @@ const airColors = computed(() => {
       <B24Select v-model="multipleAttrs.size" class="w-32" :items="sizes" placeholder="Size" multiple />
       <B24Select v-model="multipleAttrs.variant" class="w-40" :items="variants" placeholder="Variant" multiple />
       <B24Select v-model="multipleAttrs.indicator" class="w-44" :items="indicators" placeholder="Indicator" multiple />
-      <B24Separator orientation="vertical" class="h-10" />
-      <B24Switch v-model="singleAttrs.disabled" label="Disabled" size="sm" />
-      <B24Switch v-model="singleAttrs.required" label="Required" size="sm" />
-      <B24Switch v-model="checked" label="Checked" size="sm" />
+
+      <B24Switch v-model="singleAttrs.disabled" label="Disabled" />
+      <B24Switch v-model="singleAttrs.required" label="Required" />
+      <B24Switch v-model="checked" label="Checked" />
     </template>
 
-    <Matrix v-slot="props" :attrs="multipleAttrs">
+    <Matrix v-slot="props" :attrs="multipleAttrs" :b24ui="{ root: 'max-w-80' }">
       <B24Checkbox
         v-model="checked"
         label="Check me"

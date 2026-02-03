@@ -55,14 +55,13 @@ onMounted(() => {
       <B24Select v-model="attrs.size" class="w-32" :items="sizes" placeholder="Size" multiple />
       <B24Select v-model="attrs.animation" class="w-40" :items="animations" placeholder="Animation" multiple />
       <B24Select v-model="singleAttrs.orientation" class="w-40" :items="orientations" placeholder="Orientation" />
-      <B24Separator orientation="vertical" class="h-10" />
-      <B24Switch v-model="singleAttrs.inverted" label="Inverted" size="sm" />
+      <B24Switch v-model="singleAttrs.inverted" label="Inverted" />
     </template>
 
     <Matrix
       v-slot="props"
       :attrs="attrs"
-      :b24ui="{ body: ['gap-4', singleAttrs.orientation === 'vertical' ? 'w-48 h-48 flex-row' : ''] }"
+      :b24ui="{ root: 'max-w-80', body: ['gap-4', singleAttrs.orientation === 'vertical' ? 'w-48 h-48 flex-row' : ''] }"
     >
       <B24Progress v-bind="{ ...singleAttrs, ...props }" />
       <B24Progress

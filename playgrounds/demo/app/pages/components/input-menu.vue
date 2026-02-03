@@ -70,14 +70,14 @@ const itemsObj = ref([
     <template #controls>
       <B24Select v-model="attrs.color" class="w-44" :items="airColors" placeholder="Color" multiple />
       <B24Select v-model="attrs.size" class="w-32" :items="sizes" placeholder="Size" multiple />
-      <B24Separator orientation="vertical" class="h-10" />
-      <B24Switch v-model="singleAttrs.disabled" label="Disabled" size="sm" />
-      <B24Switch v-model="singleAttrs.loading" label="Loading" size="sm" />
-      <B24Switch v-model="singleAttrs.highlight" label="Highlight" size="sm" />
-      <B24Switch v-model="singleAttrs.rounded" label="Rounded" size="sm" />
+
+      <B24Switch v-model="singleAttrs.disabled" label="Disabled" />
+      <B24Switch v-model="singleAttrs.loading" label="Loading" />
+      <B24Switch v-model="singleAttrs.highlight" label="Highlight" />
+      <B24Switch v-model="singleAttrs.rounded" label="Rounded" />
     </template>
 
-    <Matrix v-slot="props" :attrs="attrs">
+    <Matrix v-slot="props" :attrs="attrs" :b24ui="{ root: 'max-w-80' }">
       <B24InputMenu
         :items="items"
         autofocus
@@ -85,6 +85,7 @@ const itemsObj = ref([
         placeholder="Insert value&hellip;"
         aria-label="Insert value"
         v-bind="{ ...singleAttrs, ...props }"
+        class="w-full"
       />
       <B24InputMenu
         :items="items"
@@ -93,6 +94,7 @@ const itemsObj = ref([
         placeholder="Required"
         aria-label="Required"
         v-bind="{ ...singleAttrs, ...props }"
+        class="w-full"
       />
       <B24InputMenu
         :items="items"
@@ -101,6 +103,7 @@ const itemsObj = ref([
         placeholder="Underline"
         aria-label="Underline"
         v-bind="{ ...singleAttrs, ...props }"
+        class="w-full"
       />
       <B24InputMenu
         :items="items"
@@ -109,6 +112,7 @@ const itemsObj = ref([
         placeholder="No border"
         aria-label="No border"
         v-bind="{ ...singleAttrs, ...props }"
+        class="w-full"
       />
       <B24InputMenu
         :items="items"
@@ -117,6 +121,7 @@ const itemsObj = ref([
         placeholder="No padding"
         aria-label="No padding"
         v-bind="{ ...singleAttrs, ...props }"
+        class="w-full"
       />
       <B24InputMenu
         :items="itemsObj"
@@ -125,6 +130,7 @@ const itemsObj = ref([
         placeholder="With tag"
         aria-label="With tag"
         v-bind="{ ...singleAttrs, ...props }"
+        class="w-full"
       />
       <B24InputMenu
         :items="items"
@@ -134,6 +140,7 @@ const itemsObj = ref([
         placeholder="Trailing"
         aria-label="Trailing"
         v-bind="{ ...singleAttrs, ...props }"
+        class="w-full"
       />
       <B24InputMenu
         :items="items"
@@ -143,6 +150,7 @@ const itemsObj = ref([
         placeholder="Icons"
         aria-label="Icons"
         v-bind="{ ...singleAttrs, ...props }"
+        class="w-full"
       />
       <B24InputMenu
         :items="items"
@@ -151,6 +159,7 @@ const itemsObj = ref([
         placeholder="Avatar"
         aria-label="Avatar"
         v-bind="{ ...singleAttrs, ...props }"
+        class="w-full"
       />
       <B24InputMenu
         :items="items"
@@ -159,6 +168,7 @@ const itemsObj = ref([
         placeholder="Loading trailing"
         aria-label="Loading trailing"
         v-bind="{ ...singleAttrs, ...props }"
+        class="w-full"
       />
       <B24InputMenu
         v-model="valueForAdd"
@@ -171,6 +181,7 @@ const itemsObj = ref([
         tag="+ item"
         tag-color="air-primary-copilot"
         v-bind="{ ...singleAttrs, ...props }"
+        class="w-full"
         @create="onCreate"
       />
       <B24InputMenu
@@ -184,7 +195,7 @@ const itemsObj = ref([
         tag-color="air-primary-copilot"
         :create-item="{ position: 'bottom', when: 'always' }"
         v-bind="{ ...singleAttrs, ...props }"
-        class="max-w-80"
+        class="w-full"
         @create="onCreateMultiple"
       />
       <B24InputMenu
@@ -193,6 +204,7 @@ const itemsObj = ref([
         virtualize
         :items="[Array(1000).fill(0).map((_, i) => ({ label: `item-${i}`, value: i }))]"
         v-bind="{ ...singleAttrs, ...props }"
+        class="w-full"
       />
     </Matrix>
   </PlaygroundPage>

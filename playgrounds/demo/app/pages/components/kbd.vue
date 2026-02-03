@@ -20,7 +20,7 @@ const kbdKeys = Object.keys(kbdKeysMap)
       <B24Select v-model="attrs.accent" class="w-32" :items="accents" placeholder="Accent" multiple />
     </template>
 
-    <Matrix v-slot="props" :attrs="attrs">
+    <Matrix v-slot="props" :attrs="attrs" :b24ui="{ root: 'max-w-80' }">
       <div class="flex flex-wrap items-center gap-3">
         <B24Kbd v-for="(kdbKey, index) in kbdKeys" :key="index" :value="kdbKey" v-bind="props" />
       </div>

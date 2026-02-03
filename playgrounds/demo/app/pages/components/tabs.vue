@@ -5,12 +5,10 @@ import ChevronDownIcon from '@bitrix24/b24icons-vue/actions/ChevronDownIcon'
 import Refresh5Icon from '@bitrix24/b24icons-vue/actions/Refresh5Icon'
 
 const sizes = Object.keys(theme.variants.size)
-const variants = Object.keys(theme.variants.variant)
 const orientations = Object.keys(theme.variants.orientation) as Array<keyof typeof theme.variants.orientation>
 
 const attrs = reactive({
-  size: [theme.defaultVariants.size],
-  variant: [theme.defaultVariants.variant]
+  size: [theme.defaultVariants.size]
 })
 
 const orientation = ref(orientations[0])
@@ -47,11 +45,10 @@ const items = [
   <PlaygroundPage>
     <template #controls>
       <B24Select v-model="attrs.size" class="w-32" :items="sizes" placeholder="Size" multiple />
-      <B24Select v-model="attrs.variant" class="w-32" :items="variants" placeholder="Variant" multiple />
       <B24Select v-model="orientation" class="w-44" :items="orientations" placeholder="Orientation" />
     </template>
 
-    <Matrix v-slot="props" :attrs="attrs" :b24ui="{ body: 'overflow-x-auto' }">
+    <Matrix v-slot="props" :attrs="attrs" :b24ui="{ root: 'grow-0', body: 'overflow-x-auto' }">
       <B24Tabs
         :items="itemsSimple"
         :content="false"

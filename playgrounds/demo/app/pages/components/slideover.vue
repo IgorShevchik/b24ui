@@ -60,7 +60,7 @@ const openSliderTopAndBottom = async () => {
 <template>
   <PlaygroundPage :b24ui="{ body: 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4' }">
     <template #controls>
-      <B24Switch v-model="inset" label="Inset" size="sm" />
+      <B24Switch v-model="inset" label="Inset" />
     </template>
 
     <template #default="{ cardVariant, cardBorderClass }">

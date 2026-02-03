@@ -14,11 +14,10 @@ const showGroup = ref(false)
   <PlaygroundPage>
     <template #controls>
       <B24Select v-model="attrs.size" class="w-32" :items="sizes" placeholder="Size" multiple />
-      <B24Separator orientation="vertical" class="h-10" />
-      <B24Switch v-model="showGroup" label="Group" size="sm" />
+      <B24Switch v-model="showGroup" label="Group" />
     </template>
 
-    <Matrix v-slot="props" :attrs="attrs">
+    <Matrix v-slot="props" :attrs="attrs" :b24ui="{ root: 'max-w-50' }">
       <template v-if="showGroup">
         <B24AvatarGroup :max="3" :size="props?.size">
           <B24Avatar

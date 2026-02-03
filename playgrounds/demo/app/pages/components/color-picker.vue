@@ -25,11 +25,11 @@ function handleColorChange(event: Event) {
         </B24Button>
         <B24Input :model-value="colorHex" class="w-28" @change="handleColorChange" />
       </B24FieldGroup>
-      <B24Separator orientation="vertical" class="h-10" />
-      <B24Switch v-model="disabled" label="Disabled" size="sm" />
+
+      <B24Switch v-model="disabled" label="Disabled" />
     </template>
 
-    <Matrix v-slot="props" :attrs="attrs">
+    <Matrix v-slot="props" :attrs="attrs" :b24ui="{ root: 'max-w-60' }">
       <B24ColorPicker v-model="colorHex" v-bind="props" :disabled="disabled" />
     </Matrix>
   </PlaygroundPage>

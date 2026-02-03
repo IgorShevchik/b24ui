@@ -31,12 +31,11 @@ const singleAttrs = reactive({
     <template #controls>
       <B24Select v-model="attrs.size" class="w-32" :items="sizes" placeholder="Size" multiple />
       <B24Select v-model="singleAttrs.orientation" class="w-44" :items="orientations" placeholder="Orientation" />
-      <B24Separator orientation="vertical" class="h-10" />
-      <B24Switch v-model="singleAttrs.noSplit" label="NoSplit" size="sm" />
+      <B24Switch v-model="singleAttrs.noSplit" label="NoSplit" />
     </template>
 
-    <Matrix v-slot="props" :attrs="attrs">
-      <B24FieldGroup v-bind="{ ...props, ...singleAttrs }">
+    <Matrix v-slot="props" :attrs="attrs" :b24ui="{ root: 'max-w-80' }">
+      <B24FieldGroup v-bind="{ ...props, ...singleAttrs }" class="w-full">
         <B24Button
           loading-auto
           use-clock
@@ -47,7 +46,7 @@ const singleAttrs = reactive({
         <B24Button use-dropdown />
       </B24FieldGroup>
 
-      <B24FieldGroup v-bind="{ ...props, ...singleAttrs }">
+      <B24FieldGroup v-bind="{ ...props, ...singleAttrs }" class="w-full">
         <B24Button loading-auto use-clock @click="onClick">
           Button
         </B24Button>
@@ -59,7 +58,7 @@ const singleAttrs = reactive({
         </B24Button>
       </B24FieldGroup>
 
-      <B24FieldGroup v-bind="{ ...props, ...singleAttrs }">
+      <B24FieldGroup v-bind="{ ...props, ...singleAttrs }" class="w-full">
         <B24Input name="search" placeholder="Search&hellip;" aria-label="Search" type="search" />
         <B24Button
           loading-auto
@@ -70,8 +69,8 @@ const singleAttrs = reactive({
         </B24Button>
       </B24FieldGroup>
 
-      <B24FieldGroup v-bind="{ ...props, ...singleAttrs }">
-        <B24Select class="w-32" :items="items" name="some_value" placeholder="Choose a value&hellip;" aria-label="Choose a value" />
+      <B24FieldGroup v-bind="{ ...props, ...singleAttrs }" class="w-full">
+        <B24Select class="w-full" :items="items" name="some_value" placeholder="Choose a value&hellip;" aria-label="Choose a value" />
         <B24Button
           loading-auto
           use-clock
@@ -81,13 +80,13 @@ const singleAttrs = reactive({
         </B24Button>
       </B24FieldGroup>
 
-      <B24FieldGroup v-bind="{ ...props, ...singleAttrs }">
+      <B24FieldGroup v-bind="{ ...props, ...singleAttrs }" class="w-full">
         <B24Badge color="air-tertiary" label="https://" />
-        <B24Input class="max-w-40" type="url" placeholder="www.example.com" />
+        <B24Input class="w-full" type="url" placeholder="www.example.com" />
       </B24FieldGroup>
 
-      <B24FieldGroup v-bind="{ ...props, ...singleAttrs }">
-        <B24InputNumber class="max-w-40" placeholder="Some number" />
+      <B24FieldGroup v-bind="{ ...props, ...singleAttrs }" class="w-full">
+        <B24InputNumber class="w-full" placeholder="Some number" />
         <B24Button
           loading-auto
           use-clock

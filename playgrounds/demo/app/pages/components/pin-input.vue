@@ -30,12 +30,12 @@ const onComplete = (value: string[]) => {
     <template #controls>
       <B24Select v-model="attrs.color" class="w-44" :items="airColors" placeholder="Color" multiple />
       <B24Select v-model="attrs.size" class="w-32" :items="sizes" placeholder="Size" multiple />
-      <B24Separator orientation="vertical" class="h-10" />
-      <B24Switch v-model="singleAttrs.disabled" label="Disabled" size="sm" />
-      <B24Switch v-model="singleAttrs.highlight" label="Highlight" size="sm" />
+
+      <B24Switch v-model="singleAttrs.disabled" label="Disabled" />
+      <B24Switch v-model="singleAttrs.highlight" label="Highlight" />
     </template>
 
-    <Matrix v-slot="props" :attrs="attrs">
+    <Matrix v-slot="props" :attrs="attrs" :b24ui="{ root: 'max-w-80' }">
       <B24PinInput placeholder="○" autofocus v-bind="{ ...singleAttrs, ...props }" @complete="onComplete" />
       <B24PinInput placeholder="○" required v-bind="{ ...singleAttrs, ...props }" />
     </Matrix>

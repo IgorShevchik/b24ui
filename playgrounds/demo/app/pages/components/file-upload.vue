@@ -98,11 +98,10 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
       <B24Select v-model="singleAttrs.variant" class="w-32" :items="variants" placeholder="Variant" />
       <B24Select v-model="singleAttrs.layout" class="w-32" :items="layouts" placeholder="Layout" />
       <B24Select v-model="singleAttrs.position" class="w-32" :items="positions" placeholder="Position" />
-      <B24Separator orientation="vertical" class="h-10" />
-      <B24Switch v-model="singleAttrs.preview" label="preview" size="sm" />
+      <B24Switch v-model="singleAttrs.preview" label="Preview" />
     </template>
 
-    <Matrix v-slot="props" :attrs="attrs" :b24ui="{ root: 'w-80' }">
+    <Matrix v-slot="props" :attrs="attrs" :b24ui="{ root: 'max-w-80' }">
       <B24Form :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
         <B24FormField
           name="avatar"

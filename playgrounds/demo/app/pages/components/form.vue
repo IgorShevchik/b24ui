@@ -12,7 +12,7 @@ const disabled = ref(false)
 <template>
   <PlaygroundPage>
     <template #default="{ cardVariant, cardBorderClass }">
-      <B24Card :variant="cardVariant" :class="[cardBorderClass, 'w-72']">
+      <B24Card :variant="cardVariant" :class="[cardBorderClass, 'grow']">
         <template #header>
           <ProseH5 class="mb-0">
             Base
@@ -21,7 +21,7 @@ const disabled = ref(false)
         <FormExample />
       </B24Card>
 
-      <B24Card :variant="cardVariant" :class="[cardBorderClass, 'w-72']">
+      <B24Card :variant="cardVariant" :class="[cardBorderClass, 'grow']">
         <template #header>
           <ProseH5 class="mb-0">
             Nested
@@ -30,7 +30,7 @@ const disabled = ref(false)
         <FormExampleNested />
       </B24Card>
 
-      <B24Card :variant="cardVariant" :class="[cardBorderClass, 'w-72']">
+      <B24Card :variant="cardVariant" :class="[cardBorderClass, 'grow']">
         <template #header>
           <ProseH5 class="mb-0">
             Nested list
@@ -39,7 +39,7 @@ const disabled = ref(false)
         <FormExampleNestedList />
       </B24Card>
 
-      <B24Card :variant="cardVariant" :class="[cardBorderClass, 'w-72']">
+      <B24Card :variant="cardVariant" :class="[cardBorderClass, 'grow']">
         <template #header>
           <ProseH5 class="mb-0">
             Validate
@@ -48,7 +48,7 @@ const disabled = ref(false)
         <FormExampleOnError />
       </B24Card>
 
-      <B24Card :variant="cardVariant" :class="[cardBorderClass, 'w-full']" :b24ui="{ body: 'overflow-x-auto' }">
+      <B24Card :variant="cardVariant" :class="[cardBorderClass, 'grow']" :b24ui="{ body: 'overflow-x-auto' }">
         <template #header>
           <div class="py-2 px-4 flex gap-4 items-center overflow-x-auto">
             <B24FormField label="Validate on" orientation="horizontal">

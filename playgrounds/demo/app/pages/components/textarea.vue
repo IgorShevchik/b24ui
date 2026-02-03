@@ -91,7 +91,7 @@ defineShortcuts({
   <PlaygroundPage>
     <template #controls>
       <B24Select v-model="attrs.color" class="w-44" :items="airColors" placeholder="Color" multiple />
-      <B24Separator orientation="vertical" class="h-10" />
+
       <B24FormField label="Rows" name="rows" orientation="horizontal">
         <B24InputNumber
           v-model="singleAttrs.rows"
@@ -100,45 +100,49 @@ defineShortcuts({
           :max="9"
         />
       </B24FormField>
-      <B24Separator orientation="vertical" class="h-10" />
-      <B24Switch v-model="singleAttrs.disabled" label="Disabled" size="sm" />
-      <B24Switch v-model="singleAttrs.loading" label="Loading" size="sm" />
-      <B24Switch v-model="singleAttrs.highlight" label="Highlight" size="sm" />
-      <B24Switch v-model="singleAttrs.rounded" label="Rounded" size="sm" />
+
+      <B24Switch v-model="singleAttrs.disabled" label="Disabled" />
+      <B24Switch v-model="singleAttrs.loading" label="Loading" />
+      <B24Switch v-model="singleAttrs.highlight" label="Highlight" />
+      <B24Switch v-model="singleAttrs.rounded" label="Rounded" />
     </template>
 
-    <Matrix v-slot="props" :attrs="attrs">
-      <B24Textarea v-model="value" autofocus v-bind="{ ...singleAttrs, ...props }" />
-      <B24Textarea :default-value="'Default value'" v-bind="{ ...singleAttrs, ...props }" />
-      <B24Textarea placeholder="Autoresize" autoresize :maxrows="6" v-bind="{ ...singleAttrs, ...props }" />
-      <B24Textarea required placeholder="Required" v-bind="{ ...singleAttrs, ...props }" />
-      <B24Textarea no-padding placeholder="No Padding" v-bind="{ ...singleAttrs, ...props }" />
-      <B24Textarea no-border placeholder="No Border" v-bind="{ ...singleAttrs, ...props }" />
-      <B24Textarea underline placeholder="Underline" v-bind="{ ...singleAttrs, ...props }" />
+    <Matrix v-slot="props" :attrs="attrs" :b24ui="{ root: 'max-w-80' }">
+      <B24Textarea v-model="value" autofocus v-bind="{ ...singleAttrs, ...props }" class="w-full" />
+      <B24Textarea :default-value="'Default value'" v-bind="{ ...singleAttrs, ...props }" class="w-full" />
+      <B24Textarea placeholder="Autoresize" autoresize :maxrows="6" v-bind="{ ...singleAttrs, ...props }" class="w-full" />
+      <B24Textarea required placeholder="Required" v-bind="{ ...singleAttrs, ...props }" class="w-full" />
+      <B24Textarea no-padding placeholder="No Padding" v-bind="{ ...singleAttrs, ...props }" class="w-full" />
+      <B24Textarea no-border placeholder="No Border" v-bind="{ ...singleAttrs, ...props }" class="w-full" />
+      <B24Textarea underline placeholder="Underline" v-bind="{ ...singleAttrs, ...props }" class="w-full" />
       <B24Textarea
         :icon="RocketIcon"
         placeholder="Icon"
         v-bind="{ ...singleAttrs, ...props }"
+        class="w-full"
       />
       <B24Textarea
         :trailing-icon="RocketIcon"
         placeholder="Trailing icon"
         v-bind="{ ...singleAttrs, ...props }"
+        class="w-full"
       />
       <B24Textarea
         :avatar="{ src: '/b24ui/demo/avatar/employee.png' }"
         :trailing-icon="TaskIcon"
         placeholder="Avatar with trailing icon"
         v-bind="{ ...singleAttrs, ...props }"
+        class="w-full"
       />
       <B24Textarea
         trailing
         :icon="TaskIcon"
         placeholder="Loading trailing..."
         v-bind="{ ...singleAttrs, ...props }"
+        class="w-full"
       />
 
-      <div class="relative flex items-center gap-2 bg-(--ui-color-bg-content-secondary) rounded-xs ring-1 ring-ai-250 hover:ring-ai-350">
+      <div class="w-full relative flex items-center gap-2 bg-(--ui-color-bg-content-secondary) rounded-xs ring-1 ring-ai-250 hover:ring-ai-350">
         <B24Textarea
           v-model="input"
           autoresize

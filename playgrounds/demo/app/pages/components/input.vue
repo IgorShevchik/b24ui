@@ -26,8 +26,9 @@ const attrs = reactive({
 
 const singleAttrs = reactive({
   disabled: false,
-  rounded: false,
-  loading: false
+  loading: false,
+  highlight: false,
+  rounded: false
 })
 
 const value = ref('Model value')
@@ -97,42 +98,44 @@ defineShortcuts({
     <template #controls>
       <B24Select v-model="attrs.color" class="w-44" :items="airColors" placeholder="Color" multiple />
       <B24Select v-model="attrs.size" class="w-32" :items="sizes" placeholder="Size" multiple />
-      <B24Separator orientation="vertical" class="h-10" />
-      <B24Switch v-model="singleAttrs.disabled" label="Disabled" size="sm" />
-      <B24Switch v-model="singleAttrs.rounded" label="Rounded" size="sm" />
-      <B24Switch v-model="singleAttrs.loading" label="Loading" size="sm" />
+
+      <B24Switch v-model="singleAttrs.disabled" label="Disabled" />
+      <B24Switch v-model="singleAttrs.loading" label="Loading" />
+      <B24Switch v-model="singleAttrs.highlight" label="Highlight" />
+      <B24Switch v-model="singleAttrs.rounded" label="Rounded" />
     </template>
 
-    <Matrix v-slot="props" :attrs="attrs">
-      <B24Input v-model="value" autofocus v-bind="{ ...singleAttrs, ...props }" />
-      <B24Input :default-value="'Default value'" v-bind="{ ...singleAttrs, ...props }" />
-      <B24Input placeholder="Highlight" highlight v-bind="{ ...singleAttrs, ...props }" />
+    <Matrix v-slot="props" :attrs="attrs" :b24ui="{ root: 'max-w-80' }">
+      <B24Input v-model="value" autofocus v-bind="{ ...singleAttrs, ...props }" class="w-full" />
+      <B24Input :default-value="'Default value'" v-bind="{ ...singleAttrs, ...props }" class="w-full" />
       <B24Input
         placeholder="Highlight with error"
-        highlight
         v-bind="{ ...singleAttrs, ...props }"
+        highlight
         color="air-primary-alert"
         aria-invalid="true"
+        class="w-full"
       />
-      <B24Input placeholder="Required" required v-bind="{ ...singleAttrs, ...props }" />
-      <B24Input placeholder="No Padding" no-padding v-bind="{ ...singleAttrs, ...props }" />
-      <B24Input placeholder="No Border" no-border v-bind="{ ...singleAttrs, ...props }" />
-      <B24Input placeholder="Underline" underline v-bind="{ ...singleAttrs, ...props }" />
-      <B24Input placeholder="Search..." :icon="ALetterIcon" v-bind="{ ...singleAttrs, ...props }" />
-      <B24Input placeholder="Search..." :trailing-icon="Search2Icon" v-bind="{ ...singleAttrs, ...props }" />
-      <B24Input :avatar="{ src: '/b24ui/demo/avatar/employee.png' }" placeholder="Search..." v-bind="{ ...singleAttrs, ...props }" />
-      <B24Input placeholder="Trailing loading..." trailing v-bind="{ ...singleAttrs, ...props }" />
+      <B24Input placeholder="Required" required v-bind="{ ...singleAttrs, ...props }" class="w-full" />
+      <B24Input placeholder="No Padding" no-padding v-bind="{ ...singleAttrs, ...props }" class="w-full" />
+      <B24Input placeholder="No Border" no-border v-bind="{ ...singleAttrs, ...props }" class="w-full" />
+      <B24Input placeholder="Underline" underline v-bind="{ ...singleAttrs, ...props }" class="w-full" />
+      <B24Input placeholder="Search..." :icon="ALetterIcon" v-bind="{ ...singleAttrs, ...props }" class="w-full" />
+      <B24Input placeholder="Search..." :trailing-icon="Search2Icon" v-bind="{ ...singleAttrs, ...props }" class="w-full" />
+      <B24Input :avatar="{ src: '/b24ui/demo/avatar/employee.png' }" placeholder="Search..." v-bind="{ ...singleAttrs, ...props }" class="w-full" />
+      <B24Input placeholder="Trailing loading..." trailing v-bind="{ ...singleAttrs, ...props }" class="w-full" />
       <B24Input
         placeholder="Loading..."
         :icon="RocketIcon"
         :trailing-icon="TaskIcon"
         v-bind="{ ...singleAttrs, ...props }"
+        class="w-full"
       />
-      <B24Input :icon="CalculatorIcon" type="number" :model-value="10" v-bind="{ ...singleAttrs, ...props }" />
-      <B24Input :icon="CalendarIcon" type="date" :model-value="new Date().toISOString().substring(0, 10)" v-bind="{ ...singleAttrs, ...props }" />
-      <B24Input :icon="CrossedEye2Icon" type="password" model-value="password" v-bind="{ ...singleAttrs, ...props }" />
+      <B24Input :icon="CalculatorIcon" type="number" :model-value="10" v-bind="{ ...singleAttrs, ...props }" class="w-full" />
+      <B24Input :icon="CalendarIcon" type="date" :model-value="new Date().toISOString().substring(0, 10)" v-bind="{ ...singleAttrs, ...props }" class="w-full" />
+      <B24Input :icon="CrossedEye2Icon" type="password" model-value="password" v-bind="{ ...singleAttrs, ...props }" class="w-full" />
 
-      <div class="relative flex items-center gap-2 bg-(--ui-color-bg-content-secondary) rounded-xs ring-1 ring-ai-250 hover:ring-ai-350">
+      <div class="w-full relative flex items-center gap-2 bg-(--ui-color-bg-content-secondary) rounded-xs ring-1 ring-ai-250 hover:ring-ai-350">
         <B24Input
           v-model="input"
           placeholder="Try use speech recognition..."

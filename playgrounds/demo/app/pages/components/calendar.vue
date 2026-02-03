@@ -68,13 +68,13 @@ const isDateUnavailable = (date: DateValue) => {
       <B24Select v-model="multipleAttrs.color" class="w-44" :items="airColors" placeholder="Color" multiple />
       <B24Select v-model="multipleAttrs.size" class="w-32" :items="sizes" placeholder="Size" multiple />
       <B24InputNumber v-model="singleAttrs.numberOfMonths" class="min-w-24 w-24" placeholder="Number of months" />
-      <B24Separator orientation="vertical" class="h-10" />
-      <B24Switch v-model="multiple" label="Multiple" size="sm" />
-      <B24Switch v-model="range" label="Range" size="sm" />
-      <B24Switch v-model="singleAttrs.disabled" label="Disabled" size="sm" />
+
+      <B24Switch v-model="multiple" label="Multiple" />
+      <B24Switch v-model="range" label="Range" />
+      <B24Switch v-model="singleAttrs.disabled" label="Disabled" />
     </template>
 
-    <Matrix v-slot="props" :attrs="multipleAttrs">
+    <Matrix v-slot="props" :attrs="multipleAttrs" :b24ui="{ root: 'grow-0' }">
       <B24Calendar v-if="range" v-model="valueRange" range :is-date-disabled="isDateDisabled" v-bind="{ ...singleAttrs, ...props }" />
       <B24Calendar v-else-if="multiple" v-model="valueMultiple" multiple :is-date-unavailable="isDateUnavailable" v-bind="{ ...singleAttrs, ...props }" />
       <B24Calendar v-else v-model="value" v-bind="{ ...singleAttrs, ...props }">

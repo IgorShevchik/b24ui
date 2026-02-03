@@ -115,9 +115,11 @@ const items = [
   <PlaygroundPage>
     <template #controls>
       <B24Select v-model="orientation" :items="orientations" placeholder="Orientation" />
-      <B24Switch v-if="orientation ==='vertical'" v-model="collapsed" label="isCollapsed" size="sm" />
-      <B24Switch v-if="orientation ==='vertical'" v-model="tooltip" label="isTooltip" size="sm" />
-      <B24Switch v-if="orientation ==='vertical'" v-model="popover" label="isPopover" size="sm" />
+      <template v-if="orientation ==='vertical'">
+        <B24Switch v-model="collapsed" label="isCollapsed" />
+        <B24Switch v-model="tooltip" label="isTooltip" />
+        <B24Switch v-model="popover" label="isPopover" />
+      </template>
     </template>
 
     <div
