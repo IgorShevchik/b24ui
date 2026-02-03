@@ -50,7 +50,7 @@ function openModal() {
       <B24Button label="Open with nested" />
 
       <template #footer>
-        <B24Modal title="Second modal">
+        <B24Modal title="Second modal" v-bind="attrs">
           <B24Button label="Open second" color="air-primary" />
         </B24Modal>
       </template>
@@ -86,12 +86,31 @@ function openModal() {
     </B24Modal>
 
     <B24Modal
-      title="Modal scrollable"
-      description="This modal has `scrollable: true` prop. Content scrolls within the overlay, preventing accidental closes on scrollbar clicks."
-      scrollable
+      title="This modal has long text"
       v-bind="attrs"
     >
-      <B24Button label="Scrollable with long text" color="air-secondary-accent" />
+      <B24Button label="With long text" color="air-secondary-accent" />
+
+      <template #body>
+        <MockContentLongText />
+      </template>
+      <template #footer>
+        <B24ModalDialogClose>
+          <B24Button label="Send" color="air-primary" />
+        </B24ModalDialogClose>
+        <B24ModalDialogClose>
+          <B24Button label="Cancel" color="air-tertiary" />
+        </B24ModalDialogClose>
+      </template>
+    </B24Modal>
+
+    <B24Modal
+      title="Modal scrollable"
+      description="This modal has `scrollable: true` prop. Content scrolls within the overlay, preventing accidental closes on scrollbar clicks."
+      v-bind="attrs"
+      scrollable
+    >
+      <B24Button label="Long text with scrollable" />
 
       <template #body>
         <MockContentLongText />
@@ -112,7 +131,7 @@ function openModal() {
       :b24ui="{ footer: 'border-t-0 pt-0' }"
       v-bind="{ ...attrs, dismissible: false, modal: false, overlay: false }"
     >
-      <B24Button label="Modal prevent close" />
+      <B24Button label="Modal prevent close" color="air-secondary-accent" />
 
       <template #body>
         <MockContentUploadFile />
@@ -132,10 +151,16 @@ function openModal() {
       </template>
     </B24Modal>
 
-    <B24Modal title="Modal with custom close button" description="The `close` prop inherits from the Button props." :close="{ color: 'air-boost', size: 'xs' }" :ui="{ close: 'top-3.5 rounded-full' }">
-      <B24Button label="Open with custom close button" color="air-secondary-accent" />
+    <B24Modal
+      title="Modal with custom close button"
+      description="The `close` prop inherits from the Button props."
+      v-bind="attrs"
+      :close="{ color: 'air-boost', size: 'xs' }"
+      :ui="{ close: 'top-3.5 rounded-full' }"
+    >
+      <B24Button label="Open with custom close button" />
     </B24Modal>
 
-    <B24Button label="Open programmatically" @click="openModal" />
+    <B24Button label="Open programmatically" color="air-secondary-accent" @click="openModal" />
   </PlaygroundPage>
 </template>
