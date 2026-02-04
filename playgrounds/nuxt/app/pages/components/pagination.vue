@@ -7,8 +7,7 @@ const showEdges = ref(true)
 <template>
   <PlaygroundPage>
     <template #controls>
-      <B24Switch v-model="showEdges" label="Show edges" size="sm" />
-      <B24Separator orientation="vertical" class="h-10" />
+      <B24Switch v-model="showEdges" label="Show edges" />
       <B24FormField label="Siblings" orientation="horizontal">
         <B24InputNumber v-model="siblingCount" class="w-20" :min="0" :max="3" />
       </B24FormField>

@@ -16,12 +16,6 @@ const singleAttrs = reactive({
   highlight: false,
   highlightColor: theme.defaultVariants.highlightColor
 })
-
-// const highlight = ref(false)
-// const highlightColor = ref<PageCardProps['highlightColor']>(theme.defaultVariants.highlightColor)
-
-// const orientation = ref(orientations[1])
-// const reverse = ref(false)
 </script>
 
 <template>
@@ -30,12 +24,12 @@ const singleAttrs = reactive({
       <B24Select v-model="attrs.variant" class="w-32" :items="variants" multiple placeholder="Variant" />
       <B24Select v-model="singleAttrs.highlightColor" class="w-44" :items="colors" placeholder="Highlight color" />
       <B24Select v-model="singleAttrs.orientation" class="w-44" :items="orientations" placeholder="Orientation" />
-      <B24Separator orientation="vertical" class="h-10" />
-      <B24Switch v-model="singleAttrs.highlight" label="Highlight" size="sm" />
-      <B24Switch v-model="singleAttrs.reverse" label="Reverse" size="sm" />
+
+      <B24Switch v-model="singleAttrs.highlight" label="Highlight" />
+      <B24Switch v-model="singleAttrs.reverse" label="Reverse" />
     </template>
 
-    <Matrix v-slot="props" :attrs="attrs">
+    <Matrix v-slot="props" :attrs="attrs" :b24ui="{ root: 'grow-0' }">
       <B24PageCard
         :icon="PaletteIcon"
         title="Design system"

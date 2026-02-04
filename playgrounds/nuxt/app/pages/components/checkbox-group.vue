@@ -59,10 +59,9 @@ const airColors = computed(() => {
       <B24Select v-model="multipleAttrs.variant" class="w-32" :items="variants" placeholder="Variant" multiple />
       <B24Select v-model="multipleAttrs.indicator" class="w-32" :items="indicators" placeholder="Indicator" multiple />
       <B24Select v-model="singleAttrs.orientation" class="w-32" :items="orientations" placeholder="Orientation" />
-      <B24Separator orientation="vertical" class="h-10" />
       <B24Switch v-model="singleAttrs.disabled" class="w-24" label="Disabled" />
     </template>
-    <Matrix v-slot="props" :attrs="multipleAttrs">
+    <Matrix v-slot="props" :attrs="multipleAttrs" :b24ui="{ root: 'grow-0', body: 'overflow-x-auto' }">
       <B24CheckboxGroup v-model="value" :items="items" v-bind="{ ...singleAttrs, ...props }" />
       <B24CheckboxGroup :items="items" :default-value="value" v-bind="{ ...singleAttrs, ...props }" />
       <B24CheckboxGroup :items="itemsWithDesc" v-bind="{ ...singleAttrs, ...props }" />

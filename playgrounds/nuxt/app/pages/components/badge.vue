@@ -54,14 +54,14 @@ function onCloseClick(event: MouseEvent) {
     <template #controls>
       <B24Select v-model="multipleAttrs.color" class="w-44" :items="airColors" placeholder="Color" multiple />
       <B24Select v-model="multipleAttrs.size" class="w-24" :items="sizes" placeholder="Size" multiple />
-      <B24Separator orientation="vertical" class="h-10" />
-      <B24Switch v-model="singleAttrs.inverted" label="Inverted" size="sm" />
-      <B24Switch v-model="singleAttrs.square" label="Square" size="sm" />
-      <B24Switch v-model="singleAttrs.useLink" label="useLink" size="sm" />
-      <B24Switch v-model="singleAttrs.useClose" label="useClose" size="sm" />
+
+      <B24Switch v-model="singleAttrs.inverted" label="Inverted" />
+      <B24Switch v-model="singleAttrs.square" label="Square" />
+      <B24Switch v-model="singleAttrs.useLink" label="useLink" />
+      <B24Switch v-model="singleAttrs.useClose" label="useClose" />
     </template>
 
-    <Matrix v-slot="props" :attrs="multipleAttrs">
+    <Matrix v-slot="props" :attrs="multipleAttrs" :b24ui="{ root: 'max-w-80' }">
       <B24Badge
         label="Badge"
         v-bind="{ ...singleAttrs, ...props }"

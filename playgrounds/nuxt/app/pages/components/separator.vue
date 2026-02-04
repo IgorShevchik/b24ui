@@ -25,14 +25,14 @@ const singleAttrs = reactive({
       <B24Select v-model="multipleAttrs.size" class="w-32" :items="sizes" placeholder="Size" multiple />
       <B24Select v-model="multipleAttrs.accent" class="w-44" :items="accents" placeholder="Accent" multiple />
       <B24Select v-model="multipleAttrs.type" class="w-32" :items="types" placeholder="Type" multiple />
-      <B24Separator orientation="vertical" class="h-10" />
+
       <B24Input v-model="singleAttrs.label" class="min-w-32 w-32" placeholder="Label" />
-      <B24Separator orientation="vertical" class="h-10" />
-      <B24Switch v-model="singleAttrs.useIcon" label="Icon" size="sm" />
-      <B24Switch v-model="singleAttrs.useLabel" label="Label" size="sm" />
+
+      <B24Switch v-model="singleAttrs.useIcon" label="Icon" />
+      <B24Switch v-model="singleAttrs.useLabel" label="Label" />
     </template>
 
-    <Matrix v-slot="props" :attrs="multipleAttrs">
+    <Matrix v-slot="props" :attrs="multipleAttrs" :b24ui="{ root: 'max-w-80' }">
       <div class="h-24 flex gap-4 items-center">
         <div class="flex-1 text-center">
           <ProseP>Blog</ProseP>

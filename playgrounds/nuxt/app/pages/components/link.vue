@@ -1,10 +1,10 @@
 <script setup lang="ts">
 const attrs = reactive({
   to: '/components/link',
-  raw: false,
-  isAction: false,
   active: false,
-  disabled: false
+  disabled: false,
+  raw: false,
+  isAction: false
 })
 
 const classes = reactive({
@@ -19,11 +19,11 @@ const classes = reactive({
       <B24Input v-model="attrs.to" class="min-w-52" type="url" placeholder="to" />
       <B24Input v-model="classes.activeClass" class="min-w-52" placeholder="activeClass" />
       <B24Input v-model="classes.inactiveClass" class="min-w-52" placeholder="inactiveClass" />
-      <B24Separator orientation="vertical" class="h-10" />
-      <B24Switch v-model="attrs.raw" label="raw" size="sm" />
-      <B24Switch v-model="attrs.isAction" label="isAction" size="sm" />
-      <B24Switch v-model="attrs.active" label="active" size="sm" />
-      <B24Switch v-model="attrs.disabled" label="disabled" size="sm" />
+
+      <B24Switch v-model="attrs.active" label="Active" />
+      <B24Switch v-model="attrs.disabled" label="Disabled" />
+      <B24Switch v-model="attrs.raw" label="raw" />
+      <B24Switch v-model="attrs.isAction" label="isAction" />
     </template>
 
     <template #default="{ cardVariant, cardBorderClass }">

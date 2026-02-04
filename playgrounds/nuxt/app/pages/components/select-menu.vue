@@ -32,9 +32,9 @@ const multipleAttrs = reactive({
 
 const singleAttrs = reactive({
   disabled: false,
+  loading: false,
   highlight: false,
-  rounded: false,
-  loading: false
+  rounded: false
 })
 
 const knowledgeBase = ['Select Knowledge base', 'Create knowledge base'] satisfies SelectMenuItem[]
@@ -161,16 +161,17 @@ function getFirstValue(value?: string | (string | undefined)[]) {
     <template #controls>
       <B24Select v-model="multipleAttrs.color" class="w-44" :items="airColors" placeholder="Color" multiple />
       <B24Select v-model="multipleAttrs.size" class="w-32" :items="sizes" placeholder="Size" multiple />
-      <B24Separator orientation="vertical" class="h-10" />
-      <B24Switch v-model="singleAttrs.highlight" label="Highlight" size="sm" />
-      <B24Switch v-model="singleAttrs.rounded" label="Rounded" size="sm" />
-      <B24Switch v-model="singleAttrs.disabled" label="Disabled" size="sm" />
-      <B24Switch v-model="singleAttrs.loading" label="Loading" size="sm" />
+
+      <B24Switch v-model="singleAttrs.disabled" label="Disabled" />
+      <B24Switch v-model="singleAttrs.loading" label="Loading" />
+      <B24Switch v-model="singleAttrs.highlight" label="Highlight" />
+      <B24Switch v-model="singleAttrs.rounded" label="Rounded" />
     </template>
 
-    <Matrix v-slot="props" :attrs="multipleAttrs">
+    <Matrix v-slot="props" :attrs="multipleAttrs" :b24ui="{ root: 'max-w-80' }">
       <B24SelectMenu
         :items="items"
+        :b24ui="{ root: 'w-full' }"
         name="some_value"
         placeholder="Choose a value&hellip;"
         aria-label="Choose a value"
@@ -178,6 +179,7 @@ function getFirstValue(value?: string | (string | undefined)[]) {
       />
       <B24SelectMenu
         :items="items"
+        :b24ui="{ root: 'w-full' }"
         name="some_value"
         placeholder="Underline"
         aria-label="Underline"
@@ -186,6 +188,7 @@ function getFirstValue(value?: string | (string | undefined)[]) {
       />
       <B24SelectMenu
         :items="items"
+        :b24ui="{ root: 'w-full' }"
         name="some_value"
         placeholder="No border"
         aria-label="No border"
@@ -194,6 +197,7 @@ function getFirstValue(value?: string | (string | undefined)[]) {
       />
       <B24SelectMenu
         :items="items"
+        :b24ui="{ root: 'w-full' }"
         name="some_value"
         placeholder="No padding"
         aria-label="No padding"
@@ -202,6 +206,7 @@ function getFirstValue(value?: string | (string | undefined)[]) {
       />
       <B24SelectMenu
         :items="items"
+        :b24ui="{ root: 'w-full' }"
         :tag-color="props?.color || 'air-primary'"
         tag="some text"
         name="some_value"
@@ -211,6 +216,7 @@ function getFirstValue(value?: string | (string | undefined)[]) {
       />
       <B24SelectMenu
         :items="items"
+        :b24ui="{ root: 'w-full' }"
         trailing
         name="some_value"
         placeholder="Loading trailing"
@@ -219,6 +225,7 @@ function getFirstValue(value?: string | (string | undefined)[]) {
       />
       <B24SelectMenu
         :items="items"
+        :b24ui="{ root: 'w-full' }"
         :icon="RocketIcon"
         name="some_value"
         placeholder="Icon"
@@ -227,6 +234,7 @@ function getFirstValue(value?: string | (string | undefined)[]) {
       />
       <B24SelectMenu
         :items="items"
+        :b24ui="{ root: 'w-full' }"
         :avatar="{ src: '/avatar/employee.png' }"
         name="some_value"
         placeholder="Avatar"
@@ -236,15 +244,16 @@ function getFirstValue(value?: string | (string | undefined)[]) {
       <B24SelectMenu
         v-model="selectedItems"
         :items="items"
+        :b24ui="{ root: 'w-full' }"
         name="multiple"
         placeholder="Multiple"
         aria-label="Multiple"
         multiple
-        class="w-60"
         v-bind="{ ...props, disabled: singleAttrs.disabled, loading: singleAttrs.loading }"
       />
       <B24SelectMenu
         v-model="value"
+        :b24ui="{ root: 'w-full' }"
         :create-item="{ position: 'bottom', when: 'always' }"
         :items="itemsSimple"
         :icon="Search2Icon"
@@ -262,6 +271,7 @@ function getFirstValue(value?: string | (string | undefined)[]) {
       />
       <B24SelectMenu
         :items="statuses"
+        :b24ui="{ root: 'w-full' }"
         :icon="Search2Icon"
         name="some_value"
         placeholder="Search status&hellip;"
@@ -280,6 +290,7 @@ function getFirstValue(value?: string | (string | undefined)[]) {
       </B24SelectMenu>
       <B24SelectMenu
         :items="users"
+        :b24ui="{ root: 'w-full' }"
         :loading="singleAttrs.loading || status === 'pending'"
         :icon="UserIcon"
         :trailing-icon="Expand1Icon"
@@ -304,7 +315,7 @@ function getFirstValue(value?: string | (string | undefined)[]) {
         name="some_chips"
         aria-label="Search chips"
         arrow
-        :b24ui="{ base: ['xss'].includes(getSizeValue(props?.size) || '') ? 'ps-[25px]' : '' }"
+        :b24ui="{ root: 'w-full', base: ['xss'].includes(getSizeValue(props?.size) || '') ? 'ps-[25px]' : '' }"
         v-bind="{ ...singleAttrs, ...props }"
       >
         <template #leading="{ modelValue, b24ui }">
@@ -318,6 +329,7 @@ function getFirstValue(value?: string | (string | undefined)[]) {
         </template>
       </B24SelectMenu>
       <B24SelectMenu
+        :b24ui="{ root: 'w-full' }"
         :icon="TaskListIcon"
         placeholder="Search virtualized..."
         virtualize

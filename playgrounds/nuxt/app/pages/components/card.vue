@@ -14,9 +14,8 @@ const attrs = reactive({
   <PlaygroundPage>
     <template #controls>
       <B24Select v-model="attrs.variant" class="w-56" :items="variants" placeholder="Variant" multiple />
-      <B24Separator orientation="vertical" class="h-10" />
-      <B24Switch v-model="withHeader" label="Header" size="sm" />
-      <B24Switch v-model="withFooter" label="Footer" size="sm" />
+      <B24Switch v-model="withHeader" label="Header" />
+      <B24Switch v-model="withFooter" label="Footer" />
     </template>
 
     <Matrix :attrs="attrs">

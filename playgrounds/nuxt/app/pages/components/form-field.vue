@@ -25,9 +25,9 @@ const feedbacks = [
       <B24Select v-model="attrs.orientation" class="w-44" :items="orientations" multiple placeholder="Orientation" />
     </template>
 
-    <Matrix v-slot="props" :attrs="attrs">
+    <Matrix v-slot="props" :attrs="attrs" :b24ui="{ root: 'max-w-100' }">
       <template v-for="(feedback, index) in feedbacks" :key="index">
-        <B24FormField label="Email" name="email" v-bind="{ ...feedback, ...props }" class="data-[orientation=horizontal]:w-full max-w-80">
+        <B24FormField label="Email" name="email" v-bind="{ ...feedback, ...props }" class="data-[orientation=horizontal]:w-full">
           <B24Input placeholder="john@lennon.com" />
         </B24FormField>
       </template>

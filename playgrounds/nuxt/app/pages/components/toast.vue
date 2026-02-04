@@ -175,10 +175,10 @@ function removeToast() {
         />
       </B24FormField>
       <B24Input v-model="appConfig.toaster.max" placeholder="Max" type="number" class="min-w-24 w-24" />
-      <B24Separator orientation="vertical" class="h-10" />
-      <B24Switch v-model="appConfig.toaster.disableSwipe" label="DisableSwipe" size="sm" />
-      <B24Switch v-model="appConfig.toaster.expand" label="Expand" size="sm" />
-      <B24Switch v-model="isShowProgress" label="isShowProgress" size="sm" />
+
+      <B24Switch v-model="appConfig.toaster.disableSwipe" label="DisableSwipe" />
+      <B24Switch v-model="appConfig.toaster.expand" label="Expand" />
+      <B24Switch v-model="isShowProgress" label="isShowProgress" />
     </template>
 
     <div

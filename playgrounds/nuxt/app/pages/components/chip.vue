@@ -33,13 +33,13 @@ const airColors = computed(() => {
       <B24Select v-model="multipleAttrs.color" class="w-44" :items="airColors" placeholder="Color" multiple />
       <B24Select v-model="multipleAttrs.size" class="w-32" :items="sizes" placeholder="Size" multiple />
       <B24Select v-model="multipleAttrs.position" class="w-44" :items="positions" placeholder="Position" multiple />
-      <B24Separator orientation="vertical" class="h-10" />
-      <B24Switch v-model="singleAttrs.inset" label="Inset" size="sm" />
-      <B24Switch v-model="singleAttrs.inverted" label="Inverted" size="sm" />
-      <B24Switch v-model="singleAttrs.hideZero" label="HideZero" size="sm" />
+
+      <B24Switch v-model="singleAttrs.inset" label="Inset" />
+      <B24Switch v-model="singleAttrs.inverted" label="Inverted" />
+      <B24Switch v-model="singleAttrs.hideZero" label="HideZero" />
     </template>
 
-    <Matrix v-slot="props" :attrs="multipleAttrs" :b24ui="{ body: 'flex-row flex-wrap' }">
+    <Matrix v-slot="props" :attrs="multipleAttrs" :b24ui="{ root: 'max-w-90', body: 'flex-row flex-wrap gap-6' }">
       <B24Chip :text="53" :trailing-icon="TrendUpIcon" v-bind="{ ...singleAttrs, ...props }">
         <B24Button :icon="MailIcon" color="air-secondary-no-accent" />
       </B24Chip>

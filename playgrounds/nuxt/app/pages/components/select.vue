@@ -26,7 +26,9 @@ const multipleAttrs = reactive({
 const singleAttrs = reactive({
   multiple: false,
   disabled: false,
-  loading: false
+  loading: false,
+  highlight: false,
+  rounded: false
 })
 
 const airColors = computed(() => {
@@ -112,13 +114,15 @@ function getUserAvatar(value: string) {
     <template #controls>
       <B24Select v-model="multipleAttrs.color" class="w-44" :items="airColors" placeholder="Color" multiple />
       <B24Select v-model="multipleAttrs.size" class="w-32" :items="sizes" placeholder="Size" multiple />
-      <B24Separator orientation="vertical" class="h-10" />
-      <B24Switch v-model="singleAttrs.multiple" label="Multiple" size="sm" />
-      <B24Switch v-model="singleAttrs.disabled" label="Disabled" size="sm" />
-      <B24Switch v-model="singleAttrs.loading" label="Loading" size="sm" />
+
+      <B24Switch v-model="singleAttrs.multiple" label="Multiple" />
+      <B24Switch v-model="singleAttrs.disabled" label="Disabled" />
+      <B24Switch v-model="singleAttrs.loading" label="Loading" />
+      <B24Switch v-model="singleAttrs.highlight" label="Highlight" />
+      <B24Switch v-model="singleAttrs.rounded" label="Rounded" />
     </template>
 
-    <Matrix v-slot="props" :attrs="multipleAttrs" :b24ui="{ root: 'w-[240px]' }">
+    <Matrix v-slot="props" :attrs="multipleAttrs" :b24ui="{ root: 'max-w-80' }">
       <B24Select
         v-model="value"
         :items="items"
@@ -126,18 +130,25 @@ function getUserAvatar(value: string) {
         v-bind="{ ...singleAttrs, ...props }"
         placeholder="Choose a value…"
         aria-label="Choose a value"
+        :b24ui="{ root: 'w-full' }"
       />
-      <B24Select :default-value="value" :items="items" v-bind="{ ...singleAttrs, ...props }" tag="tag" :tag-color="props?.color" />
-      <B24Select placeholder="Highlight" highlight :items="items" v-bind="{ ...singleAttrs, ...props }" />
-      <B24Select placeholder="Search..." :avatar="{ src: '/avatar/employee.png' }" :items="items" v-bind="{ ...singleAttrs, ...props }" />
-      <B24Select placeholder="Loading trailing" v-bind="{ ...singleAttrs, ...props }" trailing :items="items" />
-      <B24Select placeholder="Trailing icon" :trailing-icon="RocketIcon" v-bind="{ ...singleAttrs, ...props }" :items="items" />
-      <B24Select placeholder="Underline" underline v-bind="{ ...singleAttrs, ...props }" :items="items" />
-      <B24Select placeholder="Rounded" rounded v-bind="{ ...singleAttrs, ...props }" :items="items" />
-      <B24Select placeholder="No border" no-border v-bind="{ ...singleAttrs, ...props }" :items="items" />
-      <B24Select placeholder="No padding" no-padding v-bind="{ ...singleAttrs, ...props }" :items="items" />
+      <B24Select
+        :default-value="value"
+        :items="items"
+        v-bind="{ ...singleAttrs, ...props }"
+        tag="tag"
+        :tag-color="props?.color"
+        :b24ui="{ root: 'w-full' }"
+      />
+      <B24Select placeholder="Search..." :avatar="{ src: '/avatar/employee.png' }" :items="items" v-bind="{ ...singleAttrs, ...props }" :b24ui="{ root: 'w-full' }" />
+      <B24Select placeholder="Loading trailing" v-bind="{ ...singleAttrs, ...props }" trailing :items="items" :b24ui="{ root: 'w-full' }" />
+      <B24Select placeholder="Trailing icon" :trailing-icon="RocketIcon" v-bind="{ ...singleAttrs, ...props }" :items="items" :b24ui="{ root: 'w-full' }" />
+      <B24Select placeholder="Underline" underline v-bind="{ ...singleAttrs, ...props }" :items="items" :b24ui="{ root: 'w-full' }" />
+      <B24Select placeholder="No border" no-border v-bind="{ ...singleAttrs, ...props }" :items="items" :b24ui="{ root: 'w-full' }" />
+      <B24Select placeholder="No padding" no-padding v-bind="{ ...singleAttrs, ...props }" :items="items" :b24ui="{ root: 'w-full' }" />
       <B24Select
         :items="statuses"
+        :b24ui="{ root: 'w-full' }"
         :icon="Search2Icon"
         v-bind="{ ...singleAttrs, ...props }"
         name="some_value"
@@ -155,6 +166,7 @@ function getUserAvatar(value: string) {
       </B24Select>
       <B24Select
         :items="users || []"
+        :b24ui="{ root: 'w-full' }"
         :icon="UserIcon"
         :trailing-icon="Expand1Icon"
         v-bind="{ ...singleAttrs, ...props }"

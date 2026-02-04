@@ -26,7 +26,9 @@ const multipleAttrs = reactive({
 const singleAttrs = reactive({
   multiple: false,
   disabled: false,
-  loading: false
+  loading: false,
+  highlight: false,
+  rounded: false
 })
 
 const airColors = computed(() => {
@@ -116,6 +118,8 @@ function getUserAvatar(value: string) {
       <B24Switch v-model="singleAttrs.multiple" label="Multiple" />
       <B24Switch v-model="singleAttrs.disabled" label="Disabled" />
       <B24Switch v-model="singleAttrs.loading" label="Loading" />
+      <B24Switch v-model="singleAttrs.highlight" label="Highlight" />
+      <B24Switch v-model="singleAttrs.rounded" label="Rounded" />
     </template>
 
     <Matrix v-slot="props" :attrs="multipleAttrs" :b24ui="{ root: 'max-w-80' }">
@@ -136,12 +140,10 @@ function getUserAvatar(value: string) {
         :tag-color="props?.color"
         :b24ui="{ root: 'w-full' }"
       />
-      <B24Select placeholder="Highlight" highlight :items="items" v-bind="{ ...singleAttrs, ...props }" :b24ui="{ root: 'w-full' }" />
       <B24Select placeholder="Search..." :avatar="{ src: '/b24ui/demo/avatar/employee.png' }" :items="items" v-bind="{ ...singleAttrs, ...props }" :b24ui="{ root: 'w-full' }" />
       <B24Select placeholder="Loading trailing" v-bind="{ ...singleAttrs, ...props }" trailing :items="items" :b24ui="{ root: 'w-full' }" />
       <B24Select placeholder="Trailing icon" :trailing-icon="RocketIcon" v-bind="{ ...singleAttrs, ...props }" :items="items" :b24ui="{ root: 'w-full' }" />
       <B24Select placeholder="Underline" underline v-bind="{ ...singleAttrs, ...props }" :items="items" :b24ui="{ root: 'w-full' }" />
-      <B24Select placeholder="Rounded" rounded v-bind="{ ...singleAttrs, ...props }" :items="items" :b24ui="{ root: 'w-full' }" />
       <B24Select placeholder="No border" no-border v-bind="{ ...singleAttrs, ...props }" :items="items" :b24ui="{ root: 'w-full' }" />
       <B24Select placeholder="No padding" no-padding v-bind="{ ...singleAttrs, ...props }" :items="items" :b24ui="{ root: 'w-full' }" />
       <B24Select

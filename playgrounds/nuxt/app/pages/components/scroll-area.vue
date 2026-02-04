@@ -46,7 +46,7 @@ const virtualizeOptions = computed(() => {
 <template>
   <PlaygroundPage>
     <template #controls>
-      <B24Switch v-model="virtualize" label="Virtualize" size="sm" />
+      <B24Switch v-model="virtualize" label="Virtualize" />
       <B24FieldGroup>
         <B24Button
           active-color="air-primary"
@@ -62,7 +62,6 @@ const virtualizeOptions = computed(() => {
         />
       </B24FieldGroup>
       <template v-if="virtualize">
-        <B24Separator orientation="vertical" class="h-10" />
         <B24FormField label="gap" orientation="horizontal">
           <B24InputNumber
             v-model="gap"
@@ -92,7 +91,7 @@ const virtualizeOptions = computed(() => {
       :items="items"
       :orientation="orientation"
       :virtualize="virtualizeOptions"
-      class="size-full p-4 scrollbar-thin"
+      class="w-full h-[400px] p-4 scrollbar-thin"
     >
       <img
         :src="item.src"

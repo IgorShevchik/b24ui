@@ -14,7 +14,7 @@ const attrs = reactive({
       <B24Select v-model="attrs.accent" class="w-32" :items="accents" placeholder="Accent" multiple />
     </template>
 
-    <Matrix v-slot="props" :attrs="attrs" :b24ui="{ root: 'max-w-100' }">
+    <Matrix v-slot="props" :attrs="attrs" :b24ui="{ root: 'max-w-80' }">
       <B24Skeleton class="h-12 w-12 rounded-full" v-bind="props" />
       <div class="space-y-2">
         <B24Skeleton class="h-4 w-[150px]" v-bind="props" />

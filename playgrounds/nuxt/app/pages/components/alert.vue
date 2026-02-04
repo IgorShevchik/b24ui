@@ -83,10 +83,9 @@ const multipleActions = () => [
     <template #controls>
       <B24Select v-model="multipleAttrs.color" class="w-44" :items="airColors" placeholder="Color" multiple />
       <B24Select v-model="multipleAttrs.size" class="w-32" :items="sizes" placeholder="Size" multiple />
-      <B24Separator orientation="vertical" class="h-10" />
-      <B24Switch v-model="inverted" label="Inverted" size="sm" />
+      <B24Switch v-model="inverted" label="Inverted" />
     </template>
-    <Matrix v-slot="props" :attrs="multipleAttrs" :b24ui="{ root: 'max-w-80' }">
+    <Matrix v-slot="props" :attrs="multipleAttrs" :b24ui="{ root: 'max-w-100' }">
       <B24Alert :title="data.title" v-bind="{ ...props, inverted }" />
       <B24Alert :title="data.title" :icon="data.icon" v-bind="{ ...props, inverted }" />
       <B24Alert :title="data.title" :icon="data.icon" :close="data.close" v-bind="{ ...props, inverted }" />

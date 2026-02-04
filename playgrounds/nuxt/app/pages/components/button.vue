@@ -32,13 +32,13 @@ function onClick() {
     <template #controls>
       <B24Select v-model="multipleAttrs.color" class="w-44" :items="airColors" placeholder="Color" multiple />
       <B24Select v-model="multipleAttrs.size" class="w-32" :items="sizes" placeholder="Size" multiple />
-      <B24Separator orientation="vertical" class="h-10" />
-      <B24Switch v-model="singleAttrs.useDropdown" label="useDropdown" size="sm" />
-      <B24Switch v-model="singleAttrs.rounded" label="Rounded" size="sm" />
-      <B24Switch v-model="singleAttrs.loading" label="Loading" size="sm" />
+
+      <B24Switch v-model="singleAttrs.useDropdown" label="useDropdown" />
+      <B24Switch v-model="singleAttrs.rounded" label="Rounded" />
+      <B24Switch v-model="singleAttrs.loading" label="Loading" />
     </template>
 
-    <Matrix v-slot="props" :attrs="multipleAttrs">
+    <Matrix v-slot="props" :attrs="multipleAttrs" :b24ui="{ root: 'max-w-70' }">
       <B24Button label="Button" loading-auto v-bind="{ ...singleAttrs, ...props }" @click="onClick" />
       <B24Button label="Link" loading-auto to="/" v-bind="{ ...singleAttrs, ...props }" @click="onClick" />
       <B24Button label="Submit" type="submit" loading-auto v-bind="{ ...singleAttrs, ...props }" @click="onClick" />

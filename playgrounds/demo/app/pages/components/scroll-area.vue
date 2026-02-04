@@ -62,7 +62,6 @@ const virtualizeOptions = computed(() => {
         />
       </B24FieldGroup>
       <template v-if="virtualize">
-        
         <B24FormField label="gap" orientation="horizontal">
           <B24InputNumber
             v-model="gap"

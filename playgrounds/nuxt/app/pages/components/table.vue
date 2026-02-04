@@ -334,7 +334,7 @@ onMounted(() => {
 <template>
   <PlaygroundPage :b24ui="{ root: 'backdrop-blur-none' }">
     <template #controls>
-      <B24Switch v-model="virtualize" label="Virtualize" size="sm" />
+      <B24Switch v-model="virtualize" label="Virtualize" />
 
       <B24Input
         :model-value="(table?.tableApi?.getColumn('email')?.getFilterValue() as string)"

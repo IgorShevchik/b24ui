@@ -51,10 +51,9 @@ const attrs = reactive({
   <PlaygroundPage>
     <template #controls>
       <B24Select v-model="attrs.type" class="w-44" :items="types" placeholder="Type" />
-      <B24Separator orientation="vertical" class="h-10" />
-      <B24Switch v-if="attrs.type === 'single'" v-model="attrs.collapsible" label="Collapsible" size="sm" />
-      <B24Switch v-model="attrs.disabled" label="Disabled" size="sm" />
-      <B24Switch v-model="attrs.unmountOnHide" label="UnmountOnHide" size="sm" />
+      <B24Switch v-if="attrs.type === 'single'" v-model="attrs.collapsible" label="Collapsible" />
+      <B24Switch v-model="attrs.disabled" label="Disabled" />
+      <B24Switch v-model="attrs.unmountOnHide" label="UnmountOnHide" />
     </template>
 
     <template #default="{ cardVariant, cardBorderClass }">
