@@ -102,7 +102,7 @@ defineShortcuts({
         <B24SidebarHeader>
           <div class="h-full flex items-center gap-x-sm relative my-0 ps-6 pe-xs rtl:pe-6">
             <B24Tooltip
-              class="flex-0 mt-1"
+              class="mt-1"
               :content="{ side: 'bottom', align: 'start' }"
               text="Go home"
               :kbds="['ctrl', 'arrowleft']"
@@ -142,6 +142,18 @@ defineShortcuts({
       </template>
 
       <template #navbar>
+        <B24Tooltip
+          class="lg:hidden inline-flex"
+          :content="{ side: 'bottom', align: 'start' }"
+          text="Go home"
+          :kbds="['ctrl', 'arrowleft']"
+        >
+          <NuxtLink to="/" class="mt-0 text-(--ui-color-design-selection-content)" aria-label="Home">
+            <ProseH1 class="font-(--ui-font-weight-medium) mb-0">
+              Demo
+            </ProseH1>
+          </NuxtLink>
+        </B24Tooltip>
         <B24NavbarSpacer />
         <B24NavbarSection class="flex-row items-center justify-start gap-4">
           <B24DashboardSearchButton size="sm" rounded :collapsed="false" :kbds="[{ value: 'meta', size: 'sm' }, { value: 'K', size: 'sm' }]" />
