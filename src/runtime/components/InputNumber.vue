@@ -11,7 +11,7 @@ type InputNumber = ComponentConfig<typeof theme, AppConfig, 'inputNumber'>
 
 type InputNumberValue = number | null
 
-export interface InputNumberProps<T extends InputNumberValue = InputNumberValue> extends Pick<NumberFieldRootProps, 'modelValue' | 'defaultValue' | 'min' | 'max' | 'step' | 'stepSnapping' | 'disabled' | 'required' | 'id' | 'name' | 'formatOptions' | 'disableWheelChange' | 'invertWheelChange' | 'readonly'>, /** @vue-ignore */ Omit<InputHTMLAttributes, 'disabled' | 'min' | 'max' | 'readonly' | 'required' | 'step' | 'name' | 'placeholder' | 'type' | 'autofocus' | 'maxlength' | 'minlength' | 'pattern' | 'size'> {
+export interface InputNumberProps<T extends InputNumberValue = InputNumberValue> extends Pick<NumberFieldRootProps, 'modelValue' | 'defaultValue' | 'min' | 'max' | 'step' | 'stepSnapping' | 'disabled' | 'required' | 'id' | 'name' | 'formatOptions' | 'disableWheelChange' | 'invertWheelChange' | 'readonly' | 'focusOnChange'>, /** @vue-ignore */ Omit<InputHTMLAttributes, 'disabled' | 'min' | 'max' | 'readonly' | 'required' | 'step' | 'name' | 'placeholder' | 'type' | 'autofocus' | 'maxlength' | 'minlength' | 'pattern' | 'size'> {
   /**
    * The element or component this component should render as.
    * @defaultValue 'div'
@@ -50,10 +50,10 @@ export interface InputNumberProps<T extends InputNumberValue = InputNumberValue>
   /** Highlight the ring color like a focus state. */
   highlight?: boolean
   /**
-   * The orientation of the input menu.
+   * The orientation of the input number.
    * @defaultValue 'horizontal'
    */
-  orientation?: 'vertical' | 'horizontal'
+  orientation?: InputNumber['variants']['orientation']
   /**
    * Configure the increment button. The `size` is inherited.
    * @defaultValue { color: 'air-tertiary-no-accent' }
@@ -104,6 +104,7 @@ import { onMounted, computed, useTemplateRef, toRef } from 'vue'
 import { NumberFieldRoot, NumberFieldInput, NumberFieldDecrement, NumberFieldIncrement, useForwardPropsEmits } from 'reka-ui'
 import { reactivePick, useVModel } from '@vueuse/core'
 import { useAppConfig } from '#imports'
+import { useComponentUI } from '../composables/useComponentUI'
 import { useFieldGroup } from '../composables/useFieldGroup'
 import { useFormField } from '../composables/useFormField'
 import { useLocale } from '../composables/useLocale'
@@ -129,8 +130,9 @@ const modelValue = useVModel<InputNumberProps<T>, 'modelValue', 'update:modelVal
 
 const { t } = useLocale()
 const appConfig = useAppConfig() as InputNumber['AppConfig']
+const uiProp = useComponentUI('inputNumber', props)
 
-const rootProps = useForwardPropsEmits(reactivePick(props, 'as', 'defaultValue', 'min', 'max', 'step', 'stepSnapping', 'formatOptions', 'disableWheelChange', 'invertWheelChange', 'readonly'), emits)
+const rootProps = useForwardPropsEmits(reactivePick(props, 'as', 'defaultValue', 'min', 'max', 'step', 'stepSnapping', 'formatOptions', 'disableWheelChange', 'invertWheelChange', 'readonly', 'focusOnChange'), emits)
 
 const { emitFormBlur, emitFormFocus, emitFormChange, emitFormInput, id, color, size: formGroupSize, name, highlight, disabled, ariaAttrs } = useFormField<InputNumberProps<T>>(props)
 const { orientation, size: fieldGroupSize } = useFieldGroup<InputNumberProps<T>>(props)
@@ -200,7 +202,7 @@ defineExpose({
     :id="id"
     :model-value="modelValue"
     data-slot="root"
-    :class="b24ui.root({ class: [props.b24ui?.root, props.class] })"
+    :class="b24ui.root({ class: [uiProp?.root, props.class] })"
     :name="name"
     :disabled="disabled"
     @update:model-value="onUpdate"
@@ -208,7 +210,7 @@ defineExpose({
     <B24Badge
       v-if="isTag"
       data-slot="tag"
-      :class="b24ui.tag({ class: props.b24ui?.tag })"
+      :class="b24ui.tag({ class: uiProp?.tag })"
       :color="props.tagColor"
       :label="props.tag"
       size="xs"
@@ -220,18 +222,18 @@ defineExpose({
       :placeholder="placeholder"
       :required="required"
       data-slot="base"
-      :class="b24ui.base({ class: props.b24ui?.base })"
+      :class="b24ui.base({ class: uiProp?.base })"
       @blur="onBlur"
       @focus="emitFormFocus"
     />
 
-    <div v-if="!!increment" data-slot="increment" :class="b24ui.increment({ class: props.b24ui?.increment })">
+    <div v-if="!!increment" data-slot="increment" :class="b24ui.increment({ class: uiProp?.increment })">
       <NumberFieldIncrement as-child :disabled="disabled || incrementDisabled">
         <slot name="increment">
           <B24Button
             :icon="incrementIcon"
             color="air-tertiary-no-accent"
-            :size="size"
+            :size="inputSize"
             :aria-label="t('inputNumber.increment')"
             v-bind="typeof increment === 'object' ? increment : undefined"
           />
@@ -239,13 +241,13 @@ defineExpose({
       </NumberFieldIncrement>
     </div>
 
-    <div v-if="!!decrement" data-slot="decrement" :class="b24ui.decrement({ class: props.b24ui?.decrement })">
+    <div v-if="!!decrement" data-slot="decrement" :class="b24ui.decrement({ class: uiProp?.decrement })">
       <NumberFieldDecrement as-child :disabled="disabled || decrementDisabled">
         <slot name="decrement">
           <B24Button
             :icon="decrementIcon"
             color="air-tertiary-no-accent"
-            :size="size"
+            :size="inputSize"
             :aria-label="t('inputNumber.decrement')"
             v-bind="typeof decrement === 'object' ? decrement : undefined"
           />

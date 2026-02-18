@@ -1,33 +1,22 @@
-<script setup lang="ts">
-import usePageMeta from '~/composables/usePageMeta'
-
-usePageMeta.setPageTitle('Bitrix24 UI - Demo')
-</script>
-
 <template>
-  <template
-    v-for="(group) in usePageMeta.groups"
-    :key="group.id"
-  >
-    <ProseH4 class="mb-sm">
-      {{ group.label }}
-    </ProseH4>
-    <B24PageGrid class="gap-5 mb-4 mt-3">
-      <B24PageCard
-        v-for="(component) in group.children"
-        :key="component.id"
-        :to="component.to"
-        :title="component.label"
-        :description="component.description"
-        :icon="component.iconData"
-        reverse
-        :b24ui="{
-          root: '',
-          header: 'mb-0',
-          title: 'text-[15px] font-medium',
-          description: 'line-clamp-2 mt-1'
-        }"
-      />
-    </B24PageGrid>
-  </template>
+  <div class="flex items-center justify-center min-h-[calc(100vh-var(--topbar-height))]">
+    <B24Card class="mx-4 text-center backdrop-blur-xl max-w-96">
+      <template #header>
+        <ProseH1 class="mb-0">
+          Demo Playground
+        </ProseH1>
+      </template>
+      <ProseP class="bitrix-mobile:hidden bitrix-desktop:hidden">
+        Explore and test all Bitrix24 UI components in an interactive environment.
+      </ProseP>
+
+      <ProseP class="hidden bitrix-mobile:inline-block">
+        It's magic! 🔮 Check out what the Bitrix24 Mobile UI is capable of. You're doing great! 😎
+      </ProseP>
+
+      <ProseP class="hidden bitrix-desktop:inline-block">
+        Pure magic! ✨ Look at what the Bitrix24 Desktop UI can do. You rock! 🔥
+      </ProseP>
+    </B24Card>
+  </div>
 </template>

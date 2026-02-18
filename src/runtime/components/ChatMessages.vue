@@ -80,6 +80,7 @@ import { Presence } from 'reka-ui'
 import { defu } from 'defu'
 import { useElementBounding, useEventListener, watchThrottled } from '@vueuse/core'
 import { useAppConfig } from '#imports'
+import { useComponentUI } from '../composables/useComponentUI'
 import { omit } from '../utils'
 import { tv } from '../utils/tv'
 import icons from '../dictionary/icons'
@@ -97,6 +98,7 @@ const slots = defineSlots<ChatMessagesSlots>()
 const getProxySlots = () => omit(slots, ['default', 'indicator', 'viewport'])
 
 const appConfig = useAppConfig() as ChatMessages['AppConfig']
+const uiProp = useComponentUI('chatMessages', props)
 
 const userProps = toRef(() => defu(props.user, { side: 'right' as const, variant: 'message' as const }))
 const assistantProps = toRef(() => defu(props.assistant, { side: 'left' as const, variant: 'message' as const }))
@@ -267,15 +269,17 @@ onMounted(() => {
 
   lastScrollTop.value = parent.value.scrollTop
 
-  // Wait for content to fully render (especially MDC components in ChatPalette)
-  setTimeout(() => {
-    if (props.shouldScrollToBottom) {
-      // Scroll to bottom on mount without smooth animation when `props.shouldScrollToBottom` is true
+  if (props.shouldScrollToBottom) {
+    // Scroll to bottom immediately to avoid flash, then again after a delay to account for async content (e.g. MDC)
+    scrollToBottom(false)
+    setTimeout(() => {
       scrollToBottom(false)
-    } else {
+    }, 100)
+  } else {
+    nextTick(() => {
       checkScrollPosition()
-    }
-  }, 100)
+    })
+  }
 
   // Add event listener to check scroll position to show the auto scroll button
   useEventListener(parent, 'scroll', checkScrollPosition)
@@ -290,15 +294,15 @@ onMounted(() => {
     ref="el"
     :data-status="status"
     data-slot="root"
-    :class="b24ui.root({ class: [props.b24ui?.root, props.class] })"
+    :class="b24ui.root({ class: [uiProp?.root, props.class] })"
     :style="{ '--last-message-height': `${lastMessageHeight}px` }"
   >
     <slot>
       <B24ChatMessage
         v-for="message in messages"
         :key="message.id"
-        v-bind="{ ...message, ...(message.role === 'user' ? userProps : assistantProps) }"
-        :ref="(el) => registerMessageRef(message.id, el as ComponentPublicInstance)"
+        v-bind="{ ...(message.role === 'user' ? userProps : assistantProps), ...message }"
+        :ref="el => registerMessageRef(message.id, el as ComponentPublicInstance)"
         :compact="compact"
       >
         <template v-for="(_, name) in getProxySlots()" #[name]="slotData">
@@ -316,7 +320,7 @@ onMounted(() => {
     >
       <template #content>
         <slot name="indicator" :b24ui="b24ui">
-          <div data-slot="indicator" :class="b24ui.indicator({ class: props.b24ui?.indicator })">
+          <div data-slot="indicator" :class="b24ui.indicator({ class: uiProp?.indicator })">
             <span />
             <span />
             <span />
@@ -326,7 +330,7 @@ onMounted(() => {
     </B24ChatMessage>
 
     <Presence :present="showAutoScroll">
-      <div :data-state="showAutoScroll ? 'open' : 'closed'" data-slot="viewport" :class="b24ui.viewport({ class: props.b24ui?.viewport })">
+      <div :data-state="showAutoScroll ? 'open' : 'closed'" data-slot="viewport" :class="b24ui.viewport({ class: uiProp?.viewport })">
         <slot name="viewport" :b24ui="b24ui" :on-click="onAutoScrollClick">
           <B24Button
             v-if="autoScroll"
@@ -334,7 +338,7 @@ onMounted(() => {
             color="air-secondary-no-accent"
             v-bind="(typeof autoScroll === 'object' ? autoScroll : {})"
             data-slot="autoScroll"
-            :class="b24ui.autoScroll({ class: props.b24ui?.autoScroll })"
+            :class="b24ui.autoScroll({ class: uiProp?.autoScroll })"
             @click="onAutoScrollClick"
           />
         </slot>

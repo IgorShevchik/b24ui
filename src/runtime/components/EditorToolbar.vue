@@ -91,6 +91,7 @@ import { defu } from 'defu'
 import { BubbleMenu, FloatingMenu } from '@tiptap/vue-3/menus'
 import { reactiveOmit } from '@vueuse/core'
 import { useAppConfig } from '#imports'
+import { useComponentUI } from '../composables/useComponentUI'
 import { isArrayOfArray, pick, omit } from '../utils'
 import { createHandlers } from '../utils/editor'
 import { tv } from '../utils/tv'
@@ -109,6 +110,7 @@ const props = withDefaults(defineProps<EditorToolbarProps<T>>(), {
 defineSlots<EditorToolbarSlots<T>>()
 
 const appConfig = useAppConfig() as EditorToolbar['AppConfig']
+const uiProp = useComponentUI('editorToolbar', props)
 
 const handlers = inject('editorHandlers', computed(() => createHandlers()))
 
@@ -166,15 +168,14 @@ function isDisabled(item: EditorToolbarItem): boolean {
 
   if ('items' in item && item.items?.length) {
     const items = isArrayOfArray(item.items) ? item.items.flat() : item.items
-    // @ts-expect-error: need test at nuxt.ui? but this work
-    const itemItems = items.filter((item): item is EditorToolbarItem => 'kind' in item)
+    // Filter out structural elements (separators, labels)
+    const actionableItems = items.filter((item: any) => item.type !== 'separator' && item.type !== 'label')
 
-    if (itemItems.length === 0) {
+    if (actionableItems.length === 0) {
       return true
     }
 
-    // @ts-expect-error: need test at nuxt.ui? but this work
-    return itemItems.every(item => isDisabled(item))
+    return actionableItems.every((item: any) => isDisabled(item))
   }
 
   if (!('kind' in item)) {
@@ -231,7 +232,7 @@ function getActiveChildItem(item: EditorToolbarDropdownItem): EditorToolbarItem 
 }
 
 function getButtonProps(item: EditorToolbarItem) {
-  const baseProps = omit(item as any, ['kind', 'mark', 'align', 'level', 'href', 'src', 'pos', 'items', 'slot', 'checkedIcon', 'loadingIcon', 'externalIcon', 'content', 'arrow', 'portal', 'modal', 'tooltip'])
+  const baseProps = omit(item as any, ['kind', 'mark', 'align', 'level', 'href', 'src', 'pos', 'items', 'slot', 'checkedIcon', 'loadingIcon', 'externalIcon', 'content', 'arrow', 'portal', 'modal', 'tooltip', 'onClick'])
 
   // For dropdown items, use the active child's icon if available
   if ('items' in item && item.items?.length) {
@@ -252,10 +253,11 @@ function getButtonProps(item: EditorToolbarItem) {
 }
 
 function getDropdownProps(item: EditorToolbarDropdownItem) {
-  const baseProps = pick(item as any, ['checkedIcon', 'loadingIcon', 'externalIcon', 'content', 'arrow', 'portal', 'modal', 'b24ui'])
+  const baseProps = pick(item as any, ['size', 'checkedIcon', 'loadingIcon', 'externalIcon', 'content', 'arrow', 'portal', 'modal', 'b24ui'])
 
   return defu(baseProps, {
-    modal: false
+    modal: false,
+    size: props.size
   })
 }
 
@@ -300,7 +302,7 @@ function getDropdownItems(item: EditorToolbarDropdownItem) {
     v-bind="Component !== 'template' ? {
       editor,
       tabindex: -1,
-      class: b24ui.root({ class: props.b24ui?.root }),
+      class: b24ui.root({ class: uiProp?.root }),
       ...rootProps,
       options,
       ...$attrs
@@ -308,9 +310,9 @@ function getDropdownItems(item: EditorToolbarDropdownItem) {
       ...$attrs
     }"
   >
-    <Primitive :as="as" role="toolbar" data-slot="base" :class="b24ui.base({ class: [props.b24ui?.base, props.class] })">
+    <Primitive :as="as" role="toolbar" data-slot="base" :class="b24ui.base({ class: [uiProp?.base, props.class] })">
       <template v-for="(group, groupIndex) in groups" :key="`group-${groupIndex}`">
-        <div role="group" data-slot="group" :class="b24ui.group({ class: props.b24ui?.group })">
+        <div role="group" data-slot="group" :class="b24ui.group({ class: uiProp?.group })">
           <template v-for="(item, index) in group" :key="`group-${groupIndex}-${index}`">
             <slot
               :name="((item.slot || 'item') as keyof EditorToolbarSlots<T>)"
@@ -326,10 +328,10 @@ function getDropdownItems(item: EditorToolbarDropdownItem) {
                 :items="getDropdownItems(item as EditorToolbarDropdownItem)"
               >
                 <B24Tooltip v-if="item.tooltip" :disabled="isDisabled(item)" v-bind="{ ...(item.tooltip || {}) }">
-                  <B24Button :active="isActive(item)" :disabled="isDisabled(item)" v-bind="getButtonProps(item)" />
+                  <B24Button :active="isActive(item)" :disabled="isDisabled(item)" v-bind="getButtonProps(item)" @click="onClick($event, item)" />
                 </B24Tooltip>
 
-                <B24Button v-else :active="isActive(item)" :disabled="isDisabled(item)" v-bind="getButtonProps(item)" />
+                <B24Button v-else :active="isActive(item)" :disabled="isDisabled(item)" v-bind="getButtonProps(item)" @click="onClick($event, item)" />
               </B24DropdownMenu>
 
               <B24Tooltip v-else-if="item.tooltip" :disabled="isDisabled(item)" v-bind="{ ...(item.tooltip || {}) }">
@@ -357,7 +359,7 @@ function getDropdownItems(item: EditorToolbarDropdownItem) {
         <Separator
           v-if="groupIndex < groups.length - 1"
           data-slot="separator"
-          :class="b24ui.separator({ class: props.b24ui?.separator })"
+          :class="b24ui.separator({ class: uiProp?.separator })"
           orientation="vertical"
         />
       </template>

@@ -3,7 +3,7 @@ import type { ComboboxRootProps, ComboboxRootEmits, ComboboxContentProps, Combob
 import type { AppConfig } from '@nuxt/schema'
 import theme from '#build/b24ui/select-menu'
 import type { UseComponentIconsProps } from '../composables/useComponentIcons'
-import type { AvatarProps, ChipProps, InputProps, BadgeProps, IconComponent } from '../types'
+import type { AvatarProps, ButtonProps, ChipProps, InputProps, LinkPropsKeys, BadgeProps, IconComponent } from '../types'
 import type { ModelModifiers } from '../types/input'
 import type { ButtonHTMLAttributes } from '../types/html'
 import type { AcceptableValue, ArrayOrNested, GetItemKeys, GetItemValue, GetModelValue, GetModelValueEmits, NestedItem, EmitsToProps } from '../types/utils'
@@ -36,7 +36,9 @@ export type SelectMenuItem = SelectMenuValue | {
   [key: string]: any
 }
 
-export interface SelectMenuProps<T extends ArrayOrNested<SelectMenuItem> = ArrayOrNested<SelectMenuItem>, VK extends GetItemKeys<T> | undefined = undefined, M extends boolean = false> extends Pick<ComboboxRootProps<T>, 'open' | 'defaultOpen' | 'disabled' | 'name' | 'resetSearchTermOnBlur' | 'resetSearchTermOnSelect' | 'highlightOnHover'>, UseComponentIconsProps, /** @vue-ignore */ Omit<ButtonHTMLAttributes, 'type' | 'disabled' | 'name'> {
+type ExcludeItem = { type: 'label' | 'separator' }
+
+export interface SelectMenuProps<T extends ArrayOrNested<SelectMenuItem> = ArrayOrNested<SelectMenuItem>, VK extends GetItemKeys<T> | undefined = undefined, M extends boolean = false> extends Pick<ComboboxRootProps<T>, 'open' | 'defaultOpen' | 'disabled' | 'name' | 'resetSearchTermOnBlur' | 'resetSearchTermOnSelect' | 'resetModelValueOnClear' | 'highlightOnHover' | 'by'>, UseComponentIconsProps, /** @vue-ignore */ Omit<ButtonHTMLAttributes, 'type' | 'disabled' | 'name'> {
   id?: string
   /** The placeholder text when the select is empty. */
   placeholder?: string
@@ -97,6 +99,18 @@ export interface SelectMenuProps<T extends ArrayOrNested<SelectMenuItem> = Array
    */
   selectedIcon?: IconComponent
   /**
+   * Display a clear button to reset the model value.
+   * Can be an object to pass additional props to the Button.
+   * @defaultValue false
+   */
+  clear?: boolean | Partial<Omit<ButtonProps, LinkPropsKeys>>
+  /**
+   * The icon displayed in the clear button.
+   * @defaultValue icons.close
+   * @IconifyIcon
+   */
+  clearIcon?: IconComponent
+  /**
    * The content of the menu.
    * @defaultValue { side: 'bottom', sideOffset: 8, collisionPadding: 8, position: 'popper' }
    */
@@ -123,10 +137,10 @@ export interface SelectMenuProps<T extends ArrayOrNested<SelectMenuItem> = Array
      */
     overscan?: number
     /**
-     * Estimated size (in px) of each item
+     * Estimated size (in px) of each item, or a function that returns the size for a given index
      * @defaultValue 32
      */
-    estimateSize?: number
+    estimateSize?: number | ((index: number) => number)
   }
   /**
    * When `items` is an array of objects, select the field to use as the value instead of the object itself.
@@ -145,10 +159,10 @@ export interface SelectMenuProps<T extends ArrayOrNested<SelectMenuItem> = Array
   descriptionKey?: GetItemKeys<T>
   items?: T
   /** The value of the SelectMenu when initially rendered. Use when you do not need to control the state of the SelectMenu. */
-  defaultValue?: GetModelValue<T, VK, M>
+  defaultValue?: GetModelValue<T, VK, M, ExcludeItem>
   /** The controlled value of the SelectMenu. Can be binded-with with `v-model`. */
-  modelValue?: GetModelValue<T, VK, M>
-  modelModifiers?: Omit<ModelModifiers<GetModelValue<T, VK, M>>, 'lazy'>
+  modelValue?: GetModelValue<T, VK, M, ExcludeItem>
+  modelModifiers?: Omit<ModelModifiers<GetModelValue<T, VK, M, ExcludeItem>>, 'lazy'>
   /** Whether multiple options can be selected or not. */
   multiple?: M & boolean
   /** Highlight the ring color like a focus state. */
@@ -179,12 +193,13 @@ export type SelectMenuEmits<A extends ArrayOrNested<SelectMenuItem>, VK extends 
   blur: [event: FocusEvent]
   focus: [event: FocusEvent]
   create: [item: string]
+  clear: []
   /** Event handler when highlighted element changes. */
   highlight: [payload: {
     ref: HTMLElement
-    value: GetModelValue<A, VK, M>
+    value: GetModelValue<A, VK, M, ExcludeItem>
   } | undefined]
-} & GetModelValueEmits<A, VK, M>
+} & GetModelValueEmits<A, VK, M, ExcludeItem>
 
 type SlotProps<T extends SelectMenuItem> = (props: { item: T, index: number, b24ui: SelectMenu['b24ui'] }) => any
 
@@ -194,9 +209,9 @@ export interface SelectMenuSlots<
   M extends boolean = false,
   T extends NestedItem<A> = NestedItem<A>
 > {
-  'leading'(props: { modelValue?: GetModelValue<A, VK, M>, open: boolean, b24ui: SelectMenu['b24ui'] }): any
-  'default'(props: { modelValue?: GetModelValue<A, VK, M>, open: boolean, b24ui: SelectMenu['b24ui'] }): any
-  'trailing'(props: { modelValue?: GetModelValue<A, VK, M>, open: boolean, b24ui: SelectMenu['b24ui'] }): any
+  'leading'(props: { modelValue?: GetModelValue<A, VK, M, ExcludeItem>, open: boolean, b24ui: SelectMenu['b24ui'] }): any
+  'default'(props: { modelValue?: GetModelValue<A, VK, M, ExcludeItem>, open: boolean, b24ui: SelectMenu['b24ui'] }): any
+  'trailing'(props: { modelValue?: GetModelValue<A, VK, M, ExcludeItem>, open: boolean, b24ui: SelectMenu['b24ui'] }): any
   'empty'(props: { searchTerm?: string }): any
   'item': SlotProps<T>
   'item-leading': SlotProps<T>
@@ -211,10 +226,11 @@ export interface SelectMenuSlots<
 
 <script setup lang="ts" generic="T extends ArrayOrNested<SelectMenuItem>, VK extends GetItemKeys<T> | undefined = undefined, M extends boolean = false">
 import { useTemplateRef, computed, onMounted, toRef, toRaw } from 'vue'
-import { Primitive, ComboboxRoot, ComboboxArrow, ComboboxAnchor, ComboboxInput, ComboboxTrigger, ComboboxPortal, ComboboxContent, ComboboxEmpty, ComboboxGroup, ComboboxVirtualizer, ComboboxLabel, ComboboxSeparator, ComboboxItem, ComboboxItemIndicator, FocusScope, useForwardPropsEmits, useFilter } from 'reka-ui'
+import { Primitive, ComboboxRoot, ComboboxArrow, ComboboxAnchor, ComboboxInput, ComboboxTrigger, ComboboxCancel, ComboboxPortal, ComboboxContent, ComboboxEmpty, ComboboxGroup, ComboboxVirtualizer, ComboboxLabel, ComboboxSeparator, ComboboxItem, ComboboxItemIndicator, FocusScope, useForwardPropsEmits, useFilter } from 'reka-ui'
 import { defu } from 'defu'
 import { reactivePick, createReusableTemplate } from '@vueuse/core'
 import { useAppConfig } from '#imports'
+import { useComponentUI } from '../composables/useComponentUI'
 import { useFieldGroup } from '../composables/useFieldGroup'
 import { useComponentIcons } from '../composables/useComponentIcons'
 import { useFormField } from '../composables/useFormField'
@@ -226,6 +242,7 @@ import { tv } from '../utils/tv'
 import icons from '../dictionary/icons'
 import B24Badge from './Badge.vue'
 import B24Avatar from './Avatar.vue'
+import B24Button from './Button.vue'
 import B24Chip from './Chip.vue'
 import B24Input from './Input.vue'
 
@@ -238,6 +255,7 @@ const props = withDefaults(defineProps<SelectMenuProps<T, VK, M>>(), {
   descriptionKey: 'description',
   resetSearchTermOnBlur: true,
   resetSearchTermOnSelect: true,
+  resetModelValueOnClear: true,
   autofocusDelay: 0,
   virtualize: false
 })
@@ -248,17 +266,20 @@ const searchTerm = defineModel<string>('searchTerm', { default: '' })
 
 const { t } = useLocale()
 const appConfig = useAppConfig() as SelectMenu['AppConfig']
+const uiProp = useComponentUI('selectMenu', props)
 const { contains } = useFilter({ sensitivity: 'base' })
 
-const rootProps = useForwardPropsEmits(reactivePick(props, 'modelValue', 'defaultValue', 'open', 'defaultOpen', 'required', 'multiple', 'resetSearchTermOnBlur', 'resetSearchTermOnSelect', 'highlightOnHover'), emits)
+const rootProps = useForwardPropsEmits(reactivePick(props, 'modelValue', 'defaultValue', 'open', 'defaultOpen', 'required', 'multiple', 'resetSearchTermOnBlur', 'resetSearchTermOnSelect', 'resetModelValueOnClear', 'highlightOnHover', 'by'), emits)
 const portalProps = usePortal(toRef(() => props.portal))
 const contentProps = toRef(() => defu(props.content, { side: 'bottom', sideOffset: 8, collisionPadding: 8, position: 'popper' }) as ComboboxContentProps)
 const arrowProps = toRef(() => defu(typeof props.arrow === 'boolean' ? {} : props.arrow, { width: 20, height: 10 }) as ComboboxArrowProps)
+const clearProps = computed(() => typeof props.clear === 'object' ? props.clear : {} as Partial<Omit<ButtonProps, LinkPropsKeys>>)
+
 const virtualizerProps = toRef(() => {
   if (!props.virtualize) return false
 
   return defu(typeof props.virtualize === 'boolean' ? {} : props.virtualize, {
-    estimateSize: getEstimateSize(items.value, props.size || 'md', props.descriptionKey as string)
+    estimateSize: getEstimateSize(filteredItems.value, selectSize.value || 'md', props.descriptionKey as string, !!slots['item-description'])
   })
 })
 const searchInputProps = toRef(() => defu(props.searchInput, { placeholder: t('selectMenu.search'), type: 'text', size: 'md' }) as InputProps)
@@ -302,21 +323,23 @@ const b24ui = computed(() => tv({ extend: tv(theme), ...(appConfig.b24ui?.select
   virtualize: !!props.virtualize
 }))
 
-function displayValue(value: GetItemValue<T, VK> | GetItemValue<T, VK>[]): string | undefined {
+function displayValue(value: GetItemValue<T, VK, ExcludeItem> | GetItemValue<T, VK, ExcludeItem>[]): string | undefined {
   if (props.multiple && Array.isArray(value)) {
     const displayedValues = value
-      .map(item => getDisplayValue<T[], GetItemValue<T, VK>>(items.value, item, {
+      .map(item => getDisplayValue<T[], GetItemValue<T, VK, ExcludeItem>>(items.value, item, {
         labelKey: props.labelKey,
-        valueKey: props.valueKey
+        valueKey: props.valueKey,
+        by: props.by
       }))
       .filter((v): v is string => v != null && v !== '')
 
     return displayedValues.length > 0 ? displayedValues.join(', ') : undefined
   }
 
-  return getDisplayValue<T[], GetItemValue<T, VK>>(items.value, value as GetItemValue<T, VK>, {
+  return getDisplayValue<T[], GetItemValue<T, VK, ExcludeItem>>(items.value, value as GetItemValue<T, VK, ExcludeItem>, {
     labelKey: props.labelKey,
-    valueKey: props.valueKey
+    valueKey: props.valueKey,
+    by: props.by
   })
 }
 
@@ -368,7 +391,7 @@ const createItem = computed(() => {
   const newItem = props.valueKey ? { [props.valueKey]: searchTerm.value } as NestedItem<T> : searchTerm.value
 
   if ((typeof props.createItem === 'object' && props.createItem.when === 'always') || props.createItem === 'always') {
-    return !filteredItems.value.find(item => compare(item, newItem, props.valueKey as string))
+    return !filteredItems.value.find(item => compare(item, newItem, (props.by ?? props.valueKey) as string | undefined))
   }
 
   return !filteredItems.value.length
@@ -473,8 +496,22 @@ function isSelectItem(item: SelectMenuItem): item is Exclude<SelectMenuItem, Sel
   return typeof item === 'object' && item !== null
 }
 
+function isModelValueEmpty(modelValue: GetModelValue<T, VK, M, ExcludeItem>): boolean {
+  if (props.multiple && Array.isArray(modelValue)) {
+    return modelValue.length === 0
+  }
+  return modelValue === undefined || modelValue === null || modelValue === ''
+}
+
+function onClear() {
+  emits('clear')
+}
+
+const viewportRef = useTemplateRef('viewportRef')
+
 defineExpose({
-  triggerRef: toRef(() => triggerRef.value?.$el as HTMLButtonElement)
+  triggerRef: toRef(() => triggerRef.value?.$el as HTMLButtonElement),
+  viewportRef: toRef(() => viewportRef.value)
 })
 </script>
 
@@ -483,16 +520,16 @@ defineExpose({
   <DefineCreateItemTemplate>
     <ComboboxItem
       data-slot="item"
-      :class="b24ui.item({ addNew: true, class: props.b24ui?.item })"
+      :class="b24ui.item({ addNew: true, class: uiProp?.item })"
       :value="searchTerm"
       @select="onCreate"
     >
-      <span data-slot="itemLabel" :class="b24ui.itemLabel({ addNew: true, class: props.b24ui?.itemLabel })">
+      <span data-slot="itemLabel" :class="b24ui.itemLabel({ addNew: true, class: uiProp?.itemLabel })">
         <slot name="create-item-label" :item="searchTerm">
           <Component
             :is="icons.plus"
             data-slot="itemLeadingIcon"
-            :class="b24ui.itemLeadingIcon({ addNew: true, class: props.b24ui?.itemLeadingIcon })"
+            :class="b24ui.itemLeadingIcon({ addNew: true, class: uiProp?.itemLeadingIcon })"
           />
           {{ t('selectMenu.create', { label: searchTerm }) }}
         </slot>
@@ -504,7 +541,7 @@ defineExpose({
     <ComboboxLabel
       v-if="isSelectItem(item) && item.type === 'label'"
       data-slot="label"
-      :class="b24ui.label({ class: [props.b24ui?.label, item.b24ui?.label, item.class] })"
+      :class="b24ui.label({ class: [uiProp?.label, item.b24ui?.label, item.class] })"
     >
       {{ get(item, props.labelKey as string) }}
     </ComboboxLabel>
@@ -512,13 +549,13 @@ defineExpose({
     <ComboboxSeparator
       v-else-if="isSelectItem(item) && item.type === 'separator'"
       data-slot="separator"
-      :class="b24ui.separator({ class: [props.b24ui?.separator, item.b24ui?.separator, item.class] })"
+      :class="b24ui.separator({ class: [uiProp?.separator, item.b24ui?.separator, item.class] })"
     />
 
     <ComboboxItem
       v-else
       data-slot="item"
-      :class="b24ui.item({ class: [props.b24ui?.item, isSelectItem(item) && item.b24ui?.item, isSelectItem(item) && item.class], colorItem: (isSelectItem(item) && item?.color) || undefined })"
+      :class="b24ui.item({ class: [uiProp?.item, isSelectItem(item) && item.b24ui?.item, isSelectItem(item) && item.class], colorItem: (isSelectItem(item) && item?.color) || undefined })"
       :disabled="isSelectItem(item) && item.disabled"
       :value="props.valueKey && isSelectItem(item) ? get(item, props.valueKey as string) : item"
       @select="onSelect($event, item)"
@@ -527,15 +564,15 @@ defineExpose({
         <slot name="item-leading" :item="(item as NestedItem<T>)" :index="index" :b24ui="b24ui">
           <B24Avatar
             v-if="isSelectItem(item) && item.avatar"
-            :size="((item.b24ui?.itemLeadingAvatarSize || props.b24ui?.itemLeadingAvatarSize || b24ui.itemLeadingAvatarSize()) as AvatarProps['size'])"
+            :size="((item.b24ui?.itemLeadingAvatarSize || uiProp?.itemLeadingAvatarSize || b24ui.itemLeadingAvatarSize()) as AvatarProps['size'])"
             v-bind="item.avatar"
             data-slot="itemLeadingAvatar"
-            :class="b24ui.itemLeadingAvatar({ class: [props.b24ui?.itemLeadingAvatar, item.b24ui?.itemLeadingAvatar], colorItem: item?.color })"
+            :class="b24ui.itemLeadingAvatar({ class: [uiProp?.itemLeadingAvatar, item.b24ui?.itemLeadingAvatar], colorItem: item?.color })"
           />
         </slot>
 
-        <span data-slot="itemWrapper" :class="b24ui.itemWrapper({ class: [props.b24ui?.itemWrapper, isSelectItem(item) && item.b24ui?.itemWrapper] })">
-          <span data-slot="itemLabel" :class="b24ui.itemLabel({ class: [props.b24ui?.itemLabel, isSelectItem(item) && item.b24ui?.itemLabel] })">
+        <span data-slot="itemWrapper" :class="b24ui.itemWrapper({ class: [uiProp?.itemWrapper, isSelectItem(item) && item.b24ui?.itemWrapper] })">
+          <span data-slot="itemLabel" :class="b24ui.itemLabel({ class: [uiProp?.itemLabel, isSelectItem(item) && item.b24ui?.itemLabel] })">
             <slot name="item-label" :item="(item as NestedItem<T>)" :index="index">
               {{ isSelectItem(item) ? get(item, props.labelKey as string) : item }}
             </slot>
@@ -544,7 +581,7 @@ defineExpose({
           <span
             v-if="isSelectItem(item) && (get(item, props.descriptionKey as string) || !!slots['item-description'])"
             data-slot="itemDescription"
-            :class="b24ui.itemDescription({ class: [props.b24ui?.itemDescription, isSelectItem(item) && item.b24ui?.itemDescription] })"
+            :class="b24ui.itemDescription({ class: [uiProp?.itemDescription, isSelectItem(item) && item.b24ui?.itemDescription] })"
           >
             <slot
               name="item-description"
@@ -556,12 +593,12 @@ defineExpose({
           </span>
         </span>
 
-        <span data-slot="itemTrailing" :class="b24ui.itemTrailing({ class: [props.b24ui?.itemTrailing, isSelectItem(item) && item.b24ui?.itemTrailing], colorItem: (isSelectItem(item) && item?.color) || undefined })">
+        <span data-slot="itemTrailing" :class="b24ui.itemTrailing({ class: [uiProp?.itemTrailing, isSelectItem(item) && item.b24ui?.itemTrailing], colorItem: (isSelectItem(item) && item?.color) || undefined })">
           <ComboboxItemIndicator as-child>
             <Component
               :is="selectedIcon || icons.check"
               data-slot="itemTrailingIcon"
-              :class="b24ui.itemTrailingIcon({ class: [props.b24ui?.itemTrailingIcon, isSelectItem(item) && item.b24ui?.itemTrailingIcon], colorItem: (isSelectItem(item) && item?.color) || undefined })"
+              :class="b24ui.itemTrailingIcon({ class: [uiProp?.itemTrailingIcon, isSelectItem(item) && item.b24ui?.itemTrailingIcon], colorItem: (isSelectItem(item) && item?.color) || undefined })"
             />
           </ComboboxItemIndicator>
 
@@ -570,16 +607,16 @@ defineExpose({
               :is="item.icon"
               v-if="isSelectItem(item) && item.icon"
               data-slot="itemLeadingIcon"
-              :class="b24ui.itemLeadingIcon({ class: [props.b24ui?.itemLeadingIcon, item.b24ui?.itemLeadingIcon], colorItem: item?.color })"
+              :class="b24ui.itemLeadingIcon({ class: [uiProp?.itemLeadingIcon, item.b24ui?.itemLeadingIcon], colorItem: item?.color })"
             />
             <B24Chip
               v-else-if="isSelectItem(item) && item.chip"
-              :size="((item.b24ui?.itemLeadingChipSize || props.b24ui?.itemLeadingChipSize || b24ui.itemLeadingChipSize()) as ChipProps['size'])"
+              :size="((item.b24ui?.itemLeadingChipSize || uiProp?.itemLeadingChipSize || b24ui.itemLeadingChipSize()) as ChipProps['size'])"
               inset
               standalone
               v-bind="item.chip"
               data-slot="itemLeadingChip"
-              :class="b24ui.itemLeadingChip({ class: [props.b24ui?.itemLeadingChip, item.b24ui?.itemLeadingChip], colorItem: item?.color })"
+              :class="b24ui.itemLeadingChip({ class: [uiProp?.itemLeadingChip, item.b24ui?.itemLeadingChip], colorItem: item?.color })"
             />
           </slot>
         </span>
@@ -587,7 +624,7 @@ defineExpose({
     </ComboboxItem>
   </DefineItemTemplate>
 
-  <Primitive as="div" data-slot="root" :class="b24ui.root({ addNew: true, class: [props.b24ui?.root] })">
+  <Primitive as="div" data-slot="root" :class="b24ui.root({ addNew: true, class: [uiProp?.root] })">
     <ComboboxRoot
       :id="id"
       v-slot="{ modelValue, open }"
@@ -603,61 +640,75 @@ defineExpose({
         <ComboboxTrigger
           ref="triggerRef"
           data-slot="base"
-          :class="b24ui.base({ class: [props.b24ui?.base, props.class] })"
+          :class="b24ui.base({ class: [uiProp?.base, props.class] })"
           tabindex="0"
         >
           <B24Badge
             v-if="isTag"
             data-slot="tag"
-            :class="b24ui.tag({ class: props.b24ui?.tag })"
+            :class="b24ui.tag({ class: uiProp?.tag })"
             :color="props.tagColor"
             :label="props.tag"
             size="xs"
           />
-          <span v-if="isLeading || !!avatar || !!slots.leading" data-slot="leading" :class="b24ui.leading({ class: props.b24ui?.leading })">
-            <slot name="leading" :model-value="(modelValue as GetModelValue<T, VK, M>)" :open="open" :b24ui="b24ui">
+          <span v-if="isLeading || !!avatar || !!slots.leading" data-slot="leading" :class="b24ui.leading({ class: uiProp?.leading })">
+            <slot name="leading" :model-value="(modelValue as GetModelValue<T, VK, M, ExcludeItem>)" :open="open" :b24ui="b24ui">
               <Component
                 :is="leadingIconName"
                 v-if="isLeading && leadingIconName"
                 data-slot="leadingIcon"
-                :class="b24ui.leadingIcon({ class: props.b24ui?.leadingIcon })"
+                :class="b24ui.leadingIcon({ class: uiProp?.leadingIcon })"
               />
               <B24Avatar
                 v-else-if="!!avatar"
-                :size="((props.b24ui?.leadingAvatarSize || b24ui.leadingAvatarSize()) as AvatarProps['size'])"
+                :size="((uiProp?.leadingAvatarSize || b24ui.leadingAvatarSize()) as AvatarProps['size'])"
                 v-bind="avatar"
                 data-slot="leadingAvatar"
-                :class="b24ui.leadingAvatar({ class: props.b24ui?.leadingAvatar })"
+                :class="b24ui.leadingAvatar({ class: uiProp?.leadingAvatar })"
               />
             </slot>
           </span>
 
-          <slot :model-value="(modelValue as GetModelValue<T, VK, M>)" :open="open" :b24ui="b24ui">
-            <template v-for="displayedModelValue in [displayValue(modelValue as GetModelValue<T, VK, M>)]" :key="displayedModelValue">
+          <slot :model-value="(modelValue as GetModelValue<T, VK, M, ExcludeItem>)" :open="open" :b24ui="b24ui">
+            <template v-for="displayedModelValue in [displayValue(modelValue as GetModelValue<T, VK, M, ExcludeItem>)]" :key="displayedModelValue">
               <span
                 v-if="displayedModelValue !== undefined && displayedModelValue !== null"
                 data-slot="value"
-                :class="b24ui.value({ class: props.b24ui?.value })"
+                :class="b24ui.value({ class: uiProp?.value })"
               >
                 {{ displayedModelValue }}
               </span>
               <span
                 v-else
                 data-slot="placeholder"
-                :class="b24ui.placeholder({ class: props.b24ui?.placeholder })"
+                :class="b24ui.placeholder({ class: uiProp?.placeholder })"
               >
                 {{ placeholder ?? '&nbsp;' }}
               </span>
             </template>
           </slot>
 
-          <span v-if="isTrailing || !!slots.trailing" data-slot="trailing" :class="b24ui.trailing({ class: props.b24ui?.trailing })">
-            <slot name="trailing" :model-value="(modelValue as GetModelValue<T, VK, M>)" :open="open" :b24ui="b24ui">
+          <span v-if="isTrailing || !!slots.trailing || !!clear" data-slot="trailing" :class="b24ui.trailing({ class: uiProp?.trailing })">
+            <slot name="trailing" :model-value="(modelValue as GetModelValue<T, VK, M, ExcludeItem>)" :open="open" :b24ui="b24ui">
+              <ComboboxCancel v-if="!!clear && !isModelValueEmpty(modelValue as GetModelValue<T, VK, M, ExcludeItem>)" as-child>
+                <B24Button
+                  as="span"
+                  :icon="clearIcon || icons.close"
+                  :size="selectSize"
+                  color="air-tertiary-no-accent"
+                  tabindex="-1"
+                  v-bind="clearProps"
+                  data-slot="trailingClear"
+                  :class="b24ui.trailingClear({ class: uiProp?.trailingClear })"
+                  @click.stop="onClear"
+                />
+              </ComboboxCancel>
+
               <Component
                 :is="trailingIconName"
-                v-if="trailingIconName"
+                v-else-if="trailingIconName"
                 data-slot="trailingIcon"
-                :class="b24ui.trailingIcon({ class: props.b24ui?.trailingIcon })"
+                :class="b24ui.trailingIcon({ class: uiProp?.trailingIcon })"
               />
             </slot>
           </span>
@@ -665,8 +716,8 @@ defineExpose({
       </ComboboxAnchor>
 
       <ComboboxPortal v-bind="portalProps">
-        <ComboboxContent data-slot="content" :class="b24ui.content({ class: props.b24ui?.content })" v-bind="contentProps">
-          <FocusScope trapped data-slot="focusScope" :class="b24ui.focusScope({ class: props.b24ui?.focusScope })">
+        <ComboboxContent data-slot="content" :class="b24ui.content({ class: uiProp?.content })" v-bind="contentProps">
+          <FocusScope trapped data-slot="focusScope" :class="b24ui.focusScope({ class: uiProp?.focusScope })">
             <slot name="content-top" />
 
             <ComboboxInput
@@ -679,24 +730,25 @@ defineExpose({
                 no-border
                 autofocus
                 autocomplete="off"
-                :size="size"
+                :size="selectSize"
                 v-bind="searchInputProps"
                 data-slot="input"
-                :class="b24ui.input({ class: props.b24ui?.input })"
+                :class="b24ui.input({ class: uiProp?.input })"
                 @change.stop
               />
             </ComboboxInput>
 
-            <ComboboxEmpty data-slot="empty" :class="b24ui.empty({ class: props.b24ui?.empty })">
+            <ComboboxEmpty data-slot="empty" :class="b24ui.empty({ class: uiProp?.empty })">
               <slot name="empty" :search-term="searchTerm">
                 {{ searchTerm ? t('selectMenu.noMatch', { searchTerm }) : t('selectMenu.noData') }}
               </slot>
             </ComboboxEmpty>
 
             <div
+              ref="viewportRef"
               role="presentation"
               data-slot="viewport"
-              :class="b24ui.viewport({ class: props.b24ui?.viewport })"
+              :class="b24ui.viewport({ class: uiProp?.viewport })"
             >
               <template v-if="!!virtualize">
                 <ReuseCreateItemTemplate v-if="createItem && createItemPosition === 'top'" />
@@ -714,15 +766,15 @@ defineExpose({
               </template>
 
               <template v-else>
-                <ComboboxGroup v-if="createItem && createItemPosition === 'top'" data-slot="group" :class="b24ui.group({ class: props.b24ui?.group })">
+                <ComboboxGroup v-if="createItem && createItemPosition === 'top'" data-slot="group" :class="b24ui.group({ class: uiProp?.group })">
                   <ReuseCreateItemTemplate />
                 </ComboboxGroup>
 
-                <ComboboxGroup v-for="(group, groupIndex) in filteredGroups" :key="`group-${groupIndex}`" data-slot="group" :class="b24ui.group({ class: props.b24ui?.group })">
+                <ComboboxGroup v-for="(group, groupIndex) in filteredGroups" :key="`group-${groupIndex}`" data-slot="group" :class="b24ui.group({ class: uiProp?.group })">
                   <ReuseItemTemplate v-for="(item, index) in group" :key="`group-${groupIndex}-${index}`" :item="item" :index="index" />
                 </ComboboxGroup>
 
-                <ComboboxGroup v-if="createItem && createItemPosition === 'bottom'" data-slot="group" :class="b24ui.group({ class: props.b24ui?.group })">
+                <ComboboxGroup v-if="createItem && createItemPosition === 'bottom'" data-slot="group" :class="b24ui.group({ class: uiProp?.group })">
                   <ReuseCreateItemTemplate />
                 </ComboboxGroup>
               </template>
@@ -731,7 +783,7 @@ defineExpose({
             <slot name="content-bottom" />
           </FocusScope>
 
-          <ComboboxArrow v-if="!!arrow" v-bind="arrowProps" data-slot="arrow" :class="b24ui.arrow({ class: props.b24ui?.arrow })" />
+          <ComboboxArrow v-if="!!arrow" v-bind="arrowProps" data-slot="arrow" :class="b24ui.arrow({ class: uiProp?.arrow })" />
         </ComboboxContent>
       </ComboboxPortal>
     </ComboboxRoot>

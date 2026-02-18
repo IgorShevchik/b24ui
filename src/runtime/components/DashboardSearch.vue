@@ -13,6 +13,10 @@ type DashboardSearch = ComponentConfig<typeof theme, AppConfig, 'dashboardSearch
  */
 export interface DashboardSearchProps<T extends CommandPaletteItem = CommandPaletteItem> extends Pick<ModalProps, 'title' | 'description' | 'overlay' | 'transition' | 'content' | 'dismissible' | 'fullscreen' | 'modal' | 'portal'> {
   /**
+   * @defaultValue 'md'
+   */
+  size?: DashboardSearch['variants']['size']
+  /**
    * The icon displayed in the input.
    * @defaultValue icons.search
    * @IconComponent
@@ -75,6 +79,7 @@ import { useForwardProps } from 'reka-ui'
 import { defu } from 'defu'
 import { reactivePick } from '@vueuse/core'
 import { useAppConfig, useColorMode, defineShortcuts, useRuntimeHook } from '#imports'
+import { useComponentUI } from '../composables/useComponentUI'
 import { useLocale } from '../composables/useLocale'
 import { omit, transformUI } from '../utils'
 import { tv } from '../utils/tv'
@@ -101,9 +106,10 @@ const { t } = useLocale()
 // eslint-disable-next-line vue/no-dupe-keys
 const colorMode = useColorMode()
 const appConfig = useAppConfig() as DashboardSearch['AppConfig']
+const uiProp = useComponentUI('dashboardSearch', props)
 
 /** @memo not use loadingIcon */
-const commandPaletteProps = useForwardProps(reactivePick(props, 'icon', 'placeholder', 'autofocus', 'loading', 'close', 'closeIcon'))
+const commandPaletteProps = useForwardProps(reactivePick(props, 'size', 'icon', 'placeholder', 'autofocus', 'loading', 'close', 'closeIcon'))
 const modalProps = useForwardProps(reactivePick(props, 'overlay', 'transition', 'content', 'dismissible', 'fullscreen', 'modal', 'portal'))
 
 const getProxySlots = () => omit(slots, ['content'])
@@ -114,6 +120,7 @@ const fuse = computed(() => defu({}, props.fuse, {
 }))
 
 const b24ui = computed(() => tv({ extend: tv(theme), ...(appConfig.b24ui?.dashboardSearch || {}) })({
+  size: props.size,
   fullscreen: props.fullscreen
 }))
 
@@ -190,7 +197,7 @@ defineExpose({
     :description="description || t('dashboardSearch.description')"
     v-bind="modalProps"
     data-slot="modal"
-    :class="b24ui.modal({ class: [props.b24ui?.modal, props.class] })"
+    :class="b24ui.modal({ class: [uiProp?.modal, props.class] })"
   >
     <template #content="contentData">
       <slot name="content" v-bind="contentData">
@@ -200,7 +207,7 @@ defineExpose({
           v-bind="commandPaletteProps"
           :groups="groups"
           :fuse="fuse"
-          :b24ui="transformUI(omit(b24ui, ['modal']), props.b24ui)"
+          :b24ui="transformUI(omit(b24ui, ['modal']), uiProp)"
           @update:model-value="onSelect"
           @update:open="open = $event"
         >

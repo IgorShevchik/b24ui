@@ -160,6 +160,10 @@ props:
 ---
 ::
 
+::tip
+Use the `by` prop to compare objects by a field instead of reference when the `model-value` is an object.
+::
+
 ### Multiple
 
 Use the `multiple` prop to allow multiple selections, the selected items will be separated by a comma in the trigger.
@@ -537,6 +541,70 @@ props:
   modelValue: 'Backlog'
   selectedIcon: 'RocketIcon'
   size: md
+  items:
+    - Backlog
+    - Todo
+    - In Progress
+    - Done
+  class: 'w-[192px]'
+---
+::
+
+### Clear
+
+Use the `clear` prop to display a clear button when a value is selected.
+
+::component-code
+---
+prettier: true
+ignore:
+  - items
+  - modelValue
+  - class
+external:
+  - items
+  - modelValue
+items:
+  clear:
+    - true
+    - false
+props:
+  modelValue: 'Backlog'
+  clear: true
+  items:
+    - Backlog
+    - Todo
+    - In Progress
+    - Done
+  class: 'w-[192px]'
+---
+::
+
+### Clear Icon
+
+Use the `clear-icon` prop to customize the clear button [Icon](https://bitrix24.github.io/b24icons/icons/).
+
+::component-code
+---
+prettier: true
+ignore:
+  - items
+  - modelValue
+  - clearIcon
+  - class
+cast:
+    clearIcon: 'RocketIcon'
+external:
+  - items
+  - modelValue
+items:
+  clear:
+    - true
+    - false
+props:
+  modelValue: 'Backlog'
+  clear: true
+  clearIcon: 'RocketIcon'
   items:
     - Backlog
     - Todo
@@ -944,6 +1012,22 @@ name: 'select-menu-virtualize-example'
 ---
 ::
 
+### With infinite scroll
+
+You can use the [`useInfiniteScroll`](https://vueuse.org/core/useInfiniteScroll/) composable to load more data as the user scrolls.
+
+::component-example
+---
+prettier: true
+collapse: true
+highlights:
+  - 41
+  - 51
+overflowHidden: true
+name: 'select-menu-infinite-scroll-example'
+---
+::
+
 ### With full content width
 
 You can expand the content to the full width of its items by adding the `b24ui.content`,`b24ui.item` and `b24ui.viewport` slots.
@@ -991,6 +1075,7 @@ When accessing the component via a template ref, you can use the following:
 | Name | Type |
 | ---- | ---- |
 | `triggerRef`{lang="ts-type"} | `Ref<HTMLButtonElement \| null>`{lang="ts-type"} |
+| `viewportRef`{lang="ts-type"} | `Ref<HTMLDivElement \| null>`{lang="ts-type"} |
 
 ## Theme
 

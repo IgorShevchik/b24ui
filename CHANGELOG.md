@@ -1,5 +1,80 @@
 # Changelog
 
+## [2.3.1](https://github.com/bitrix24/b24ui/compare/v2.3.0...v2.3.1) (2026-02-xx)
+
+* feat(plugins\platform): detect `bitrixMobile`
+* fix(Prose.A): add prop `raw`
+* feat(Theme): new component
+* fix(ColorModeImage): add baseURL support for public paths
+* fix(Table): improve perfs with `shallowRef` when watch deep is disabled
+* fix(EditorMentionMenu): use `char` prop as mention prefix instead of always `@`
+* fix(Checkbox/Switch): prevent `data-state` conflict when used inside Tooltip
+* feat(Toaster): prevent duplicate toasts and add pulse animation
+* fix(defineShortcuts): add alt key guard
+* feat(Form): add HTML5 validation to programmatic submit
+* fix(ChatMessages): prevent flash at top before scrolling to bottom on mount
+* fix(InputMenu/Select/SelectMenu): exclude cosmetic items from model value type
+* fix(colorMode): improve
+* feat(NavigationMenu): handle `chip` in items
+* feat(NavigationMenu): allow tooltip usage in `horizontal` orientation
+* feat(ScrollArea): add `skipMeasurement` virtualize option
+* fix(Toast): improve animation smoothness
+* fix(Toast): allow `update` to keep toast open and reset duration
+
+## [2.3.0](https://github.com/bitrix24/b24ui/compare/v2.2.1...v2.3.0) (2026-02-12)
+
+### ⚠ BREAKING CHANGES
+
+* **component-meta:** `B24UIMeta` remove from dist. Processing of this data is transferred to the future mcp documentation server.
+
+### Features
+
+* **Calendar:** add `weekNumbers` prop
+* **CommandPalette/InputMenu/SelectMenu:** handle virtualizer `estimateSize` as function
+* **CommandPalette:** add `input` prop
+* **CommandPalette:** add `size` prop
+* **components:** add `by` prop
+* **components:** add `valueKey` prop
+* **Editor:** add `placeholder.mode` prop
+* **Editor:** add `size` prop in menus
+* **Editor:** add `taskList` handler
+* **Editor:** add support for code inside links
+* **Editor:** handle boolean in `image` and `mention` props
+* **EditorMentionMenu:** handle async search with `ignoreFilter` prop
+* **EditorDragHandle:** proxy `nested` / `nestedOptions` props and emit `hover` event
+* **InputMenu/Select/SelectMenu:** expose `viewportRef` for infinite scroll
+* **InputMenu/SelectMenu:** add `clear` prop
+* **Link:** support custom navigate function in vue
+* **ProseTd/ProseTh:** handle `align` prop
+* **Timeline/Stepper:** add wrapper slot and fix dynamic slot conditions
+* **Timeline:** add `select` event
+
+### Bug Fixes
+
+* **Banner:** isolate banner visibility using per-instance CSS variables
+* **Banner:** prevent XSS via id prop injection
+* **CommandPalette/ContextMenu/DropdownMenu:** keyboard selection on link items
+* **CommandPalette:** prevent XSS in search highlight
+* **ContentSurround:** align next link to right on tablet without prev
+* **defineShortcuts:** check shift modifier for special character shortcuts
+* **Editor:** set `contentType` when updating value
+* **Editor:** support all heading levels by default
+* **EditorToolbar:** prevent `onClick` from being called twice on items
+* **EditorToolbar:** prevent disabled dropdown when items have no kind
+* **EditorToolbar:** proxy size prop to dropdown menu
+* **Error:** render as `main` instead of `div`
+* **FileUpload:** emit null when clearing file
+* **FileUpload:** keep input visible when preview is disabled with multiple files
+* **useOverlay:** refine close event argument extraction
+* **CheckboxGroup:** update `update:modelValue` emit type
+* **InputMenu/InputNumber/SelectMenu:** proxy `size` to buttons
+* **InputMenu:** prevent focus on trailing button
+* **Modal/Popover/Slideover:** prevent unexpected close on touch when interacting with other overlays
+* **ChatMessages:** allow message props to override role defaults
+* **useEditorMenu:** rank filtered results by relevance
+* **NavigationMenu:** streamline linkLabelExternalIcon rendering by nesting component into linkLabel
+* **Skeleton:** improve colors
+
 ## [2.2.1](https://github.com/bitrix24/b24ui/compare/v2.1.17...v2.2.1) (2025-12-18)
 
 ### Features

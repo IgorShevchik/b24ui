@@ -59,6 +59,7 @@ import { useLocale } from '../composables/useLocale'
 import { usePortal } from '../composables/usePortal'
 import { omit, get, isArrayOfArray } from '../utils'
 import { pickLinkProps } from '../utils/link'
+import { useComponentUI } from '../composables/useComponentUI'
 import icons from '../dictionary/icons'
 import B24LinkBase from './LinkBase.vue'
 import B24Link from './Link.vue'
@@ -74,6 +75,8 @@ const slots = defineSlots<DropdownMenuContentSlots<T>>()
 
 const { dir } = useLocale()
 // const appConfig = useAppConfig()
+
+const uiProp = useComponentUI('dropdownMenu', props)
 
 const portalProps = usePortal(toRef(() => props.portal))
 /** @memo we not use 'loadingIcon' */
@@ -129,7 +132,7 @@ const groups = computed<DropdownMenuItem[][]>(() =>
         </span>
 
         <span
-          v-if="get(item, props.descriptionKey as string)"
+          v-if="get(item, props.descriptionKey as string) || !!slots[(item.slot ? `${item.slot}-description`: 'item-description') as keyof DropdownMenuContentSlots<T>]"
           data-slot="itemDescription"
           :class="b24ui.itemDescription({ class: [b24uiOverride?.itemDescription, item.b24ui?.itemDescription] })"
         >
@@ -250,7 +253,7 @@ const groups = computed<DropdownMenuItem[][]>(() =>
                 <template v-for="(_, name) in getProxySlots()" #[name]="slotData">
                   <slot :name="(name as keyof DropdownMenuContentSlots<T>)" v-bind="slotData" />
                 </template>
-                <DropdownMenuArrow v-if="!!arrow" v-bind="arrowProps" data-slot="arrow" :class="b24ui.arrow({ class: props.b24ui?.arrow })" />
+                <DropdownMenuArrow v-if="!!arrow" v-bind="arrowProps" data-slot="arrow" :class="b24ui.arrow({ class: uiProp?.arrow })" />
               </B24DropdownMenuContent>
             </DropdownMenu.Sub>
             <DropdownMenu.CheckboxItem
@@ -265,14 +268,13 @@ const groups = computed<DropdownMenuItem[][]>(() =>
             >
               <ReuseItemTemplate :item="item" :index="index" />
             </DropdownMenu.CheckboxItem>
-            <DropdownMenu.Item
-              v-else
-              as-child
-              :disabled="item.disabled"
-              :text-value="get(item, props.labelKey as string)"
-              @select="item.onSelect"
-            >
-              <B24Link v-slot="{ active, ...slotProps }" v-bind="pickLinkProps(item as Omit<DropdownMenuItem, 'type'>)" custom>
+            <B24Link v-else v-slot="{ active, ...slotProps }" v-bind="pickLinkProps(item as Omit<DropdownMenuItem, 'type'>)" custom>
+              <DropdownMenu.Item
+                as-child
+                :disabled="item.disabled"
+                :text-value="get(item, props.labelKey as string)"
+                @select="item.onSelect"
+              >
                 <B24LinkBase
                   v-bind="slotProps"
                   data-slot="item"
@@ -280,8 +282,8 @@ const groups = computed<DropdownMenuItem[][]>(() =>
                 >
                   <ReuseItemTemplate :item="item" :active="active" :index="index" />
                 </B24LinkBase>
-              </B24Link>
-            </DropdownMenu.Item>
+              </DropdownMenu.Item>
+            </B24Link>
           </template>
         </DropdownMenu.Group>
       </div>

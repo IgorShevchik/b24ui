@@ -1,0 +1,6 @@
+@layer theme {
+  [data-platform="bitrix-mobile"].edge-dark {
+    --ui-color-base-0: #fff;
+    --ui-color-base-1: #fff;
+  }
+}

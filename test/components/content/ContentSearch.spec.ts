@@ -2,10 +2,13 @@ import { describe, it, expect } from 'vitest'
 import ContentSearch from '../../../src/runtime/components/content/ContentSearch.vue'
 import type { ContentSearchProps } from '../../../src/runtime/components/content/ContentSearch.vue'
 import ComponentRender from '../../component-render'
+import theme from '#build/b24ui/content/content-search'
 import SignIcon from '@bitrix24/b24icons-vue/main/SignIcon'
 import Cross30Icon from '@bitrix24/b24icons-vue/actions/Cross30Icon'
 
 describe('ContentSearch', () => {
+  const sizes = Object.keys(theme.variants.size) as any
+
   const links = [{
     label: 'Docs',
     to: '/getting-started',
@@ -61,12 +64,12 @@ describe('ContentSearch', () => {
     content: 'We\'ve transitioned from Headless UI to Reka UI.',
     level: 2
   }, {
-    id: '/getting-started#tailwind-css-v4',
-    title: 'Tailwind CSS v4',
+    id: '/getting-started#tailwind-css',
+    title: 'Tailwind CSS',
     titles: [
       'Introduction'
     ],
-    content: 'Bitrix24 UI integrates the latest Tailwind CSS v4.',
+    content: 'Bitrix24 UI integrates the latest Tailwind CSS.',
     level: 2
   }, {
     id: '/getting-started#tailwind-variants',
@@ -130,6 +133,7 @@ describe('ContentSearch', () => {
     // ['with loadingIcon', { props: { ...props, loading: true, loadingIcon: Cross30Icon } }],
     ['without colorMode', { props: { ...props, colorMode: false } }],
     ['with fullscreen', { props: { ...props, fullscreen: true } }],
+    ...sizes.map((size: string) => [`with size ${size}`, { props: { ...props, size } }]),
     ['with b24ui', { props: { ...props, b24ui: { input: '[&>input]:text-lg' } } }],
     ['with class', { props: { ...props, class: 'sm:max-w-5xl' } }]
   ])('renders %s correctly', async (nameOrHtml: string, options: { props?: ContentSearchProps }) => {

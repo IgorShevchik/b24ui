@@ -1,12 +1,18 @@
+import type { NavigationMenuItem, PageLink } from '@bitrix24/b24ui-nuxt'
+import type { Surround } from '../types'
 import { upperName } from '../utils'
-import GroupIcon from '@bitrix24/b24icons-vue/main/GroupIcon'
+import ItemIcon from '@bitrix24/b24icons-vue/crm/ItemIcon'
+import TextIcon from '@bitrix24/b24icons-vue/outline/TextIcon'
 import HomeIcon from '@bitrix24/b24icons-vue/outline/HomeIcon'
 // import CopilotIcon from '@bitrix24/b24icons-vue/outline/CopilotIcon'
 // import ArrowRightLIcon from '@bitrix24/b24icons-vue/outline/ArrowRightLIcon'
 // import ArrowLeftLIcon from '@bitrix24/b24icons-vue/outline/ArrowLeftLIcon'
 
+const normalizePath = (p: string) => (p.endsWith('/') ? p.slice(0, -1) : p)
+
 const components = [
   'accordion',
+  'advice',
   'alert',
   // 'auth-form',
   'avatar',
@@ -87,7 +93,26 @@ const components = [
   'tooltip',
   // 'tree',
   'user'
-].map(component => ({ label: upperName(component.split('/').pop() as string), icon: GroupIcon, to: `/components/${component}` }))
+].map(component => ({ label: upperName(component.split('/').pop() as string), icon: ItemIcon, to: `/components/${component}` }))
+
+const componentsProse = ['show'].map(component => ({
+  label: upperName(component.split('/').pop() as string),
+  icon: TextIcon,
+  to: `/components/prose/${component}`
+}))
+
+const externalLinks: PageLink[] = [
+  {
+    label: 'b24icons',
+    to: 'https://bitrix24.github.io/b24icons/',
+    target: '_blank'
+  },
+  {
+    label: 'b24jssdk',
+    to: 'https://bitrix24.github.io/b24jssdk/',
+    target: '_blank'
+  }
+]
 
 export const useNavigation = () => {
   // const appConfig = useAppConfig()
@@ -96,9 +121,11 @@ export const useNavigation = () => {
     { label: 'Home', icon: HomeIcon, to: '/' }
     // { label: 'Chat', icon: CopilotIcon, to: '/chat' }
   ]
+
   const groups = computed(() => [
     { id: 'links', items },
-    { id: 'components', label: 'Components', items: components }
+    { id: 'components', label: 'Components', items: components },
+    { id: 'components/prose', label: 'Prose', items: componentsProse }
     // {
     //   id: 'dir',
     //   label: 'Direction',
@@ -116,9 +143,26 @@ export const useNavigation = () => {
     // }
   ])
 
+  function findSurround(path: string): Surround<NavigationMenuItem> {
+    const current = normalizePath(path)
+    const list = components
+    const index = list.findIndex(
+      i => normalizePath(String(i.to)) === current
+    )
+
+    if (index === -1) {
+      return [undefined, undefined]
+    }
+
+    return [list[index - 1], list[index + 1]]
+  }
+
   return {
     components,
+    componentsProse,
     groups,
-    items
+    items,
+    externalLinks,
+    findSurround
   }
 }

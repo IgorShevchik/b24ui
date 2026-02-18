@@ -32,9 +32,30 @@ class: 'relative h-176 !p-0 rounded-b-md'
 ---
 ::
 
-::callout{icon-name="GitHubIcon" to="https://github.com/nuxt/ui/blob/v4/docs/app/components/content/examples/editor/EditorExample.vue" aria-label="View source code"}
+::callout{icon-name="GitHubIcon" to="https://github.com/bitrix24/b24ui/blob/main/docs/app/components/content/examples/editor/EditorExample.vue" aria-label="View source code"}
 This example demonstrates a production-ready Editor component. Check out the source code on GitHub.
 ::
+
+::warning
+If you encounter prosemirror-related errors such as `Adding different instances of a keyed plugin` when using the Editor component or its extensions, you may need to add prosemirror packages to the `vite.optimizeDeps.include` list in your `nuxt.config.ts` file. This ensures Vite pre-bundles these dependencies to avoid loading multiple instances.
+
+```ts [nuxt.config.ts]
+export default defineNuxtConfig({
+  vite: {
+    optimizeDeps: {
+      include: [
+        '@bitrix24/b24ui-nuxt > prosemirror-state',
+        '@bitrix24/b24ui-nuxt > prosemirror-transform',
+        '@bitrix24/b24ui-nuxt > prosemirror-model',
+        '@bitrix24/b24ui-nuxt > prosemirror-view',
+        '@bitrix24/b24ui-nuxt > prosemirror-gapcursor'
+      ]
+    }
+  }
+})
+```
+::
+
 
 ### Content
 
@@ -160,12 +181,32 @@ external:
   - modelValue
 class: 'p-8'
 props:
-  modelValue: |
-    <h1>Hello World</h1>
-    <p></p>
+  modelValue: ''
   placeholder: 'Start writing...'
-  class: 'w-full min-h-21'
+  class: 'w-full min-h-7'
 ---
+::
+
+::note
+The `placeholder` prop accepts a string or an object with [PlaceholderOptions](https://tiptap.dev/docs/editor/extensions/functionality/placeholder) and an additional `mode` property:
+- `everyLine`: Display placeholder on every empty line when focused (default).
+- `firstLine`: Display placeholder only on the first line when the editor is empty.
+
+```vue
+<template>
+  <B24Editor :placeholder="{ placeholder: 'Start writing...', mode: 'firstLine' }" />
+</template>
+```
+::
+
+::tip
+By default, placeholders only appear on top-level empty nodes. To show placeholders in nested elements like list items, set `includeChildren` to `true`:
+
+```vue
+<template>
+  <B24Editor :placeholder="{ placeholder: 'Start writing...', includeChildren: true }" />
+</template>
+```
 ::
 
 ::callout{to="https://tiptap.dev/docs/editor/extensions/functionality/placeholder" target="_blank"}
@@ -223,6 +264,7 @@ The Editor component provides these default handlers, which you can reference in
 | `blockquote`{lang="ts-type"} | Toggle blockquotes | |
 | `bulletList`{lang="ts-type"} | Toggle bullet lists | Handles list conversions |
 | `orderedList`{lang="ts-type"} | Toggle ordered lists | Handles list conversions |
+| `taskList`{lang="ts-type"} | Toggle task lists | Handles list conversions |
 | `codeBlock`{lang="ts-type"} | Toggle code blocks | |
 | `horizontalRule`{lang="ts-type"} | Insert horizontal rules | |
 | `paragraph`{lang="ts-type"} | Set paragraph format | |
@@ -236,6 +278,10 @@ The Editor component provides these default handlers, which you can reference in
 | `suggestion`{lang="ts-type"} | Trigger suggestion menu | Inserts `/` character |
 | `mention`{lang="ts-type"} | Trigger mention menu | Inserts `@` character |
 | `emoji`{lang="ts-type"} | Trigger emoji picker | Inserts `:` character |
+
+::warning
+The `taskList` and `textAlign` handlers only work when their respective extensions are installed, as they are not included in the Editor by default.
+::
 
 Here's how to use default handlers in toolbar or suggestion menu items:
 
@@ -425,22 +471,8 @@ name: 'editor-image-upload-node'
 preview: false
 collapse: true
 lang: 'ts'
-name: 'editor-image-upload'
+name: 'editor-image-upload-extension'
 ---
-::
-
-::warning
-If you encounter a `Adding different instances of a keyed plugin` error when creating a custom extension, you may need to add `prosemirror-state` to the vite `optimizeDeps` include list in your `nuxt.config.ts` file.
-
-```ts [nuxt.config.ts]
-export default defineNuxtConfig({
-  vite: {
-    optimizeDeps: {
-      include: ['prosemirror-state']
-    }
-  }
-})
-```
 ::
 
 3. Use the custom extension in the Editor:
@@ -594,6 +626,10 @@ prettier: true
 name: 'editor-completion-example'
 class: '!p-0'
 ---
+::
+
+::note
+The completion extension can be configured with `autoTrigger: true` to automatically suggest completions while typing (disabled by default). You can also manually trigger it with :kbd{value="meta"} :kbd{value="j" class="ms-px"}.
 ::
 
 ::callout{to="https://ai-sdk.dev/" target="_blank"}

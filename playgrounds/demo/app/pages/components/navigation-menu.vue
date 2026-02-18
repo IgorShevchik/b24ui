@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import theme from '#build/b24ui/navigation-menu'
 import type { NavigationMenuItem } from '@bitrix24/b24ui-nuxt'
-import usePageMeta from './../../composables/usePageMeta'
 import Placeholder from '../../components/Placeholder.vue'
-import ExampleGrid from '../../components/ExampleGrid.vue'
-import ExampleCard from '../../components/ExampleCard.vue'
 import ConnectionIcon from '@bitrix24/b24icons-vue/actions/ConnectionIcon'
 import GitHubIcon from '@bitrix24/b24icons-vue/social/GitHubIcon'
 import PulseCircleIcon from '@bitrix24/b24icons-vue/main/PulseCircleIcon'
@@ -13,11 +11,11 @@ import CrmMapIcon from '@bitrix24/b24icons-vue/crm/CrmMapIcon'
 import Settings5Icon from '@bitrix24/b24icons-vue/editor/Settings5Icon'
 import Filter1Icon from '@bitrix24/b24icons-vue/main/Filter1Icon'
 
-usePageMeta.setPageTitle('NavigationMenu')
-
-const isCollapsed = ref(false)
-const isTooltip = ref(false)
-const isPopover = ref(false)
+const orientations = Object.keys(theme.variants.orientation) as Array<keyof typeof theme.variants.orientation>
+const collapsed = ref(false)
+const tooltip = ref(false)
+const popover = ref(false)
+const orientation = ref(orientations[0])
 
 const items = [
   [
@@ -25,13 +23,14 @@ const items = [
       label: 'Current Deals',
       type: 'label' as NavigationMenuItem['type'],
       active: true,
-      badge: 13,
+      badge: 42,
       icon: ConnectionIcon
     },
     {
       label: 'Sales Pipeline',
       type: 'trigger' as NavigationMenuItem['type'],
-      avatar: { src: '/b24ui/demo/avatar/employee.png' },
+      avatar: { src: '/avatar/employee.png' },
+      badge: 24,
       children: [
         {
           label: 'Lead Generation',
@@ -46,6 +45,7 @@ const items = [
         {
           label: 'Negotiations',
           description: 'Deal terms discussion',
+          chip: true,
           icon: MicrophoneOnIcon
         }
       ]
@@ -57,6 +57,7 @@ const items = [
       hint: '500%',
       icon: PulseCircleIcon,
       disabled: true,
+      chip: true,
       to: 'https://helpdesk.bitrix24.com/',
       target: '_blank'
     },
@@ -67,9 +68,7 @@ const items = [
       target: '_blank',
       tooltip: {
         text: 'Open on GitHub',
-        kbds: [
-          '3.8k'
-        ]
+        kbds: ['meta', 'G']
       }
     },
     {
@@ -78,7 +77,9 @@ const items = [
       hint: '500%',
       type: 'trigger' as NavigationMenuItem['type'],
       active: true,
+      activeClass: '',
       defaultOpen: true,
+      chip: false,
       badge: {
         label: '14',
         color: 'air-primary' as const,
@@ -113,59 +114,32 @@ const items = [
 </script>
 
 <template>
-  <ExampleGrid v-once class="mb-4">
-    <ExampleCard title="demo" class="col-span-4">
-      <B24Separator class="mt-3" type="dotted" label="horizontal" />
-      <div class="-mt-[8px] mb-4 flex flex-col justify-center flex-wrap overflow-auto">
-        <div
-          class="isolate px-2 w-full min-w-[720px]"
-        >
-          <div class="relative z-[1] flex flex-row items-center justify-between min-h-(--topbar-height) ">
-            <B24NavigationMenu
-              class="min-h-full shrink-1 w-full"
-              :items="items"
-              orientation="horizontal"
-              :tooltip="isTooltip"
-              :popover="isPopover"
-            />
-          </div>
+  <PlaygroundPage
+    :b24ui="{
+      root: 'overflow-visible'
+    }"
+  >
+    <template #controls>
+      <B24Select v-model="orientation" :items="orientations" placeholder="Orientation" />
+      <template v-if="orientation ==='vertical'">
+        <B24Switch v-model="collapsed" label="isCollapsed" />
+        <B24Switch v-model="tooltip" label="isTooltip" />
+        <B24Switch v-model="popover" label="isPopover" />
+      </template>
+    </template>
 
-          <Placeholder class="h-52 w-full mt-0" />
-        </div>
-      </div>
-    </ExampleCard>
-  </ExampleGrid>
-  <ExampleGrid v-once class="mb-4">
-    <ExampleCard title="demo" class="col-span-4">
-      <B24Separator class="mt-3" type="dotted" label="vertical" />
-      <div
-        class="-mt-[8px] px-2 isolate mb-4 flex flex-row justify-start flex-wrap gap-2"
-      >
-        <B24NavigationMenu
-          :collapsed="isCollapsed"
-          :items="items"
-          orientation="vertical"
-          :tooltip="isTooltip"
-          :popover="isPopover"
-          class="mt-[4px] w-[240px] data-[collapsed=true]:w-[50px]"
-        />
-        <Placeholder class="flex-1 rounded-l-none rounded-tr-none ms-2 w-full shrink">
-          <ExampleCard title="settings" class="backdrop-blur-md bg-(--ui-color-g-content-grey-1)/20">
-            <B24Separator class="my-5" type="dotted" />
-            <div class="flex flex-row gap-4">
-              <B24FormField label="isCollapsed" name="isCollapsed">
-                <B24Switch v-model="isCollapsed" />
-              </B24FormField>
-              <B24FormField label="isTooltip" name="isTooltip">
-                <B24Switch v-model="isTooltip" />
-              </B24FormField>
-              <B24FormField label="isPopover" name="isPopover">
-                <B24Switch v-model="isPopover" />
-              </B24FormField>
-            </div>
-          </ExampleCard>
-        </Placeholder>
-      </div>
-    </ExampleCard>
-  </ExampleGrid>
+    <div
+      :class="['flex gap-2 w-full py-3 px-1', { 'flex-col min-h-52': orientation === 'horizontal' }]"
+    >
+      <B24NavigationMenu
+        :tooltip="tooltip"
+        :popover="popover"
+        :collapsed="collapsed"
+        :items="items"
+        :orientation="orientation"
+        class="data-[orientation=horizontal]:h-max data-[orientation=horizontal]:min-w-120 data-[orientation=vertical]:w-48 data-[orientation=vertical]:data-[collapsed=true]:w-6xl"
+      />
+      <Placeholder class="size-full mt-0" />
+    </div>
+  </PlaygroundPage>
 </template>

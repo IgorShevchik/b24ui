@@ -1,5 +1,5 @@
 <script lang="ts">
-import type { DialogRootProps, DialogRootEmits, DialogContentProps, DialogContentEmits } from 'reka-ui'
+import type { DialogRootProps, DialogRootEmits, DialogContentProps, DialogContentEmits, PointerDownOutsideEvent } from 'reka-ui'
 import type { AppConfig } from '@nuxt/schema'
 import theme from '#build/b24ui/modal'
 import type { ButtonProps, IconComponent, LinkPropsKeys } from '../types'
@@ -93,8 +93,10 @@ import { computed, toRef } from 'vue'
 import { DialogRoot, DialogTrigger, DialogPortal, DialogOverlay, DialogContent, DialogTitle, DialogDescription, DialogClose, VisuallyHidden, useForwardPropsEmits } from 'reka-ui'
 import { reactivePick, createReusableTemplate } from '@vueuse/core'
 import { useAppConfig } from '#imports'
+import { useComponentUI } from '../composables/useComponentUI'
 import { useLocale } from '../composables/useLocale'
 import { usePortal } from '../composables/usePortal'
+import { pointerDownOutside } from '../utils/overlay'
 import { tv } from '../utils/tv'
 import icons from '../dictionary/icons'
 import B24Button from './Button.vue'
@@ -114,6 +116,7 @@ const slots = defineSlots<ModalSlots>()
 
 const { t } = useLocale()
 const appConfig = useAppConfig() as Modal['AppConfig']
+const uiProp = useComponentUI('modal', props)
 
 const rootProps = useForwardPropsEmits(reactivePick(props, 'open', 'defaultOpen', 'modal'), emits)
 const portalProps = usePortal(toRef(() => props.portal))
@@ -131,20 +134,9 @@ const contentEvents = computed(() => {
     }, {} as Record<typeof events[number], (e: Event) => void>)
   }
 
-  if (props.scrollable) {
-    return {
-      // FIXME: This is a workaround to prevent the modal from closing when clicking on the scrollbar https://reka-ui.com/docs/components/dialog#scrollable-overlay but it's not working on Mac OS.
-      pointerDownOutside: (e: any) => {
-        const originalEvent = e.detail.originalEvent
-        const target = originalEvent.target as HTMLElement
-        if (originalEvent.offsetX > target.clientWidth || originalEvent.offsetY > target.clientHeight) {
-          e.preventDefault()
-        }
-      }
-    }
+  return {
+    pointerDownOutside: (e: PointerDownOutsideEvent) => pointerDownOutside(e, { scrollable: props.scrollable })
   }
-
-  return {}
 })
 
 const [DefineContentTemplate, ReuseContentTemplate] = createReusableTemplate()
@@ -164,7 +156,7 @@ const b24ui = computed(() => tv({ extend: tv(theme), ...(appConfig.b24ui?.modal 
     <DefineContentTemplate>
       <DialogContent
         data-slot="content"
-        :class="b24ui.content({ class: [!slots.default && props.class, props.b24ui?.content] })"
+        :class="b24ui.content({ class: [!slots.default && props.class, uiProp?.content] })"
         v-bind="contentProps"
         @after-enter="emits('after:enter')"
         @after-leave="emits('after:leave')"
@@ -188,18 +180,18 @@ const b24ui = computed(() => tv({ extend: tv(theme), ...(appConfig.b24ui?.modal 
           <div
             v-if="!!slots.header || (title || !!slots.title) || (description || !!slots.description) || (props.close || !!slots.close) || !!slots.body"
             data-slot="contentWrapper"
-            :class="b24ui.contentWrapper({ class: props.b24ui?.contentWrapper })"
+            :class="b24ui.contentWrapper({ class: uiProp?.contentWrapper })"
           >
-            <div v-if="!!slots.header || (title || !!slots.title) || (description || !!slots.description) || (props.close || !!slots.close)" data-slot="header" :class="b24ui.header({ class: props.b24ui?.header })">
+            <div v-if="!!slots.header || (title || !!slots.title) || (description || !!slots.description) || (props.close || !!slots.close)" data-slot="header" :class="b24ui.header({ class: uiProp?.header })">
               <slot name="header" :close="close">
-                <div data-slot="wrapper" :class="b24ui.wrapper({ class: props.b24ui?.wrapper })">
-                  <DialogTitle v-if="title || !!slots.title" data-slot="title" :class="b24ui.title({ class: props.b24ui?.title })">
+                <div data-slot="wrapper" :class="b24ui.wrapper({ class: uiProp?.wrapper })">
+                  <DialogTitle v-if="title || !!slots.title" data-slot="title" :class="b24ui.title({ class: uiProp?.title })">
                     <slot name="title">
                       {{ title }}
                     </slot>
                   </DialogTitle>
 
-                  <DialogDescription v-if="description || !!slots.description" data-slot="description" :class="b24ui.description({ class: props.b24ui?.description })">
+                  <DialogDescription v-if="description || !!slots.description" data-slot="description" :class="b24ui.description({ class: uiProp?.description })">
                     <slot name="description">
                       {{ description }}
                     </slot>
@@ -218,19 +210,19 @@ const b24ui = computed(() => tv({ extend: tv(theme), ...(appConfig.b24ui?.modal 
                       :aria-label="t('modal.close')"
                       v-bind="(typeof props.close === 'object' ? props.close : {})"
                       data-slot="close"
-                      :class="b24ui.close({ class: props.b24ui?.close })"
+                      :class="b24ui.close({ class: uiProp?.close })"
                     />
                   </slot>
                 </DialogClose>
               </slot>
             </div>
 
-            <div v-if="!!slots.body" data-slot="body" :class="b24ui.body({ class: props.b24ui?.body, scrollbarThin: Boolean(props.scrollbarThin) })">
+            <div v-if="!!slots.body" data-slot="body" :class="b24ui.body({ class: uiProp?.body, scrollbarThin: Boolean(props.scrollbarThin) })">
               <slot name="body" :close="close" />
             </div>
           </div>
 
-          <div v-if="!!slots.footer" data-slot="footer" :class="b24ui.footer({ class: props.b24ui?.footer })">
+          <div v-if="!!slots.footer" data-slot="footer" :class="b24ui.footer({ class: uiProp?.footer })">
             <slot name="footer" :close="close" />
           </div>
         </slot>
@@ -243,13 +235,13 @@ const b24ui = computed(() => tv({ extend: tv(theme), ...(appConfig.b24ui?.modal 
 
     <DialogPortal v-bind="portalProps">
       <template v-if="scrollable">
-        <DialogOverlay data-slot="overlay" :class="b24ui.overlay({ class: props.b24ui?.overlay })">
+        <DialogOverlay data-slot="overlay" :class="b24ui.overlay({ class: uiProp?.overlay })">
           <ReuseContentTemplate />
         </DialogOverlay>
       </template>
 
       <template v-else>
-        <DialogOverlay v-if="overlay" data-slot="overlay" :class="b24ui.overlay({ class: props.b24ui?.overlay })" />
+        <DialogOverlay v-if="overlay" data-slot="overlay" :class="b24ui.overlay({ class: uiProp?.overlay })" />
 
         <ReuseContentTemplate />
       </template>

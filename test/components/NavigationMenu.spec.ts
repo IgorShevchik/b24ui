@@ -94,6 +94,8 @@ describe('NavigationMenu', () => {
     // Props
     ['with items', { props }],
     ['with modelValue', { props: { ...props, modelValue: 'item-0' } }],
+    ['with defaultValue', { props: { ...props, defaultValue: 'item-0' } }],
+    ['with valueKey', { props: { ...props, valueKey: 'label', defaultValue: 'Documentation' } }],
     ['with labelKey', { props: { ...props, labelKey: 'icon' } }],
     ['with arrow', { props: { ...props, arrow: true, modelValue: 'item-0' } }],
     ['with orientation vertical', { props: { ...props, orientation: 'vertical' as const, modelValue: 'item-0' } }],
@@ -101,6 +103,7 @@ describe('NavigationMenu', () => {
     ['with content orientation vertical', { props: { ...props, contentOrientation: 'vertical' as const, modelValue: 'item-0' } }],
     ...orientations.map((orientation: string) => [`with content orientation ${orientation}`, { props: { ...props, orientation } }]),
     [`with def`, { props: { ...props } }],
+    ['with chip', { props: { items: [[{ label: 'Guide', icon: Cross30Icon, chip: true }, { label: 'Components', icon: SignIcon, chip: { color: 'air-primary' } }]] } }],
     ['with trailingIcon', { props: { ...props, trailingIcon: SignIcon } }],
     ['with externalIcon', { props: { ...props, externalIcon: Cross30Icon } }],
     ['without externalIcon', { props: { ...props, externalIcon: false } }],

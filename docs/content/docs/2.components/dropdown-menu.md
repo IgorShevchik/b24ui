@@ -31,6 +31,8 @@ ignore:
   - ui.content
 external:
   - items
+externalTypes:
+  - DropdownMenuItem[][]
 props:
   items:
     - - label: Bitrix24
@@ -406,7 +408,7 @@ defineShortcuts(extractShortcuts(items))
 ```
 
 ::note
-In this example, :kbd{value="meta"} :kbd{value="E"}, :kbd{value="meta"} :kbd{value="I"} and :kbd{value="meta"} :kbd{value="N"} would trigger the `select` function of the corresponding item.
+In this example, :kbd{value="meta"} :kbd{value="E" class="ms-px"}, :kbd{value="meta"} :kbd{value="I" class="ms-px"} and :kbd{value="meta"} :kbd{value="N" class="ms-px"} would trigger the `select` function of the corresponding item.
 ::
 
 ## API

@@ -36,6 +36,7 @@ export interface EditorDragHandleSlots {
 
 export interface EditorDragHandleEmits {
   nodeChange: [{ node: JSONContent, pos: number }]
+  hover: [{ node: JSONContent, pos: number }]
 }
 </script>
 
@@ -46,6 +47,7 @@ import { useForwardProps } from 'reka-ui'
 import { reactiveOmit, reactivePick } from '@vueuse/core'
 import { defu } from 'defu'
 import { useAppConfig } from '#imports'
+import { useComponentUI } from '../composables/useComponentUI'
 import { buildFloatingUIMiddleware } from '../utils/editor'
 import { transformUI } from '../utils'
 import { tv } from '../utils/tv'
@@ -61,10 +63,11 @@ const props = withDefaults(defineProps<EditorDragHandleProps>(), {
 defineSlots<EditorDragHandleSlots>()
 const emit = defineEmits<EditorDragHandleEmits>()
 
-const dragHandleProps = useForwardProps(reactivePick(props, 'pluginKey', 'onElementDragEnd', 'onElementDragStart', 'getReferencedVirtualElement'))
-const buttonProps = useForwardProps(reactiveOmit(props, 'icon', 'options', 'editor', 'pluginKey', 'onElementDragEnd', 'onElementDragStart', 'getReferencedVirtualElement', 'class', 'b24ui'))
+const dragHandleProps = useForwardProps(reactivePick(props, 'pluginKey', 'nested', 'nestedOptions', 'onElementDragEnd', 'onElementDragStart', 'getReferencedVirtualElement'))
+const buttonProps = useForwardProps(reactiveOmit(props, 'icon', 'options', 'editor', 'pluginKey', 'nested', 'nestedOptions', 'onElementDragEnd', 'onElementDragStart', 'getReferencedVirtualElement', 'class', 'b24ui'))
 
 const appConfig = useAppConfig() as EditorDragHandle['AppConfig']
+const uiProp = useComponentUI('editorDragHandle', props)
 
 // eslint-disable-next-line vue/no-dupe-keys
 const b24ui = computed(() => tv({ extend: tv(theme), ...(appConfig.b24ui?.editorDragHandle || {}) })())
@@ -110,13 +113,19 @@ const currentNodePos = ref<number | null>()
 
 function onNodeChange({ pos }: { pos: number }) {
   currentNodePos.value = pos
+  if (pos == null || pos < 0) return
+
+  const node = props.editor.state.doc.nodeAt(pos)
+  if (node) {
+    emit('hover', { node: node.toJSON(), pos })
+  }
 }
 
 function onClick() {
   if (!props.editor) return
 
   const pos = currentNodePos.value
-  if (pos == null) return
+  if (pos == null || pos < 0) return
 
   const node = props.editor.state.doc.nodeAt(pos)
   if (node) {
@@ -138,7 +147,7 @@ function onClick() {
     :editor="editor"
     :on-node-change="onNodeChange"
     data-slot="root"
-    :class="b24ui.root({ class: [props.b24ui?.root, props.class] })"
+    :class="b24ui.root({ class: [uiProp?.root, props.class] })"
     @click="onClick"
   >
     <slot :b24ui="b24ui" :on-click="onClick">
@@ -149,8 +158,8 @@ function onClick() {
           ...$attrs
         }"
         data-slot="handle"
-        :class="b24ui.handle({ class: [props.b24ui?.handle, props.class] })"
-        :b24ui="transformUI(b24ui, props.b24ui)"
+        :class="b24ui.handle({ class: [uiProp?.handle, props.class] })"
+        :b24ui="transformUI(b24ui, uiProp)"
       />
     </slot>
   </DragHandle>

@@ -3,7 +3,7 @@ import type { CheckboxGroupRootProps, CheckboxGroupRootEmits } from 'reka-ui'
 import type { AppConfig } from '@nuxt/schema'
 import theme from '#build/b24ui/checkbox-group'
 import type { CheckboxProps } from '../types'
-import type { AcceptableValue, GetItemKeys, GetModelValue } from '../types/utils'
+import type { AcceptableValue, GetItemKeys, GetModelValue, GetModelValueEmits } from '../types/utils'
 import type { ComponentConfig } from '../types/tv'
 
 type CheckboxGroup = ComponentConfig<typeof theme, AppConfig, 'checkboxGroup'>
@@ -59,14 +59,14 @@ export interface CheckboxGroupProps<T extends CheckboxGroupItem[] = CheckboxGrou
    * The orientation the checkbox buttons are laid out.
    * @defaultValue 'vertical'
    */
-  orientation?: CheckboxGroupRootProps['orientation']
+  orientation?: CheckboxGroup['variants']['orientation']
   class?: any
   b24ui?: CheckboxGroup['slots'] & CheckboxProps['b24ui']
 }
 
-export type CheckboxGroupEmits<T extends CheckboxGroupItem[] = CheckboxGroupItem[]> = CheckboxGroupRootEmits<T[number]> & {
+export type CheckboxGroupEmits<T extends CheckboxGroupItem[] = CheckboxGroupItem[], VK extends GetItemKeys<T> = 'value'> = Omit<CheckboxGroupRootEmits, 'update:modelValue'> & {
   change: [event: Event]
-}
+} & GetModelValueEmits<T, VK, true>
 
 type SlotProps<T extends CheckboxGroupItem> = (props: { item: T & { id: string } }) => any
 
@@ -82,6 +82,7 @@ import { computed, useId } from 'vue'
 import { CheckboxGroupRoot, useForwardProps, useForwardPropsEmits } from 'reka-ui'
 import { reactivePick } from '@vueuse/core'
 import { useAppConfig } from '#imports'
+import { useComponentUI } from '../composables/useComponentUI'
 import { useFormField } from '../composables/useFormField'
 import { get, omit } from '../utils'
 import { tv } from '../utils/tv'
@@ -94,10 +95,11 @@ const props = withDefaults(defineProps<CheckboxGroupProps<T, VK>>(), {
   orientation: 'vertical',
   color: 'air-primary'
 })
-const emits = defineEmits<CheckboxGroupEmits<T>>()
+const emits = defineEmits<CheckboxGroupEmits<T, VK>>()
 const slots = defineSlots<CheckboxGroupSlots<T>>()
 
 const appConfig = useAppConfig() as CheckboxGroup['AppConfig']
+const uiProp = useComponentUI('checkboxGroup', props)
 
 const rootProps = useForwardPropsEmits(reactivePick(props, 'as', 'modelValue', 'defaultValue', 'orientation', 'loop', 'required'), emits)
 const checkboxProps = useForwardProps(reactivePick(props, 'variant', 'indicator'))
@@ -170,11 +172,11 @@ function onUpdate(value: any) {
     :name="name"
     :disabled="disabled"
     data-slot="root"
-    :class="b24ui.root({ class: [props.b24ui?.root, props.class] })"
+    :class="b24ui.root({ class: [uiProp?.root, props.class] })"
     @update:model-value="onUpdate"
   >
-    <fieldset data-slot="fieldset" :class="b24ui.fieldset({ class: props.b24ui?.fieldset })" v-bind="ariaAttrs">
-      <legend v-if="legend || !!slots.legend" data-slot="legend" :class="b24ui.legend({ class: props.b24ui?.legend })">
+    <fieldset data-slot="fieldset" :class="b24ui.fieldset({ class: uiProp?.fieldset })" v-bind="ariaAttrs">
+      <legend v-if="legend || !!slots.legend" data-slot="legend" :class="b24ui.legend({ class: uiProp?.legend })">
         <slot name="legend">
           {{ legend }}
         </slot>
@@ -187,9 +189,9 @@ function onUpdate(value: any) {
         :size="size"
         :name="name"
         :disabled="item.disabled || disabled"
-        :b24ui="{ ...(props.b24ui ? omit(props.b24ui, ['root']) : undefined), ...(item.b24ui || {}) }"
+        :b24ui="{ ...(uiProp ? omit(uiProp, ['root']) : undefined), ...(item.b24ui || {}) }"
         data-slot="item"
-        :class="b24ui.item({ class: [props.b24ui?.item, item.b24ui?.item, item.class], disabled: item.disabled || disabled })"
+        :class="b24ui.item({ class: [uiProp?.item, item.b24ui?.item, item.class], disabled: item.disabled || disabled })"
       >
         <template v-for="(_, name) in getProxySlots()" #[name]>
           <slot :name="(name as keyof CheckboxGroupSlots<T>)" :item="item" />

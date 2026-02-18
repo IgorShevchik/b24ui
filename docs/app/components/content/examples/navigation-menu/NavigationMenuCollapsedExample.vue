@@ -68,18 +68,18 @@ const items: NavigationMenuItem[] = [
   }
 ]
 
-const idCollapsed = ref(true)
+const isCollapsed = ref(true)
 </script>
 
 <template>
   <div class="flex flex-col items-center gap-[4px]">
     <div class="flex flex-row flex-wrap items-center justify-center gap-[4px]">
-      <B24Switch v-model="idCollapsed" label="collapsed" />
+      <B24Switch v-model="isCollapsed" label="collapsed" />
     </div>
     <B24Separator class="my-[4px]" />
     <B24NavigationMenu
       orientation="vertical"
-      :collapsed="idCollapsed"
+      :collapsed="isCollapsed"
       :items="items"
       class="data-[collapsed=true]:w-[50px]"
     />

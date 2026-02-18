@@ -1,7 +1,7 @@
+import type { HookResult } from '@nuxt/schema'
+import type { ColorModeType, ColorModeTypeLight } from './runtime/types'
 import { defu } from 'defu'
 import { createResolver, defineNuxtModule, addComponentsDir, addImportsDir, addPlugin, installModule, hasNuxtModule } from '@nuxt/kit'
-import type { HookResult } from '@nuxt/schema'
-import type { ColorModeTypeLight } from './runtime/types'
 import { addTemplates } from './templates'
 import { defaultOptions, getDefaultConfig } from './utils/defaults'
 import { name, version } from '../package.json'
@@ -19,6 +19,7 @@ export interface ModuleOptions {
    * @link https://bitrix24.github.io/b24ui/docs/getting-started/installation/nuxt/#colormode
    */
   colorMode?: boolean
+  colorModeInitialValue?: ColorModeType
   colorModeTypeLight?: ColorModeTypeLight
   version?: string
   /**
@@ -102,6 +103,7 @@ export default defineNuxtModule<ModuleOptions>({
     nuxt.hook('vite:extend', async ({ config }) => {
       const plugin = await import('@tailwindcss/vite').then(r => r.default)
       config.plugins ||= []
+      // @ts-expect-error - Vite Plugin type mismatch between @tailwindcss/vite and @nuxt/vite-builder
       config.plugins.push(plugin())
     })
     if (nuxt.options.builder !== '@nuxt/vite-builder') {
@@ -120,6 +122,7 @@ export default defineNuxtModule<ModuleOptions>({
 
     addPlugin({ src: resolve('./runtime/plugins/colors') })
     addPlugin({ src: resolve('./runtime/plugins/ui-version') })
+    addPlugin({ src: resolve('./runtime/plugins/platform') })
 
     if ((hasNuxtModule('@nuxtjs/mdc') || options.mdc) || (hasNuxtModule('@nuxt/content') || options.content)) {
       nuxt.options.mdc = defu(nuxt.options.mdc, {

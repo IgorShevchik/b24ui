@@ -10,25 +10,27 @@ export default {
     base: [
       'text-(--b24ui-typography-label-color)',
       'w-full outline-none *:my-5 *:first:mt-0 *:last:mb-0 sm:px-8 selection:bg-(--ui-color-design-selection-bg)',
-      // Placeholder
-      '[&_:is(p,h1,h2,h3,h4).is-empty]:before:content-[attr(data-placeholder)] [&_:is(p,h1,h2,h3,h4).is-empty]:before:text-(--b24ui-typography-description-color) [&_:is(p,h1,h2,h3,h4).is-empty]:before:float-left [&_:is(p,h1,h2,h3,h4).is-empty]:before:h-0 [&_:is(p,h1,h2,h3,h4).is-empty]:before:pointer-events-none',
-      '[&_li_.is-empty]:before:content-none',
       // Paragraph
       '[&_p]:leading-7',
       // Links
       '[&_a]:text-(--ui-color-accent-main-primary) [&_a]:border-b [&_a]:border-transparent [&_a]:hover:border-(--ui-color-accent-main-primary) [&_a]:font-(--ui-font-weight-medium)',
       '[&_a]:transition-colors',
+      // Code inside links
+      '[&_a>code]:border-dashed [&_a:hover>code]:border-(--ui-color-accent-soft-element-blue) [&_a:hover>code]:text-(--ui-color-accent-main-primary)',
+      '[&_a>code]:transition-colors',
       // Mentions
       '[&_.mention]:text-(--ui-color-accent-main-primary) [&_.mention]:font-(--ui-font-weight-medium)',
       // Headings - shared styles
-      '[&_:is(h1,h2,h3,h4)]:text-(--b24ui-typography-label-color) [&_:is(h1,h2,h3,h4)]:font-(--ui-font-weight-bold)',
+      '[&_:is(h1,h2,h3,h4,h5,h6)]:text-(--b24ui-typography-label-color) [&_:is(h1,h2,h3,h4,h5,h6)]:font-(--ui-font-weight-bold)',
       // Headings - unique styles
       '[&_h1]:text-3xl',
       '[&_h2]:text-2xl',
       '[&_h3]:text-xl',
       '[&_h4]:text-lg',
+      '[&_h5]:text-md',
+      '[&_h6]:text-md',
       // Code inside headings
-      '[&_:is(h1,h2,h3,h4)>code]:border-dashed [&_:is(h1,h2,h3,h4)>code]:font-(--ui-font-weight-bold)',
+      '[&_:is(h1,h2,h3,h4,h5,h6)>code]:border-dashed [&_:is(h1,h2,h3,h4,h5,h6)>code]:font-(--ui-font-weight-bold)',
       '[&_h2>code]:text-xl/6',
       '[&_h3>code]:text-lg/5',
       // Blockquote & HR
@@ -50,5 +52,18 @@ export default {
       // Selected nodes
       '[&_.ProseMirror-selectednode:not(img):not(pre):not([data-node-view-wrapper])]:bg-(--ui-color-design-selection-bg)'
     ].join(' ')
+  },
+  variants: {
+    placeholderMode: {
+      firstLine: {
+        base: '[&_:is(p,h1,h2,h3,h4,h5,h6).is-editor-empty:first-child]:before:content-[attr(data-placeholder)] [&_:is(p,h1,h2,h3,h4,h5,h6).is-editor-empty:first-child]:before:text-(--b24ui-typography-description-color) [&_:is(p,h1,h2,h3,h4,h5,h6).is-editor-empty:first-child]:before:float-start [&_:is(p,h1,h2,h3,h4,h5,h6).is-editor-empty:first-child]:before:h-0 [&_:is(p,h1,h2,h3,h4,h5,h6).is-editor-empty:first-child]:before:pointer-events-none'
+      },
+      everyLine: {
+        base: '[&_:is(p,h1,h2,h3,h4,h5,h6).is-empty]:before:content-[attr(data-placeholder)] [&_:is(p,h1,h2,h3,h4,h5,h6).is-empty]:before:text-(--b24ui-typography-description-color) [&_:is(p,h1,h2,h3,h4,h5,h6).is-empty]:before:float-start [&_:is(p,h1,h2,h3,h4,h5,h6).is-empty]:before:h-0 [&_:is(p,h1,h2,h3,h4,h5,h6).is-empty]:before:pointer-events-none'
+      }
+    }
+  },
+  defaultVariants: {
+    placeholderMode: 'everyLine'
   }
 }
