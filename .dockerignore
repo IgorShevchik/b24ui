@@ -1,8 +1,5 @@
 node_modules
-.nuxt
-.nitro
 .cache
-dist
 .git
 .github
 .env
@@ -16,5 +13,5 @@ Dockerfile
 ## **/.output
 **/.nitro
 **/.cache
-**/dist
+## **/dist
 ## **/node_modules
