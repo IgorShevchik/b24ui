@@ -30,4 +30,5 @@ USER nuxtuser
 
 EXPOSE 80
 
+# Запускаем серверную чать
 CMD ["node", "/usr/src/app/docs/.output/server/index.mjs"]
