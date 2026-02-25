@@ -82,18 +82,20 @@ function onControlCountdownProgress(params: any) {
     </template>
 
     <template #default="{ cardVariant, cardBorderClass }">
-      <Matrix v-slot="props" :attrs="multipleAttrs" :b24ui="{ root: 'max-w-120 w-full' }">
-        <div class="flex flex-wrap items-center justify-center gap-4">
+      <Matrix v-slot="props" :attrs="multipleAttrs" :b24ui="{ root: 'max-w-120' }">
+        <div class="flex flex-wrap items-center justify-between gap-4 w-full h-8">
           <B24Countdown
             v-bind="{ ...props, ...singleAttrs }"
           />
           <B24Countdown
             :icon="Clock2Icon"
             v-bind="{ ...props, ...singleAttrs }"
+            :use-circle="false"
           />
           <B24Countdown
             :avatar="{ src: '/b24ui/demo/avatar/employee.png', text: 'Employee Name' }"
             v-bind="{ ...props, ...singleAttrs }"
+            :use-circle="false"
           />
         </div>
         <B24Countdown
@@ -115,45 +117,7 @@ function onControlCountdownProgress(params: any) {
             Control
           </ProseH5>
         </template>
-        <div class="flex flex-wrap flex-row items-center gap-2">
-          <B24Tooltip text="Start counting">
-            <B24Button
-              :disabled="countingControl"
-              size="sm"
-              :icon="PlayIcon"
-              color="air-primary-success"
-              @click="onControlStart"
-            />
-          </B24Tooltip>
-          <B24Separator decorative orientation="vertical" type="dashed" />
-          <B24Tooltip text="Stop counting">
-            <B24Button
-              :disabled="!countingControl"
-              size="sm"
-              :icon="StopIcon"
-              color="air-primary"
-              @click="onControlStop"
-            />
-          </B24Tooltip>
-          <B24Tooltip text="Abort counting">
-            <B24Button
-              :disabled="!countingControl"
-              size="sm"
-              :icon="StopHandIcon"
-              color="air-tertiary"
-              @click="onControlAbort"
-            />
-          </B24Tooltip>
-          <B24Tooltip text="Restart counting">
-            <B24Button
-              :disabled="!countingControl"
-              size="sm"
-              :icon="Refresh5Icon"
-              color="air-tertiary"
-              @click="onControlRestart"
-            />
-          </B24Tooltip>
-
+        <div class="flex flex-wrap items-center justify-around gap-3">
           <B24Button
             color="air-tertiary-no-accent"
             size="sm"
@@ -176,11 +140,52 @@ function onControlCountdownProgress(params: any) {
                 @click="onControlCountdownEnd"
               />
               <Cross30Icon
+                v-if="countingControl"
                 class="cursor-pointer size-full opacity-0 group-hover:opacity-100 text-legend group-hover:text-legend absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20"
                 @click="onControlCountdownEnd"
               />
             </div>
           </B24Button>
+
+          <div class="flex items-center justify-between gap-2">
+            <B24Tooltip text="Start counting">
+              <B24Button
+                :disabled="countingControl"
+                size="sm"
+                :icon="PlayIcon"
+                color="air-primary-success"
+                @click="onControlStart"
+              />
+            </B24Tooltip>
+            <B24Separator decorative orientation="vertical" type="dashed" />
+            <B24Tooltip text="Stop counting">
+              <B24Button
+                :disabled="!countingControl"
+                size="sm"
+                :icon="StopIcon"
+                color="air-primary"
+                @click="onControlStop"
+              />
+            </B24Tooltip>
+            <B24Tooltip text="Abort counting">
+              <B24Button
+                :disabled="!countingControl"
+                size="sm"
+                :icon="StopHandIcon"
+                color="air-tertiary"
+                @click="onControlAbort"
+              />
+            </B24Tooltip>
+            <B24Tooltip text="Restart counting">
+              <B24Button
+                :disabled="!countingControl"
+                size="sm"
+                :icon="Refresh5Icon"
+                color="air-tertiary"
+                @click="onControlRestart"
+              />
+            </B24Tooltip>
+          </div>
         </div>
       </B24Card>
     </template>
