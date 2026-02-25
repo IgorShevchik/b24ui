@@ -1,8 +1,5 @@
 <script setup lang="ts">
 import theme from '#build/b24ui/description-list'
-import ExampleGrid from '../../components/ExampleGrid.vue'
-import ExampleCard from '../../components/ExampleCard.vue'
-import ExampleCardSubTitle from '../../components/ExampleCardSubTitle.vue'
 import type { ButtonProps } from '@bitrix24/b24ui-nuxt/components/Button.vue'
 import type { DescriptionListItem } from '@bitrix24/b24ui-nuxt/components/DescriptionList.vue'
 import SignIcon from '@bitrix24/b24icons-vue/main/SignIcon'
@@ -12,9 +9,14 @@ import PersonIcon from '@bitrix24/b24icons-vue/main/PersonIcon'
 import Calendar1Icon from '@bitrix24/b24icons-vue/main/Calendar1Icon'
 import CreditDebitCardIcon from '@bitrix24/b24icons-vue/main/CreditDebitCardIcon'
 
-const sizes = Object.keys(theme.variants.size) as Array<keyof typeof theme.variants.size>
+const sizes = Object.keys(theme.variants.size)
 
-const isUseBg = ref(true)
+const multipleAttrs = reactive({
+  size: [theme.defaultVariants.size]
+})
+
+const variants = ['simple', 'icons', 'actions', 'custom']
+const variant = ref<string>(variants[0] ?? '')
 
 const action = (color: string): ButtonProps[] => [
   {
@@ -172,51 +174,30 @@ const itemsCustom: (DescriptionListItem & { value?: Date | string })[] = [
     description: 'Paid with MasterCard'
   }
 ]
+
+const itemsMap: Record<string, DescriptionListItem[]> = {
+  simple: itemsSimple,
+  icons: itemsIcons,
+  actions: itemsActions,
+  custom: itemsCustom
+}
 </script>
 
 <template>
-  <ExampleGrid v-once>
-    <ExampleCard title="simple" :use-bg="isUseBg" class="sm:col-span-2">
-      <B24Separator class="my-3" type="dotted" />
-      <div class="mb-4 flex flex-wrap flex-col items-start justify-start gap-4">
-        <B24DescriptionList
-          legend="Applicant Information"
-          text="Personal details and application."
-          :items="itemsSimple"
-        />
-      </div>
-    </ExampleCard>
+  <PlaygroundPage>
+    <template #controls>
+      <B24Select v-model="multipleAttrs.size" class="w-32" :items="sizes" placeholder="Size" multiple />
+      <B24Select v-model="variant" class="w-40" :items="variants" placeholder="Demo" />
+    </template>
 
-    <ExampleCard title="icons" :use-bg="isUseBg" class="sm:col-span-2">
-      <B24Separator class="my-3" type="dotted" />
-      <div class="mb-4 flex flex-wrap flex-col items-start justify-start gap-4">
+    <Matrix v-slot="props" :attrs="multipleAttrs" :b24ui="{ root: 'max-w-200 w-full' }">
+      <template v-if="variant === 'custom'">
         <B24DescriptionList
           legend="Applicant Information"
           text="Personal details and application."
-          :items="itemsIcons"
-        />
-      </div>
-    </ExampleCard>
-
-    <ExampleCard title="actions" :use-bg="isUseBg" class="sm:col-span-2">
-      <B24Separator class="my-3" type="dotted" />
-      <div class="mb-4 flex flex-wrap flex-col items-start justify-start gap-4">
-        <B24DescriptionList
-          legend="Applicant Information"
-          text="Personal details and application."
-          :items="itemsActions"
-        />
-      </div>
-    </ExampleCard>
-
-    <ExampleCard title="custom" :use-bg="false" class="sm:col-span-2">
-      <B24Separator class="my-3" type="dotted" />
-      <div class="mb-4 flex flex-wrap flex-col items-start justify-start gap-4">
-        <B24DescriptionList
-          legend="Applicant Information"
-          text="Personal details and application."
-          class="ring rounded-md backdrop-blur-md bg-(--ui-color-design-outline-na-bg) ring-0 border-1 border-(--ui-color-divider-vibrant-default)"
+          class="rounded-md backdrop-blur-md bg-(--ui-color-design-outline-na-bg) ring-0 border border-(--ui-color-divider-vibrant-default)"
           :items="itemsCustom"
+          v-bind="props"
           :b24ui="{
             legend: 'sr-only',
             text: 'sr-only',
@@ -229,9 +210,7 @@ const itemsCustom: (DescriptionListItem & { value?: Date | string })[] = [
           <template #description="{ item }">
             <template v-if="item.label === 'Amount'">
               <div class="flex flex-wrap flex-row items-center justify-between gap-4">
-                <div>
-                  {{ item.description }}
-                </div>
+                <div>{{ item.description }}</div>
                 <B24Badge
                   :label="item.value?.toString()"
                   color="air-primary-success"
@@ -255,24 +234,15 @@ const itemsCustom: (DescriptionListItem & { value?: Date | string })[] = [
             />
           </template>
         </B24DescriptionList>
-      </div>
-    </ExampleCard>
-
-    <ExampleCard title="size" :use-bg="isUseBg" class="sm:col-span-2">
-      <template
-        v-for="size in sizes"
-        :key="size"
-      >
-        <ExampleCardSubTitle :title="size as string" />
-        <div class="mb-4 flex flex-wrap items-start justify-start gap-4">
-          <B24DescriptionList
-            legend="Applicant Information"
-            text="Personal details and application."
-            :size="size"
-            :items="itemsSimple"
-          />
-        </div>
       </template>
-    </ExampleCard>
-  </ExampleGrid>
+      <template v-else>
+        <B24DescriptionList
+          legend="Applicant Information"
+          text="Personal details and application."
+          :items="itemsMap[variant] ?? itemsSimple"
+          v-bind="props"
+        />
+      </template>
+    </Matrix>
+  </PlaygroundPage>
 </template>
