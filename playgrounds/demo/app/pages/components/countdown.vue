@@ -83,7 +83,7 @@ function onControlCountdownProgress(params: any) {
 
     <template #default="{ cardVariant, cardBorderClass }">
       <Matrix v-slot="props" :attrs="multipleAttrs" :b24ui="{ root: 'max-w-120' }">
-        <div class="flex flex-wrap items-center justify-between gap-4 w-full h-8">
+        <div class="flex flex-wrap items-center justify-between gap-4 w-full min-h-8">
           <B24Countdown
             v-bind="{ ...props, ...singleAttrs }"
           />

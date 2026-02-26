@@ -233,7 +233,7 @@ defineShortcuts({
         </template>
       </B24Modal>
 
-      <B24Popover :content="{ side: 'right', align: 'start' }">
+      <B24Popover>
         <B24Button label="Select label (popover)" />
 
         <template #content>

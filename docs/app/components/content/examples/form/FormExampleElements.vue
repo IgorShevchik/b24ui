@@ -79,7 +79,7 @@ function resetState() {
 
 <template>
   <B24Form ref="form" :state="state" :schema="schema" class="w-full" @submit="onSubmit">
-    <div class="grid grid-cols-3 gap-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
       <B24FormField label="Input" name="input">
         <B24Input v-model="state.input" placeholder="john@lennon.com" class="w-full" />
       </B24FormField>
@@ -99,19 +99,19 @@ function resetState() {
       </B24FormField>
 
       <B24FormField name="select" label="Select">
-        <B24Select v-model="state.select" :items="items" class="w-full" />
+        <B24Select v-model="state.select" :items="items" :b24ui="{ root: 'w-full' }" />
       </B24FormField>
 
       <B24FormField name="selectMultiple" label="Select (Multiple)">
-        <B24Select v-model="state.selectMultiple" multiple :items="items" class="w-full" />
+        <B24Select v-model="state.selectMultiple" multiple :items="items" :b24ui="{ root: 'w-full' }" />
       </B24FormField>
 
       <B24FormField name="selectMenu" label="Select Menu">
-        <B24SelectMenu v-model="state.selectMenu" :items="items" class="w-full" />
+        <B24SelectMenu v-model="state.selectMenu" :items="items" :b24ui="{ root: 'w-full' }" />
       </B24FormField>
 
       <B24FormField name="selectMenuMultiple" label="Select Menu (Multiple)">
-        <B24SelectMenu v-model="state.selectMenuMultiple" multiple :items="items" class="w-full" />
+        <B24SelectMenu v-model="state.selectMenuMultiple" multiple :items="items" :b24ui="{ root: 'w-full' }" />
       </B24FormField>
 
       <B24FormField name="inputMenu" label="Input Menu">
@@ -137,9 +137,6 @@ function resetState() {
           <B24CheckboxGroup v-model="state.checkboxGroup" legend="Checkbox group" :items="items" />
         </B24FormField>
       </div>
-      <B24FormField name="pin" label="Pin Input" :error-pattern="/(pin)\..*/">
-        <B24PinInput v-model="state.pin" />
-      </B24FormField>
 
       <B24FormField name="file" label="File Input">
         <B24FileUpload
@@ -148,6 +145,10 @@ function resetState() {
           description="PNG (max. 1MB)"
           class="w-full min-h-44"
         />
+      </B24FormField>
+
+      <B24FormField name="pin" label="Pin Input" :error-pattern="/(pin)\..*/">
+        <B24PinInput v-model="state.pin" />
       </B24FormField>
     </div>
 

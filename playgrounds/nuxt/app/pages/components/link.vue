@@ -29,7 +29,7 @@ const classes = reactive({
     <template #default="{ cardVariant, cardBorderClass }">
       <B24Card
         :variant="cardVariant"
-        :class="[cardBorderClass, 'mx-auto']"
+        :class="[cardBorderClass, 'w-full max-w-80 mx-auto']"
       >
         <template #header>
           <ProseH5 class="mb-0">
@@ -37,7 +37,7 @@ const classes = reactive({
           </ProseH5>
         </template>
 
-        <div class="flex flex-col items-start gap-3 text-(length:--ui-font-size-sm)">
+        <div class="flex flex-col items-start gap-3">
           <B24Link v-bind="attrs">
             {{ `${attrs.to ? 'Link' : 'Button'} preview` }}
           </B24Link>

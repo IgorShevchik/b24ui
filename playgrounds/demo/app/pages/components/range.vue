@@ -44,8 +44,8 @@ const airColors = computed(() => {
       v-slot="props"
       :attrs="multipleAttrs"
       :b24ui="{
-        root: 'max-w-80',
-        body: ['overflow-x-auto', singleAttrs.orientation === 'vertical' ? 'h-48 flex flex-row w-max' : 'w-64']
+        root: 'max-w-80 min-w-0',
+        body: singleAttrs.orientation === 'vertical' ? 'h-48 flex flex-row overflow-x-auto' : ''
       }"
     >
       <B24Range v-model="value" v-bind="{ ...singleAttrs, ...props }" />

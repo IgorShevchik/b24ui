@@ -22,7 +22,7 @@ const slots = defineSlots<{
   >
     <template #header>
       <NavbarHeader :to="to" />
-      <div v-if="slots.trailing" class="flex flex-wrap flex-row items-center justify-end gap-3">
+      <div v-if="slots.trailing" class="flex flex-wrap flex-row items-center justify-end gap-3 ml-auto">
         <slot name="trailing" />
       </div>
     </template>

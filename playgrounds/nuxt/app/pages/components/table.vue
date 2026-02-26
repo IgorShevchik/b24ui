@@ -423,13 +423,13 @@ onMounted(() => {
         </B24Popover>
 
         <template #footer>
-          <div class="flex items-center justify-between gap-3">
+          <div class="flex flex-wrap items-center justify-between gap-3">
             <div class="text-(length:--ui-font-size-sm) text-description">
               {{ table?.tableApi?.getFilteredSelectedRowModel().rows.length || 0 }} of
               {{ table?.tableApi?.getFilteredRowModel().rows.length || 0 }} row(s) selected.
             </div>
 
-            <div class="flex items-center gap-1.5">
+            <div class="flex items-center gap-2 overflow-x-auto pb-8">
               <B24Pagination
                 :disabled="!!virtualize"
                 :page="(table?.tableApi?.getState().pagination.pageIndex ?? 0) + 1"

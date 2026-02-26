@@ -137,7 +137,7 @@ const items = [
         :collapsed="collapsed"
         :items="items"
         :orientation="orientation"
-        class="data-[orientation=horizontal]:h-max data-[orientation=horizontal]:min-w-120 data-[orientation=vertical]:w-48 data-[orientation=vertical]:data-[collapsed=true]:w-6xl"
+        class="data-[orientation=horizontal]:h-max data-[orientation=vertical]:w-48 data-[orientation=vertical]:data-[collapsed=true]:w-12"
       />
       <Placeholder class="size-full mt-0" />
     </div>

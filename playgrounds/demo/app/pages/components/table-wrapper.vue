@@ -369,10 +369,9 @@ const singleAttrs = reactive({
           </tbody>
           <tfoot>
             <tr>
-              <th colspan="4" class="text-right">
-                Total:
+              <th colspan="5" class="text-right">
+                Total: 9,825,000
               </th>
-              <td>9,825,000</td>
               <td colspan="4" />
             </tr>
           </tfoot>

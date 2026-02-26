@@ -25,7 +25,7 @@ const { cardVariant, cardBorderClass } = usePlaygroundCardStyles(playgroundConte
       <B24Switch v-model="playgroundContext.isUseBg.value" label="isUseBg" />
     </template>
     <template v-if="slots.controls" #controls>
-      <div class="flex items-center flex-wrap gap-2 py-2 pr-3 max-w-full">
+      <div class="flex items-center justify-around sm:justify-start flex-wrap gap-2 py-2 pr-3 max-w-full">
         <slot name="controls" :playground="playgroundContext" />
       </div>
     </template>
@@ -36,7 +36,7 @@ const { cardVariant, cardBorderClass } = usePlaygroundCardStyles(playgroundConte
     :b24ui="{
       ...b24ui,
       root: [playgroundContext.isUseBg.value ? 'backdrop-blur-xl' : '', 'border-0 border-t-2 lg:border-t-0 rounded-none lg:rounded-(--ui-border-radius-md)', b24ui?.root],
-      body: ['flex items-stretch flex-wrap justify-center md:justify-start gap-4 min-h-0 p-4', b24ui?.body]
+      body: ['flex items-stretch flex-wrap justify-center md:justify-start gap-4 min-h-0 p-4 pb-10', b24ui?.body]
     }"
   >
     <slot v-bind="{ playgroundContext, cardVariant, cardBorderClass }" />
