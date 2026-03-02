@@ -2,7 +2,6 @@
 title: EditorMentionMenu
 description: A mention menu that displays user suggestions when a trigger character is typed in the editor.
 category: editor
-badge: New
 links:
   - label: GitHub
     iconName: GitHubIcon
@@ -83,7 +82,7 @@ You can use multiple `EditorMentionMenu` components on the same editor with diff
   <B24Editor v-slot="{ editor }">
     <B24EditorMentionMenu :editor="editor" :items="users" plugin-key="mentionMenu" />
     <B24EditorMentionMenu :editor="editor" :items="tags" char="#" plugin-key="tagMenu" />
-  </UEditor>
+  </B24Editor>
 </template>
 ```
 ::

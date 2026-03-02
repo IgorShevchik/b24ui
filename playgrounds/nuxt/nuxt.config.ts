@@ -14,9 +14,15 @@ export default defineNuxtConfig({
 
   app: {
     head: {
+      link: [
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      ],
       htmlAttrs: {
         class: 'edge-dark'
       }
+    },
+    rootAttrs: {
+      'data-vaul-drawer-wrapper': ''
     }
   },
 

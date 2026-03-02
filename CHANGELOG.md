@@ -1,28 +1,57 @@
 # Changelog
 
-## [2.3.1](https://github.com/bitrix24/b24ui/compare/v2.3.0...v2.3.1) (2026-02-xx)
+## [2.4.1](https://github.com/bitrix24/b24ui/compare/v2.3.0...v2.4.1) (2026-03-xx)
 
-* feat(plugins\platform): detect `bitrixMobile`
-* fix(Prose.A): add prop `raw`
-* feat(Theme): new component
-* fix(ColorModeImage): add baseURL support for public paths
-* fix(Table): improve perfs with `shallowRef` when watch deep is disabled
-* fix(EditorMentionMenu): use `char` prop as mention prefix instead of always `@`
-* fix(Checkbox/Switch): prevent `data-state` conflict when used inside Tooltip
-* feat(Toaster): prevent duplicate toasts and add pulse animation
-* fix(defineShortcuts): add alt key guard
-* feat(Form): add HTML5 validation to programmatic submit
-* fix(ChatMessages): prevent flash at top before scrolling to bottom on mount
-* fix(InputMenu/Select/SelectMenu): exclude cosmetic items from model value type
-* fix(colorMode): improve
-* feat(NavigationMenu): handle `chip` in items
-* feat(NavigationMenu): allow tooltip usage in `horizontal` orientation
-* feat(ScrollArea): add `skipMeasurement` virtualize option
-* fix(Toast): improve animation smoothness
-* fix(Toast): allow `update` to keep toast open and reset duration
-* fix(InputMenu/SelectMenu): sort filtered items by match relevance
-* fix(components): nullable and optional type support
-* chore(deps): update @nuxt/test-utils + vitest to v4
+* feat(designSystem): add tw `scrollbar-both-edges`
+* fix(Page): make slot presence reactive for variant computation
+* fix(useResizable): use function declaration to prevent false auto-import
+* fix(ContentToc): add relative positioning to content slot
+* docs(navigation-menu): improve examples
+* docs(input): add phone number example
+
+## [2.4.0](https://github.com/bitrix24/b24ui/compare/v2.3.0...v2.4.0) (2026-02-26)
+
+### Features
+
+* **plugins\platform:** detect `bitrixMobile`
+* **Theme:** new component
+* **Toaster:** prevent duplicate toasts and add pulse animation
+* **Form:** add HTML5 validation to programmatic submit
+* **NavigationMenu:** handle `chip` in items
+* **NavigationMenu:** allow tooltip usage in `horizontal` orientation
+* **ScrollArea:** add `skipMeasurement` virtualize option
+* **dictionary:** add menu icon
+* **dictionary:** add panel icon
+* **Theme:** new component
+* **Drawer:** new component
+* **Header|Main|Footer|FooterColumns:** new component
+* **Page|PageAside|PageBody|PageHeader|PageSection|PageFeature:** new component
+* **DashboardNavbar|DashboardPanel|DashboardResizeHandle|DashboardSidebar|DashboardSidebarCollapse|DashboardSidebarToggle|DashboardToolbar:** new component
+* **Header:** add `autoClose` prop
+
+### Bug Fixes
+
+* **Prose.A:** add prop `raw`
+* **ColorModeImage:** add baseURL support for public paths
+* **Table:** improve perfs with `shallowRef` when watch deep is disabled
+* **EditorMentionMenu:** use `char` prop as mention prefix instead of always `@`
+* **Checkbox/Switch:** prevent `data-state` conflict when used inside Tooltip
+* **defineShortcuts:** add alt key guard
+* **ChatMessages:** prevent flash at top before scrolling to bottom on mount
+* **InputMenu/Select/SelectMenu:** exclude cosmetic items from model value type
+* **colorMode:** improve
+* **InputMenu/SelectMenu:** sort filtered items by match relevance
+* **Toast:** allow `update` to keep toast open and reset duration
+* **Toast:** improve animation smoothness
+* **components:** nullable and optional type support
+* **components:** add `fixed` prop to prevent responsive text size reduction
+* **types:** improve `DotPathKeys` accuracy and `GetItemKeys` performance
+* **NavigationMenu:** allow clicking trailing slot in horizontal orientation
+* **NavigationMenu:** unique auto-generated item values for grouped items
+* **defineShortcuts:** allow shifted special character shortcuts
+* **types:** resolve `isArrayOfArray` type return
+* **NavigationMenu:** prevent navigation when clicking trailing area in horizontal orientation
+* **components:** prevent `transformUI` from mutating cached `useComponentUI` value
 
 ## [2.3.0](https://github.com/bitrix24/b24ui/compare/v2.2.1...v2.3.0) (2026-02-12)
 

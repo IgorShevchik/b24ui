@@ -2,6 +2,7 @@
 import type { ContentNavigationItem } from '@nuxt/content'
 import { withTrailingSlash, joinURL } from 'ufo' // withoutTrailingSlash
 import { kebabCase } from 'scule'
+import { useColorMode } from '#b24ui/composables/color-mode/useColorMode'
 import DesignIcon from '@bitrix24/b24icons-vue/outline/DesignIcon'
 import FavoriteIcon from '@bitrix24/b24icons-vue/outline/FavoriteIcon'
 import GitHubIcon from '@bitrix24/b24icons-vue/social/GitHubIcon'
@@ -18,10 +19,6 @@ const config = useRuntimeConfig()
 const appConfig = useAppConfig()
 
 const { isEnabled, open } = useAssistant()
-
-definePageMeta({
-  layout: false
-})
 
 const { data: page } = await useAsyncData(kebabCase(pageUrl), () => queryCollection('docs').path(pageUrl).first())
 if (!page.value) {
@@ -130,15 +127,46 @@ const iconFromIconName = (iconName?: string) => {
   return undefined
 }
 
+const explainIcon = computed(() => appConfig.bxAssistant?.icons?.explain || AiStarsIcon)
+
 const showExplainWithAi = computed(() => {
   return isEnabled.value && appConfig.bxAssistant?.explainWithAi !== false
+})
+
+const colorMode = useColorMode()
+const isDark = computed(() => {
+  return colorMode.value === 'dark'
+})
+const isMounted = ref(false)
+const cardColorContext = computed(() => {
+  if (import.meta.server || !isMounted.value) {
+    return 'light'
+  }
+  return isDark.value ? 'dark' : 'light'
+})
+
+onMounted(() => {
+  isMounted.value = true
 })
 </script>
 
 <template>
-  <NuxtLayout name="docs">
+  <B24DashboardPanel
+    id="doc"
+    :b24ui="{ body: 'p-0 lg:px-2 lg:py-4 items-stretch justify-between scrollbar-transparent scrollbar-both-edges' }"
+  >
     <template #header>
-      <template v-if="page">
+      <Header />
+    </template>
+
+    <template v-if="page" #body>
+      <B24Page
+        :b24ui="{
+          root: 'lg:gap-4',
+          center: 'flex flex-col lg:gap-4',
+          right: 'lg:col-span-2 order-first lg:order-last lg:top-[0px]'
+        }"
+      >
         <PageHeader>
           <template #title>
             {{ page.title }}
@@ -161,7 +189,7 @@ const showExplainWithAi = computed(() => {
           <template #head-links>
             <B24Button
               v-if="showExplainWithAi"
-              :icon="AiStarsIcon"
+              :icon="explainIcon"
               label="Explain with AI"
               color="air-selection"
               size="sm"
@@ -191,35 +219,46 @@ const showExplainWithAi = computed(() => {
                   v-bind="link.avatar"
                   size="2xs"
                   :alt="`${link.label}`"
-                  :b24ui="{
-                    root: 'mr-[5px]',
-                    image: 'w-[18px] h-[12px]'
-                  }"
+                  :b24ui="{ root: 'mr-[5px]', image: 'w-[18px] h-[12px]' }"
                 />
               </template>
             </B24Button>
           </template>
         </PageHeader>
-      </template>
-    </template>
-    <template v-if="page?.body?.toc?.links?.length" #right>
-      <B24Card
-        variant="outline-alt"
-        class="lg:mt-[22px] lg:sticky lg:top-[8px] rounded-none lg:rounded-(--ui-border-radius-md) backdrop-blur-md border-0"
-        :b24ui="{ body: 'px-[22px] py-0 sm:ps-[22px] lg:ps-[10px] lg:pe-[4px] sm:py-0 pt-[12px] sm:pt-[12px] lg:py-[15px]' }"
-      >
-        <B24ContentToc
-          :links="page.body.toc.links"
-          class="p-0 lg:overflow-y-auto scrollbar-thin scrollbar-transparent lg:h-[calc(100vh-var(--topbar-height)-22px-22px)]"
-        />
-      </B24Card>
-    </template>
 
-    <template v-if="page">
-      <ContentRenderer v-if="page.body" :value="page" />
-      <B24Separator v-if="surround?.filter(Boolean).length" class="my-4" />
+        <template v-if="page?.body?.toc?.links?.length" #right>
+          <B24PageAside :b24ui="{ root: 'block' }">
+            <B24Card
+              variant="outline-alt"
+              class="rounded-none lg:rounded-(--ui-border-radius-md) backdrop-blur-md border-0"
+              :b24ui="{ body: 'px-3 py-0 sm:ps-[22px] lg:ps-2.5 lg:pe-1 sm:py-0 pt-3 sm:pt-3 lg:py-3' }"
+            >
+              <B24ContentToc
+                :links="page.body.toc.links"
+                class="p-0 lg:overflow-y-auto scrollbar-thin scrollbar-transparent lg:h-[calc(100vh-var(--topbar-height)-22px-22px)]"
+              />
+            </B24Card>
+          </B24PageAside>
+        </template>
 
-      <B24ContentSurround :surround="(surround as any)" />
+        <B24Card
+          v-if="page"
+          as="main"
+          :class="cardColorContext"
+          :b24ui="{
+            root: 'rounded-none lg:rounded-(--ui-border-radius-md)',
+            body: 'p-3'
+          }"
+        >
+          <ContentRenderer v-if="page.body" :value="page" />
+
+          <B24Separator v-if="surround?.filter(Boolean).length" class="my-4" />
+
+          <B24ContentSurround :surround="(surround as any)" />
+        </B24Card>
+      </B24Page>
+
+      <Footer />
     </template>
-  </NuxtLayout>
+  </B24DashboardPanel>
 </template>

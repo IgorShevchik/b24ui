@@ -33,6 +33,10 @@ const pages = [
   '/docs/components/sidebar-layout/',
   '/docs/components/container/',
   '/docs/components/error/',
+  '/docs/components/theme/',
+  '/docs/components/footer/',
+  '/docs/components/header/',
+  '/docs/components/main/',
   // endregion ////
   // region Element ////
   '/docs/components/advice/',
@@ -91,36 +95,42 @@ const pages = [
   '/docs/components/pagination/',
   '/docs/components/stepper/',
   '/docs/components/tabs/',
+  '/docs/components/footer-columns/',
   // endregion ////
   // region Overlay ////
   '/docs/components/context-menu/',
-  // '/docs/components/drawer/',
+  '/docs/components/drawer/',
   '/docs/components/dropdown-menu/',
   '/docs/components/modal/',
   '/docs/components/popover/',
   '/docs/components/slideover/',
   '/docs/components/toast/',
   '/docs/components/tooltip/',
-  // // '/docs/components/confetti/',
   // endregion ////
   // region Page ////
+  '/docs/components/page/',
+  '/docs/components/page-aside/',
+  '/docs/components/page-body/',
   '/docs/components/page-card/',
+  '/docs/components/page-feature/',
   '/docs/components/page-columns/',
   '/docs/components/page-grid/',
+  '/docs/components/page-header/',
   '/docs/components/page-links/',
   '/docs/components/page-list/',
+  '/docs/components/page-section/',
   // endregion ////
   // region Dashboard ////
   '/docs/components/dashboard-group/',
-  // // '/docs/components/dashboard-navbar/',
-  // // '/docs/components/dashboard-panel/',
-  // // '/docs/components/dashboard-resize-handle/',
+  '/docs/components/dashboard-navbar/',
+  '/docs/components/dashboard-panel/',
+  '/docs/components/dashboard-resize-handle/',
   '/docs/components/dashboard-search/',
   '/docs/components/dashboard-search-button/',
-  // // '/docs/components/dashboard-sidebar/',
-  // // '/docs/components/dashboard-sidebar-collapse/',
-  // // '/docs/components/dashboard-sidebar-toggle/',
-  // // '/docs/components/dashboard-toolbar/',
+  '/docs/components/dashboard-sidebar/',
+  '/docs/components/dashboard-sidebar-collapse/',
+  '/docs/components/dashboard-sidebar-toggle/',
+  '/docs/components/dashboard-toolbar/',
   // endregion ////
   // region Chat ////
   '/docs/components/chat-message/',
@@ -196,11 +206,21 @@ const pagesFrameExamples = [
   '/examples/sidebar-layout-inner-example/',
   '/examples/banner-example/',
   '/examples/banner-with-title-example/',
-  '/examples/content-search-example/'
+  '/examples/content-search-example/',
+  '/examples/header-menu-example/',
+  '/examples/header-toggle-example/',
+  '/examples/header-toggle-side-example/',
+  '/examples/dashboard-navbar-toggle-example/',
+  '/examples/dashboard-navbar-toggle-side-example/',
+  '/examples/dashboard-sidebar-mode-example/',
+  '/examples/dashboard-sidebar-toggle-example/',
+  '/examples/dashboard-sidebar-toggle-side-example/',
+  '/examples/dashboard-sidebar-open-example/'
 ]
 
 const pagesService = [
   '/api/countries.json',
+  '/api/phone-codes.json',
   '/api/locales.json',
   '/404.html'
 ]
