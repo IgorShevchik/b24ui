@@ -57,7 +57,7 @@ const airColors = computed(() => {
       <B24Switch v-model="singleAttrs.disabled" label="Disabled" />
     </template>
 
-    <Matrix v-slot="props" :attrs="multipleAttrs" :b24ui="{ root: 'max-w-80' }">
+    <Matrix v-slot="props" :attrs="multipleAttrs" :b24ui="{ root: 'max-w-200' }">
       <B24RadioGroup v-model="value" :items="items" default-value="2" v-bind="{ ...singleAttrs, ...props }" />
       <B24RadioGroup v-model="value" legend="Items with description" :items="itemsWithDescription" v-bind="{ ...singleAttrs, ...props }" />
       <B24RadioGroup v-model="value" :items="items" v-bind="{ ...singleAttrs, ...props }">

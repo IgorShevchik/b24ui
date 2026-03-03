@@ -20,14 +20,12 @@ const { cardVariant, cardBorderClass } = usePlaygroundCardStyles(playgroundConte
 </script>
 
 <template>
-  <Navbar>
+  <Navbar :b24ui="{ body: 'justify-around sm:justify-start flex-wrap gap-2 py-2' }">
     <template #trailing>
       <B24Switch v-model="playgroundContext.isUseBg.value" label="isUseBg" />
     </template>
     <template v-if="slots.controls" #controls>
-      <div class="flex items-center justify-around sm:justify-start flex-wrap gap-2 py-2 pr-3 max-w-full">
-        <slot name="controls" :playground="playgroundContext" />
-      </div>
+      <slot name="controls" :playground="playgroundContext" />
     </template>
   </Navbar>
 

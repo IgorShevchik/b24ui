@@ -47,19 +47,19 @@ const singleAttrs = reactive({
       </B24FieldGroup>
 
       <B24FieldGroup v-bind="{ ...props, ...singleAttrs }" class="w-full">
-        <B24Button loading-auto use-clock @click="onClick">
+        <B24Button loading-auto use-clock class="flex-1 min-w-0" @click="onClick">
           Button
         </B24Button>
-        <B24Button loading-auto use-clock @click="onClick">
+        <B24Button loading-auto use-clock class="flex-1 min-w-0" @click="onClick">
           Button
         </B24Button>
-        <B24Button loading-auto use-clock @click="onClick">
+        <B24Button loading-auto use-clock class="flex-1 min-w-0" @click="onClick">
           Button
         </B24Button>
       </B24FieldGroup>
 
       <B24FieldGroup v-bind="{ ...props, ...singleAttrs }" class="w-full">
-        <B24Input name="search" placeholder="Search&hellip;" aria-label="Search" type="search" />
+        <B24Input class="flex-1" name="search" placeholder="Search&hellip;" aria-label="Search" type="search" />
         <B24Button
           loading-auto
           use-clock
@@ -70,7 +70,14 @@ const singleAttrs = reactive({
       </B24FieldGroup>
 
       <B24FieldGroup v-bind="{ ...props, ...singleAttrs }" class="w-full">
-        <B24Select class="w-full" :items="items" name="some_value" placeholder="Choose a value&hellip;" aria-label="Choose a value" />
+        <B24Select
+          class="w-full"
+          :items="items"
+          name="some_value"
+          placeholder="Choose a value&hellip;"
+          aria-label="Choose a value"
+          :b24ui="{ root: 'flex-1 min-w-0' }"
+        />
         <B24Button
           loading-auto
           use-clock
@@ -82,11 +89,11 @@ const singleAttrs = reactive({
 
       <B24FieldGroup v-bind="{ ...props, ...singleAttrs }" class="w-full">
         <B24Badge color="air-tertiary" label="https://" />
-        <B24Input class="w-full" type="url" placeholder="www.example.com" />
+        <B24Input class="flex-1" type="url" placeholder="www.example.com" />
       </B24FieldGroup>
 
       <B24FieldGroup v-bind="{ ...props, ...singleAttrs }" class="w-full">
-        <B24InputNumber class="w-full" placeholder="Some number" />
+        <B24InputNumber class="flex-1" placeholder="Some number" />
         <B24Button
           loading-auto
           use-clock
