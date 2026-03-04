@@ -69,7 +69,10 @@ function scrollToBottom() {
 </script>
 
 <template>
-  <PlaygroundPage :b24ui="{ body: 'relative size-full rounded-lg overflow-hidden p-0 sm:p-0' }">
+  <PlaygroundPage
+    to="https://bitrix24.github.io/b24ui/docs/composables/define-shortcuts/"
+    :b24ui="{ body: 'relative size-full rounded-lg overflow-hidden p-0 sm:p-0' }"
+  >
     <B24SidebarLayout
       is-inner
       :b24ui="{
