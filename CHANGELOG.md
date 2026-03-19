@@ -1,13 +1,48 @@
 # Changelog
 
-## [2.4.1](https://github.com/bitrix24/b24ui/compare/v2.3.0...v2.4.1) (2026-03-xx)
+## [2.4.2](https://github.com/bitrix24/b24ui/compare/v2.4.1...v2.4.2) (2026-03-19)
 
-* feat(designSystem): add tw `scrollbar-both-edges`
-* fix(Page): make slot presence reactive for variant computation
-* fix(useResizable): use function declaration to prevent false auto-import
-* fix(ContentToc): add relative positioning to content slot
-* docs(navigation-menu): improve examples
-* docs(input): add phone number example
+### Features
+
+* **platform** added utilities for determining the execution environment
+* **DashboardToolbar** improve theme
+* **NavigationMenu** improve theme and colors for `light`
+* **DashboardNavbar** improve theme
+* **DropdownMenu** improve theme
+* **DashboardSidebar** improve theme
+* **DashboardPanel** improve theme
+* **Table** improve theme
+
+### Bug Fixes
+
+* **Input|Textarea:** padding for `noPadding+loading`
+* **components:** improve `disabled` state
+* **CommandPalette:** improve `back` button and divide color
+
+### Chore
+* **platform:** improve
+* **air:** mark `--air-theme-bg-image-blurred` as `deprecate`. Now we use something like `backdrop-blur-md` or `backdrop-blur-md`
+
+## [2.4.1](https://github.com/bitrix24/b24ui/compare/v2.4.0...v2.4.1) (2026-03-04)
+
+### Features
+
+* **designSystem:** add tw `scrollbar-both-edges`
+* **colorMode:** add appConfig colorModeStorageKey
+
+### Bug Fixes
+
+* **Page:** make slot presence reactive for variant computation
+* **useResizable:** use function declaration to prevent false auto-import
+* **ContentToc:** add relative positioning to content slot
+* **components:** improve arrow styling with `stroke-default` and `fill-bg`
+* **components:** improve slots return types and tests
+
+### Docs
+
+* **deprecated:** mark components as deprecated
+* **navigation-menu:** improve examples
+* **input:** add phone number example
 
 ## [2.4.0](https://github.com/bitrix24/b24ui/compare/v2.3.0...v2.4.0) (2026-02-26)
 

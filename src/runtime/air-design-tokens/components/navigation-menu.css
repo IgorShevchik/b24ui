@@ -1,10 +1,5 @@
 /**
  * NavigationMenu
- * @see /bitrix/templates/bitrix24/components/bitrix/menu/left_vertical/style.css
- * @see /bitrix/templates/bitrix24/dist/bitrix24.bundle.css
- * @see /bitrix/components/bitrix/main.interface.buttons/templates/.default/style.css
- * @todo get all variables
- * @memo fix *-content-light .air-header
  * --b24ui-header-height: calc(var(--spacing)*16); => 64
  */
 
@@ -18,6 +13,7 @@
 
 @layer components {
   /**
+   * @deprecate This rule is deprecated and will be removed in version 3.0.0
    * Sidebar
    */
   .air-sidebar {
@@ -71,6 +67,20 @@
   .menu-item-vertical-active {
     --menu-item-color: var(--menu-item-color-active);
     --menu-item-background: var(--menu-item-background-active);
+  }
+
+  /**
+   * @memo Special color for light mode - see b24.settings
+   */
+  .light {
+    .menu-item-vertical {
+      --menu-item-background-active: var(--ui-color-design-filled-bg);
+      --menu-item-color-active: var(--ui-color-base-white-fixed);
+    }
+    .menu-item-vertical-active {
+      --menu-item-background: var(--ui-color-design-filled-bg);
+      --menu-item-color: var(--ui-color-base-white-fixed);
+    }
   }
 
   .light,
@@ -142,6 +152,8 @@
   }
 
   /**
+   * @deprecate This rule (* .air-header) is deprecated and will be removed in version 3.0.0
+   *
    * Header
    * @see /bitrix/templates/bitrix24/dist/bitrix24.bundle.css
    */

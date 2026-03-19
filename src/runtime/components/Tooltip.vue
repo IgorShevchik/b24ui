@@ -1,5 +1,6 @@
 <script lang="ts">
 import type { TooltipRootProps, TooltipRootEmits, TooltipContentProps, TooltipContentEmits, TooltipArrowProps, TooltipTriggerProps, PopoverArrowProps } from 'reka-ui'
+import type { VNode } from 'vue'
 import type { AppConfig } from '@nuxt/schema'
 import theme from '#build/b24ui/tooltip'
 import type { KbdProps } from '../types'
@@ -41,8 +42,8 @@ export interface TooltipProps extends TooltipRootProps {
 export interface TooltipEmits extends TooltipRootEmits {}
 
 export interface TooltipSlots {
-  default(props: { open: boolean }): any
-  content(props: { b24ui: Tooltip['b24ui'] }): any
+  default?(props: { open: boolean }): VNode[]
+  content?(props: { b24ui: Tooltip['b24ui'] }): VNode[]
 }
 </script>
 
@@ -70,7 +71,7 @@ const uiProp = useComponentUI('tooltip', props)
 const rootProps = useForwardPropsEmits(reactivePick(props, 'defaultOpen', 'open', 'delayDuration', 'disableHoverableContent', 'disableClosingTrigger', 'ignoreNonKeyboardFocus'), emits)
 const portalProps = usePortal(toRef(() => props.portal))
 const contentProps = toRef(() => defu(props.content, { side: 'bottom', sideOffset: 8, collisionPadding: 8 }) as TooltipContentProps)
-const arrowProps = toRef(() => defu(typeof props.arrow === 'boolean' ? {} : props.arrow, { width: 12, height: 7 }) as PopoverArrowProps)
+const arrowProps = toRef(() => defu(typeof props.arrow === 'boolean' ? {} : props.arrow, { width: 20, height: 10 }) as PopoverArrowProps)
 
 // eslint-disable-next-line vue/no-dupe-keys
 const b24ui = computed(() => tv({ extend: tv(theme), ...(appConfig.b24ui?.tooltip || {}) })({
