@@ -9,7 +9,6 @@ links:
   - label: Nuxt UI
     iconName: NuxtIcon
     to: https://ui.nuxt.com/docs/components/dashboard-panel
-navigation.badge: New
 ---
 
 ## Usage
@@ -77,12 +76,12 @@ props:
 slots:
   body: |
 
-    <Placeholder class="ms-2 h-96" />
+    <Placeholder class="ms-2 mt-4 h-96" />
 class: '!p-0 !justify-start'
 ---
 
 #body
-:placeholder{class="ms-2 h-96"}
+:placeholder{class="ms-2 mt-4 h-96"}
 ::
 
 ### Size
@@ -105,12 +104,12 @@ props:
 slots:
   body: |
 
-    <Placeholder class="ms-2 h-96" />
+    <Placeholder class="ms-2 mt-4 h-96" />
 class: '!p-0 !justify-start'
 ---
 
 #body
-:placeholder{class="ms-2 h-96"}
+:placeholder{class="ms-2 mt-4 h-96"}
 ::
 
 ::tip{to="/docs/components/dashboard-group/#props"}

@@ -9,7 +9,6 @@ links:
   - label: Nuxt UI
     iconName: NuxtIcon
     to: https://ui.nuxt.com/docs/components/dashboard-navbar
-navigation.badge: New
 ---
 
 ## Usage
@@ -90,7 +89,9 @@ You can pass any property from the [Button](/docs/components/button/) component 
 
 ::component-example
 ---
-iframe: true
+iframe:
+  height: 500px;
+  class: 'max-w-[1000px]'
 iframeMobile: true
 overflowHidden: true
 name: 'dashboard-navbar-toggle-example'

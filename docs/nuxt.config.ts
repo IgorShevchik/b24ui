@@ -194,7 +194,8 @@ const pages = [
   '/docs/composables/use-confetti/',
   '/docs/composables/use-overlay/',
   '/docs/composables/use-toast/',
-  '/docs/composables/use-speech-recognition/'
+  '/docs/composables/use-speech-recognition/',
+  '/docs/composables/use-device/'
   // endregion ////
 ]
 
@@ -270,7 +271,7 @@ export default defineNuxtConfig({
     buildAssetsDir: '/_nuxt/',
     head: {
       link: [
-        { rel: 'icon', type: 'image/x-icon', href: `${baseUrl}/favicon.ico` }
+        { rel: 'icon', type: 'image/x-icon', href: `${baseUrl}/favicon.ico?v=2` }
       ],
       htmlAttrs: { class: 'edge-dark' }
     },
