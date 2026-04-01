@@ -15,8 +15,8 @@ links:
   - label: TanStack Virtual
     avatar:
       src: https://github.com/tanstack.png
+      loading: lazy
     to: https://tanstack.com/virtual/latest
-
 ---
 
 ## Usage
@@ -74,7 +74,7 @@ options:
 Use the `virtualize` prop to render only the items currently in view, significantly boosting performance when working with large datasets.
 
 ::note
-When virtualization is **enabled**, customize spacing via the `virtualize` prop options like `gap`, `paddingStart`, and `paddingEnd`. Otherwise, use the `ui` prop to apply classes like `gap p-4` on the `viewport` slot.
+When virtualization is **enabled**, customize spacing via the `virtualize` prop options like `gap`, `paddingStart`, and `paddingEnd`. Otherwise, use the `b24ui` prop to apply classes like `gap p-4` on the `viewport` slot.
 ::
 
 ::tip
@@ -169,6 +169,10 @@ overflowHidden: true
 name: 'scroll-area-infinite-scroll-example'
 class: '!p-0'
 ---
+::
+
+::note
+This example uses `useLazyFetch` with `server: false` to fetch data on the client without blocking the initial render. The loading state checks for both `pending` and `idle` status to display a loading indicator before and during the fetch. Additional pages are loaded as the user scrolls.
 ::
 
 ### With default slot

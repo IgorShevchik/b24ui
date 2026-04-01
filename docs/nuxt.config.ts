@@ -26,6 +26,7 @@ const pages = [
   '/docs/getting-started/integrations/content/',
   '/docs/getting-started/integrations/ssr/',
   '/docs/getting-started/ai/llms-txt/',
+  '/docs/getting-started/ai/skills/',
   // endregion ////
   '/docs/components/',
   // region Layout ////
@@ -244,20 +245,11 @@ export default defineNuxtConfig({
     '@nuxtjs/mcp-toolkit',
     'nuxt-component-meta',
     'nuxt-llms',
+    // @memo off this
     'nuxt-og-image',
-    // @memo off this -> use in nuxt-og-image
-    'nuxt-site-config',
-    'motion-v/nuxt',
-    (_, nuxt) => {
-      nuxt.hook('components:dirs', (dirs) => {
-        dirs.unshift({
-          path: resolve('./app/components/content/examples'),
-          pathPrefix: false,
-          prefix: '',
-          global: true
-        })
-      })
-    }
+    // @memo off this
+    'nuxt-site-config', // use in nuxt-og-image
+    'motion-v/nuxt'
   ],
 
   ssr: true,
@@ -319,7 +311,6 @@ export default defineNuxtConfig({
     // '/composables/**': { redirect: { to: '/docs/composables/**', statusCode: 301 }, prerender: false },
     // v4 redirects - default root pages
     '/docs': { redirect: '/docs/getting-started/', prerender: false },
-    // // '/docs/components': { redirect: '/docs/components/app/', prerender: false },
     '/docs/composables': { redirect: '/docs/composables/define-shortcuts/', prerender: false },
     // v4 redirects - default shadow pages
     '/docs/getting-started/installation/': { redirect: '/docs/getting-started/installation/nuxt/', prerender: false },
@@ -522,7 +513,7 @@ export default defineNuxtConfig({
     name: 'Bitrix24 UI',
     version: '1.0.0',
     route: `/mcp/`, // ${baseUrl}
-    browserRedirect: '/docs/getting-started/'
+    browserRedirect: '/docs/getting-started/' // '/docs/getting-started/ai/mcp'
   },
 
   // @memo off for generate
