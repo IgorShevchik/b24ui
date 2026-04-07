@@ -24,7 +24,7 @@ export default defineLocale<Messages>({
       prevYear: 'Ano anterior'
     },
     carousel: {
-      dots: 'Selecione um slide para exibir',
+      dots: 'Selecione o slide para exibir',
       goto: 'Ir para {slide}',
       next: 'Próximo',
       prev: 'Anterior'
@@ -45,7 +45,7 @@ export default defineLocale<Messages>({
     commandPalette: {
       back: 'Voltar',
       close: 'Fechar',
-      noData: 'Nenhum dado encontrado',
+      noData: 'Sem dados',
       noMatch: 'Nenhuma correspondência encontrada',
       placeholder: 'Digite um comando ou pesquise...'
     },
@@ -58,6 +58,10 @@ export default defineLocale<Messages>({
     },
     contentToc: {
       title: 'Nesta página'
+    },
+    dropdownMenu: {
+      noMatch: 'Nenhum dado correspondente',
+      search: 'Pesquisar…'
     },
     dashboardSearch: {
       theme: 'Tema'
@@ -85,7 +89,7 @@ export default defineLocale<Messages>({
     },
     inputMenu: {
       create: 'Criar "{label}"',
-      noData: 'Nenhum dado encontrado',
+      noData: 'Sem dados',
       noMatch: 'Nenhuma correspondência encontrada'
     },
     inputNumber: {
@@ -113,9 +117,13 @@ export default defineLocale<Messages>({
         copy: 'Copiar'
       }
     },
+    sidebar: {
+      close: 'Fechar',
+      toggle: 'Alternar'
+    },
     selectMenu: {
       create: 'Criar "{label}"',
-      noData: 'Nenhum dado encontrado',
+      noData: 'Sem dados',
       noMatch: 'Nenhuma correspondência encontrada',
       search: 'Pesquisar...'
     },
@@ -123,7 +131,7 @@ export default defineLocale<Messages>({
       close: 'Fechar'
     },
     table: {
-      noData: 'Nenhum dado encontrado'
+      noData: 'Sem dados'
     },
     toast: {
       close: 'Fechar'

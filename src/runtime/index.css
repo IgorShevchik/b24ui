@@ -27,8 +27,8 @@
 
 @layer theme {
   :root, :host {
-    --b24ui-header-height: --spacing(14.5); /* 58px */
-    --b24ui-container-width: 90rem; /* 1440px */
+    --b24ui-header-height: 3.625rem;
+    --b24ui-container-width: 90rem;
   }
 }
 
@@ -38,6 +38,9 @@
   --text-color-description: var(--b24ui-typography-description-color);
   --text-color-legend: var(--b24ui-typography-legend-color);
   --text-color-label: var(--b24ui-typography-label-color);
+
+  --text-color-primary: var(--ui-color-accent-main-primary);
+  --text-color-primary-copilot: var(--ui-color-copilot-accent-primary);
 
   --background-color-default: var(--ui-color-bg-content-primary);
   --background-color-muted: var(--ui-color-design-tinted-na-bg);
@@ -49,4 +52,14 @@
   --border-color-muted: var(--ui-color-design-tinted-na-stroke);
   --border-color-accented: var(--ui-color-accent-soft-element-blue);
   --border-color-bg: var(--ui-color-bg-content-primary);
+
+  --ring-color-default: var(--ui-color-divider-default);
+  --ring-color-muted: var(--ui-color-divider-less);
+  --ring-color-accented: var(--ui-color-divider-accent);
+  --ring-color-bg: var(--ui-color-bg-content-primary);
+
+  --divide-color-default: var(--ui-color-divider-default);
+  --divide-color-muted: var(--ui-color-divider-less);
+  --divide-color-accented: var(--ui-color-divider-accent);
+  --divide-color-bg: var(--ui-color-bg-content-primary);
 }

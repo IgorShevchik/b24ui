@@ -26,11 +26,11 @@ export default defineLocale<Messages>({
     carousel: {
       dots: 'Chọn slide để hiển thị',
       goto: 'Đi tới {slide}',
-      next: 'Tiếp theo',
-      prev: 'Quay lại'
+      next: 'Tiếp',
+      prev: 'Trước'
     },
     chatPrompt: {
-      placeholder: 'Nhập tin nhắn của bạn ở đây...'
+      placeholder: 'Nhập tin nhắn của bạn tại đây...'
     },
     chatPromptSubmit: {
       label: 'Gửi'
@@ -58,6 +58,10 @@ export default defineLocale<Messages>({
     },
     contentToc: {
       title: 'Trên trang này'
+    },
+    dropdownMenu: {
+      noMatch: 'Không có dữ liệu phù hợp',
+      search: 'Tìm kiếm…'
     },
     dashboardSearch: {
       theme: 'Chủ đề'
@@ -96,22 +100,26 @@ export default defineLocale<Messages>({
       close: 'Đóng'
     },
     pricingTable: {
-      caption: 'So sánh các gói dịch vụ'
+      caption: 'So sánh các gói giá'
     },
     prose: {
       codeCollapse: {
         closeText: 'Ẩn',
-        name: 'mã',
+        name: 'code',
         openText: 'Hiện'
       },
       collapsible: {
         closeText: 'Ẩn',
-        name: 'thuộc tính',
+        name: 'properties',
         openText: 'Hiện'
       },
       pre: {
         copy: 'Sao chép'
       }
+    },
+    sidebar: {
+      close: 'Đóng',
+      toggle: 'Chuyển đổi'
     },
     selectMenu: {
       create: 'Tạo "{label}"',

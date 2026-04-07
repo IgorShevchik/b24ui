@@ -3,6 +3,7 @@ import type { AvatarProps } from '@bitrix24/b24ui-nuxt'
 import { refDebounced } from '@vueuse/core'
 import UserIcon from '@bitrix24/b24icons-vue/common-b24/UserIcon'
 import Expand1Icon from '@bitrix24/b24icons-vue/actions/Expand1Icon'
+import SearchIcon from '@bitrix24/b24icons-vue/outline/SearchIcon'
 
 const searchTerm = ref('')
 const searchTermDebounced = refDebounced(searchTerm, 200)
@@ -31,7 +32,10 @@ function onOpen() {
   <B24SelectMenu
     v-model:search-term="searchTerm"
     :items="users"
-    :loading="status === 'pending'"
+    :search-input="{
+      icon: SearchIcon,
+      loading: status === 'pending'
+    }"
     ignore-filter
     :icon="UserIcon"
     :trailing-icon="Expand1Icon"

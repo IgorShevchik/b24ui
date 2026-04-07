@@ -105,19 +105,24 @@ defineShortcuts({
         </template>
       </B24DashboardSidebar>
 
+      <Suspense v-if="route.path.startsWith('/components/sidebar')">
+        <RouterView />
+      </Suspense>
       <B24DashboardPanel
+        v-else
         :b24ui="{
           body: [
-            !route.path.startsWith('/components') && 'justify-center items-center',
             route.path.startsWith('/components') && 'mt-17',
             route.path.startsWith('/components/scroll-area') && 'p-0!'
           ]
         }"
       >
         <template #body>
-          <Suspense>
-            <RouterView />
-          </Suspense>
+          <div class="flex flex-col items-center justify-center min-h-full shrink-0">
+            <Suspense>
+              <RouterView />
+            </Suspense>
+          </div>
         </template>
       </B24DashboardPanel>
 
