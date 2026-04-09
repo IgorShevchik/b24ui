@@ -15,115 +15,124 @@ Translate the `messages` object in every `src/runtime/locale/*.ts` file from a s
 
 ## CRITICAL CONSTRAINTS
 
-- **YOU are the translator.** Use your own language knowledge to translate strings directly. You are a multilingual LLM.
-- **NEVER** create scripts (.js, .mjs, .cjs, .ts, .py, .sh, or any other executable files).
-- **NEVER** call external translation APIs (Google Translate, DeepL, LibreTranslate, MyMemory, or any other service).
-- **NEVER** create temporary files, intermediate files, cache directories, or helper utilities.
-- **NEVER** use `curl`, `fetch`, or any HTTP requests for translation purposes.
-- The ONLY operations you perform are: **Read** a `.ts` file, translate string values in your head, **Write** the updated `.ts` file back.
+- **YOU are the translator.** Use YOUR OWN language knowledge. You are a multilingual LLM.
+- **NEVER** create scripts, temporary files, or call external APIs for translation.
+- **NEVER** skip a file. You MUST rewrite EVERY target file with translated values.
+- If a string value is `''` (empty), you MUST fill it with a translation.
+- If a string value already has text, you MUST replace it with a fresh translation.
+- If a key from the source file is **missing** in the target, you MUST add it with a translation.
+- The ONLY tools you use: **Read** a file, **Write** the file back with translations.
 
 ## Input
 
-The user may provide a **source locale code** (e.g. `pl`, `ru`).
-If no code is provided, default to `en`.
+Source locale code from user message (e.g. `pl`, `ru`). Default: `en`.
 
 ## Workflow
 
-1. **Validate** that `src/runtime/locale/{source}.ts` exists by reading it.
-2. **List** all `.ts` files in `src/runtime/locale/` (skip `index.ts` and the source file).
-3. **For each target file** (e.g. `de.ts`), do exactly this:
-   a. Read `src/runtime/locale/de.ts` as plain text.
-   b. Translate every string value inside the `messages: { ... }` block from the source language into the target language. Use YOUR OWN language abilities.
-   c. Keep everything else in the file unchanged: `import` lines, `name`, `code`, `locale`, `dir`, formatting, indentation, single quotes.
-   d. Write the complete updated file back to `src/runtime/locale/de.ts`.
-   e. Report: `Updated de.ts`
-4. Move to the next file. Process locales **one at a time**.
+### Step 0: Normalize source
 
-## Translation Rules
+Read `src/runtime/locale/{source-locale}.ts`. Replace all `...` (three ASCII dots) with `…` (U+2026) in message string values. Write back.
 
-### Placeholders
+### Step 1: Translate targets
 
-Keep all placeholders unchanged: `{slide}`, `{label}`, `{filename}`, `{duration}`, `{0}`, etc.
+List `.ts` files in `src/runtime/locale/` (skip `index.ts` and source). For each target:
 
-### Key hierarchy
+1. Read the target file.
+2. The target's `messages` must have **the same key structure** as the source. The source file is the reference for the `Messages` type defined in `src/runtime/types/locale.ts`. This means:
+   - `''` (empty) → fill with translation
+   - `'existing text'` → replace with fresh translation
+   - **missing key** → add it with a translated value
+   - ALL required keys must be present and non-empty after you finish
+3. Keep unchanged: `import` lines, `name`, `code`, `locale`, `dir`, indentation, single quotes.
+4. Use `…` (not `...`) in ALL languages.
+5. Write the complete file. Report: `Updated {code}.ts`
 
-The `messages` object structure (nested keys) must be **identical** to the source. Never add, remove, or rename keys.
+Process files one at a time.
 
-### Do not translate
+## Translation Quality
 
-Proper nouns and abbreviations: `Bitrix24`, `AI`, `CRM`.
+Translate for **real UI users**, not a dictionary. Use natural phrasing a native speaker would use in software.
 
-### Punctuation and typography by language
+- Do NOT translate word-for-word. Adapt meaning to sound native.
+- Think about what the UI element **communicates to the user**.
 
-Each target language has its own typographic conventions. Apply them consistently:
+Good vs bad (English → Russian):
 
-| Locale(s)  | Ellipsis | Quotes       | Notes                                                          |
-| ---------- | -------- | ------------ | -------------------------------------------------------------- |
-| `ru`, `ua` | `…`      | `«»` or `""` | Use em-dash `—` where appropriate                              |
-| `ar`       | `…`      | `""`         | Question mark `؟`, comma `،`, semicolon `؛`                    |
-| `fr`       | `…`      | `« »`        | Non-breaking space before `?` `!` `:` `;`                      |
-| `sc`, `tc` | `…`      | `""`         | Fullwidth punctuation `。，？！`, no spaces between characters |
-| `ja`       | `…`      | `「」`       | Fullwidth `。、？！`                                           |
-| `de`       | `…`      | `„"`         | Standard German punctuation                                    |
-| `pl`       | `…`      | `„"`         | Standard Polish punctuation                                    |
-| `br`       | `…`      | `""`         | Brazilian Portuguese punctuation                               |
-| `th`       | `…`      | `""`         | Thai has no spaces between words                               |
-| `tr`       | `…`      | `""`         | Standard Turkish punctuation                                   |
-| `kz`       | `…`      | `«»`         | Kazakh, similar to Russian conventions                         |
-| Other      | `…`      | `""`         | Follow standard conventions of the language                    |
+| Source (en)              | BAD                          | GOOD                                |
+| ------------------------ | ---------------------------- | ----------------------------------- |
+| `Thinking...`            | `Думает...`                  | `Размышляет…`                       |
+| `Thought`                | `Мысль`                      | `Размышление завершено`             |
+| `Thought for {duration}` | `Мысль в течение {duration}` | `Размышление заняло {duration}`     |
+| `Dark`                   | `Тёмный`                     | `Тёмная` (feminine, matches "тема") |
+| `System`                 | `Системный`                  | `Системная`                         |
 
-### Formatting consistency
+## Rules
 
-- If the source string ends with `...`, use the proper ellipsis character `…` in the target.
-- If the source string ends with `…`, keep `…` in the target.
-- Match capitalization rules of the target language (e.g. German nouns are capitalized).
+- **Placeholders**: Keep `{slide}`, `{label}`, `{filename}`, `{duration}` unchanged.
+- **Do not translate**: `Bitrix24`, `AI`, `CRM`.
+- **Special chars**: `...` → `…` in ALL languages. `--` → `—` for ru, ua, kz.
 
-## Full file example
+### Typography by language
 
-You read `src/runtime/locale/de.ts` and get:
+| Locale(s)  | Notes                                                     |
+| ---------- | --------------------------------------------------------- |
+| `ru`, `ua` | Ellipsis `…`, em-dash `—`, feminine gender for тема/режим |
+| `ar`       | `؟` `،` `؛`                                               |
+| `fr`       | Non-breaking space before `?` `!` `:` `;`                 |
+| `sc`, `tc` | Fullwidth `。，？！`                                      |
+| `ja`       | Fullwidth `。、？！`                                      |
+| `de`       | Nouns capitalized                                         |
+| `th`       | No spaces between words                                   |
 
-```ts
-import type { Messages } from "../types";
-import { defineLocale } from "../composables/defineLocale";
+## Example
 
-export default defineLocale<Messages>({
-  name: "Deutsch",
-  code: "de",
-  locale: "de",
-  messages: {
-    alert: {
-      close: "OLD VALUE",
-    },
-    carousel: {
-      goto: "OLD {slide}",
-      next: "OLD",
-    },
-  },
-});
-```
+Source `en.ts` has keys: `alert.close`, `carousel.goto`, `chatPrompt.placeholder`.
 
-Source `en.ts` has `alert.close = 'Close'`, `carousel.goto = 'Go to {slide}'`, `carousel.next = 'Next'`.
-
-You write back the **entire file** with only string values in `messages` replaced:
+Target `pl.ts` BEFORE (empty strings + missing key `chatPrompt`):
 
 ```ts
-import type { Messages } from "../types";
-import { defineLocale } from "../composables/defineLocale";
+import type { Messages } from '../types'
+import { defineLocale } from '../composables/defineLocale'
 
 export default defineLocale<Messages>({
-  name: "Deutsch",
-  code: "de",
-  locale: "de",
+  name: 'Polski',
+  code: 'pl',
+  locale: 'pl',
   messages: {
     alert: {
-      close: "Schließen",
+      close: ''
     },
     carousel: {
-      goto: "Gehe zu {slide}",
-      next: "Weiter",
-    },
-  },
-});
+      goto: '',
+      next: 'Następny'
+    }
+  }
+})
 ```
 
-Notice: `name`, `code`, `locale`, imports — untouched. Only message string values changed.
+Target `pl.ts` AFTER:
+
+```ts
+import type { Messages } from '../types'
+import { defineLocale } from '../composables/defineLocale'
+
+export default defineLocale<Messages>({
+  name: 'Polski',
+  code: 'pl',
+  locale: 'pl',
+  messages: {
+    alert: {
+      close: 'Zamknij'
+    },
+    carousel: {
+      goto: 'Przejdź do {slide}',
+      next: 'Następny'
+    },
+    chatPrompt: {
+      placeholder: 'Wpisz swoją wiadomość tutaj…'
+    }
+  }
+})
+```
+
+What happened: empty `''` filled, existing `'Następny'` re-translated, missing `chatPrompt` block added. Single quotes, no semicolons. Imports/name/code/locale untouched.
