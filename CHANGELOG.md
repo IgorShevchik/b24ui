@@ -11,6 +11,7 @@
 * feat(InputMenu): add `autocomplete` prop
 * feat(Checkbox/Switch): add support for `trueValue` / `falseValue`
 * feat(FileUpload): add `fileImage` prop
+* feat(ChatTool): new component
 * 
 * fix(Error): support `status` and `statusText` properties
 * fix(ContentSurround): handle RTL mode
@@ -28,6 +29,7 @@
 * chore(deps): update dependency reka-ui to v2.9.0
 * chore(translate-ui): add script with `ai`
 * chore(deps): update nuxt framework to ^4.4.2
+* chore: move contributing skill to AGENTS.md
 * 
 * playground: prevent component cutoff on small screen heights
 
