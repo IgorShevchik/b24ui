@@ -38,33 +38,33 @@ Source locale code from user message (e.g. `pl`, `ru`). Default: `en`.
 
 ### Step 1: Translate via parallel subagents
 
-Group target locales by language family and launch **5–6 subagents in parallel** via the Task tool (five fixed groups plus an optional sixth for locales that fit none of them). Each subagent translates its group of locales independently.
+Group target locales into **3 subagents** by language family and launch them **in parallel** via the Task tool. This keeps each subagent's context small enough to avoid token limits.
 
 **Subagent groups:**
 
 | Group | Locales | Rationale |
 |-------|---------|-----------|
-| 1 | `ru`, `ua`, `kz` | Cyrillic script, shared typography (em-dash, feminine gender) |
-| 2 | `de`, `fr`, `it`, `pl`, `la`, `br` | Latin script, European languages |
-| 3 | `sc`, `tc`, `ja` | CJK, fullwidth punctuation |
-| 4 | `ar`, `tr`, `in` | Distinct scripts, specific typography |
-| 5 | `vn`, `id`, `ms`, `th` | Southeast Asian languages |
+| 1 | `ru`, `ua`, `kz`, `de`, `fr`, `it`, `pl`, `la`, `br` | Cyrillic + Latin-European |
+| 2 | `sc`, `tc`, `ja`, `ar`, `tr`, `in` | CJK + Middle East + South Asian |
+| 3 | `vn`, `id`, `ms`, `th` | Southeast Asian languages |
 
-If a target locale from `contentLocales` is **not** listed in any row above, assign it to the group whose rationale best matches its script and linguistic family (e.g. Korean `ko` → Group 3 with CJK). If it fits none of the five rationales clearly, use a **sixth** subagent for all remaining unassigned locales so every dictionary target is still translated.
+If a target locale from `contentLocales` is **not** listed in any row above, assign it to the group whose rationale best matches its script and linguistic family (e.g. Korean `ko` → Group 2 with CJK). If it fits none of the three, add it to Group 3.
 
 If the source locale belongs to one of these groups, omit it from that group. If a group becomes empty, skip it.
 
 **Each subagent prompt MUST include:**
 
-- The full content of the source file (so the subagent does not need to read it)
+- The **path** to the source file (`src/runtime/locale/{source}.ts`) — the subagent reads it itself
 - The list of target locales (code + file) assigned to this group
-- The Translation Quality section and Typography rules **relevant to this group's languages**
+- The Translation Quality guidelines (compact summary, not full copy)
+- The Typography rules **only for this group's languages**
 - The file format rules (imports, `defineLocale`, single quotes, no semicolons)
-- The instruction to Read all its target files in parallel, then Write all translated files in parallel
+
+**IMPORTANT: Do NOT embed the full source file content in the subagent prompt.** Instead, instruct the subagent to Read `src/runtime/locale/{source}.ts` as its first action. This dramatically reduces prompt size.
 
 **Each subagent performs:**
 
-1. Read all assigned target files (parallel batch).
+1. Read the source file + all assigned target files (parallel batch).
 2. For each target file, produce a translated `messages` object following the rules below.
 3. Write all translated files (parallel batch).
 4. Return a report listing each updated file: `Updated {code}.ts`
