@@ -109,6 +109,16 @@ Guidelines:
 - **Think about the UI element's purpose**: a "System" option in a theme selector refers to system theme — use the adjective that agrees with the implied noun ("тема" → "Системная", not "Системный").
 - **Keep translations concise** — UI space is limited. Avoid verbose constructions when a shorter idiomatic form exists.
 
+### Semantic context from key names
+
+Use **parent and sibling key names** to disambiguate meaning when translating. Keys often encode UI state machines, component roles, or domain context that the English string value alone does not convey.
+
+1. **Parent key = component/feature context.** If the parent is `chatReasoning`, values belong to an AI reasoning indicator, not a generic "thought" concept.
+2. **Sibling keys = state relationships.** If sibling keys form a progression (e.g. `thinking` → `thought` → `thoughtFor`), translate them as related states (active → completed → completed with duration), not as isolated words.
+3. **Key name vs value mismatch = intent signal.** If a key is named `clear` but the value is `'Try again'`, the value is the user-facing text — translate the value, not the key name.
+
+When in doubt, prefer the interpretation that makes sense as a **UI state or action label** over a literal dictionary translation.
+
 Reference examples across key languages:
 
 | Source (en) | ru | ar | sc |
