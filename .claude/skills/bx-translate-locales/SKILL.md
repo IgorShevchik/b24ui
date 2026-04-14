@@ -111,13 +111,7 @@ Guidelines:
 
 ### Semantic context from key names
 
-Use **parent and sibling key names** to disambiguate meaning when translating. Keys often encode UI state machines, component roles, or domain context that the English string value alone does not convey.
-
-1. **Parent key = component/feature context.** If the parent is `chatReasoning`, values belong to an AI reasoning indicator, not a generic "thought" concept.
-2. **Sibling keys = state relationships.** If sibling keys form a progression (e.g. `thinking` → `thought` → `thoughtFor`), translate them as related states (active → completed → completed with duration), not as isolated words.
-3. **Key name vs value mismatch = intent signal.** If a key is named `clear` but the value is `'Try again'`, the value is the user-facing text — translate the value, not the key name.
-
-When in doubt, prefer the interpretation that makes sense as a **UI state or action label** over a literal dictionary translation.
+Use parent key names and sibling key names as semantic context when translating ambiguous values. For example, if the parent key is `chatReasoning` and sibling keys are `thinking` / `thought` / `thoughtFor`, infer that `'Thought'` means "reasoning completed", not the noun "a thought".
 
 Reference examples across key languages:
 
