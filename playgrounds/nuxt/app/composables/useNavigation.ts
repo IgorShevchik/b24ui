@@ -1,14 +1,12 @@
 import type { NavigationMenuItem } from '@bitrix24/b24ui-nuxt'
 import type { Surround } from '../types'
-import { upperName } from '../utils'
+import { normalizePath, upperName } from '../utils'
 import ItemIcon from '@bitrix24/b24icons-vue/crm/ItemIcon'
 import TextIcon from '@bitrix24/b24icons-vue/outline/TextIcon'
 import HomeIcon from '@bitrix24/b24icons-vue/outline/HomeIcon'
 // import CopilotIcon from '@bitrix24/b24icons-vue/outline/CopilotIcon'
 // import ArrowRightLIcon from '@bitrix24/b24icons-vue/outline/ArrowRightLIcon'
 // import ArrowLeftLIcon from '@bitrix24/b24icons-vue/outline/ArrowLeftLIcon'
-
-const normalizePath = (p: string) => (p.endsWith('/') ? p.slice(0, -1) : p)
 
 const components = [
   'accordion',
