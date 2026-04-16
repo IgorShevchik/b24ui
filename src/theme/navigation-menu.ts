@@ -138,7 +138,7 @@ export default {
           'hover:bg-(--ui-color-divider-optical-1-alt)'
         ].join(' '),
         childLinkLabel: '',
-        content: 'absolute top-0 left-0 w-full max-h-[70vh] overflow-y-auto scrollbar-thin scrollbar-transparent'
+        content: 'absolute top-0 left-0 w-full max-h-[40vh] overflow-y-auto scrollbar-thin'
       },
       vertical: {
         root: 'flex-col w-full ps-0 pe-0 rtl:pe-0 rtl:ps-0', // ps-(--menu-items-block-padding-x) rtl:pe-(--menu-items-block-padding-x)

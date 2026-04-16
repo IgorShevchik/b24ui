@@ -21,6 +21,7 @@ export default {
       'scroll-py-1',
       'overflow-y-auto',
       'scrollbar-thin',
+      'scrollbar-transparent',
       'flex-1',
       'focus:outline-none'
     ].join(' '),
