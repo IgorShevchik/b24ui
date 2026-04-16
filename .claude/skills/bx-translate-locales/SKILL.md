@@ -1,101 +1,55 @@
 ---
 name: bx-translate-locales
 description: >-
-  Translates the `messages` field of all locale files in src/runtime/locale/
-  from a source language to all other languages listed in the i18n dictionary.
-  Use when asked to translate locales, update locale translations, or run
-  bx-translate-locales.
-argument-hint: [source-locale]
+  Translates UI locale strings. Reads a JSON payload from a temp file,
+  translates all message values preserving key order, and outputs
+  a JSON object with translations. Called by translate-locales.py.
+argument-hint: <path-to-payload-json>
 disable-model-invocation: true
-allowed-tools: Read Write Bash Shell Task
+allowed-tools: Read
 ---
 
 # Translate Locale Messages
 
-Translate the `messages` object in every locale file listed in `src/runtime/dictionary/i18n.ts` from a source language to all other locales.
+You receive a **file path** as the argument. Your job:
+
+1. **Read** the file at that path using the Read tool.
+2. **Parse** the JSON payload inside.
+3. **Translate** all string values in `source_messages`.
+4. **Output ONLY** a valid JSON object — no markdown, no explanation, no code fences.
 
 ## CRITICAL CONSTRAINTS
 
-- **YOU are the translator.** Use YOUR OWN language knowledge. You are a multilingual LLM.
-- **NEVER** create scripts, temporary files, or call external APIs for translation.
-- **NEVER** skip a file. You MUST rewrite EVERY target file with translated values.
-- If a string value is `''` (empty), you MUST fill it with a translation.
-- If a string value already has text, you MUST replace it with a fresh translation.
-- If a key from the source file is **missing** in the target, you MUST add it with a translation.
-- The tools you use: **Read**, **Write**, **Task** (subagents), **Shell** (ESLint).
+- **YOU are the translator.** Use YOUR OWN multilingual knowledge. You are a multilingual LLM.
+- **NEVER** create files, scripts, or call external APIs.
+## Input (JSON file)
 
-## Input
-
-Source locale code from user message (e.g. `pl`, `ru`). Default: `en`.
-
-## Workflow
-
-### Step 0: Read dictionary and normalize source
-
-1. Read `src/runtime/dictionary/i18n.ts`. Extract the `contentLocales` array — it is the **single source of truth** for which languages exist. Each entry has `code`, `name`, and `file`.
-2. Build the target list: all entries from `contentLocales` except the one matching the source locale code.
-3. Read `src/runtime/locale/{source-locale}.ts`. Replace all `...` (three ASCII dots) with `…` (U+2026) in message string values. Write back.
-
-### Step 1: Translate via parallel subagents
-
-Group target locales into **3 subagents** by language family and launch them **in parallel** via the Task tool. This keeps each subagent's context small enough to avoid token limits.
-
-**Subagent groups:**
-
-| Group | Locales | Rationale |
-|-------|---------|-----------|
-| 1 | `ru`, `ua`, `kz`, `de`, `fr`, `it`, `pl`, `la`, `br` | Cyrillic + Latin-European |
-| 2 | `sc`, `tc`, `ja`, `ar`, `tr`, `in` | CJK + Middle East + South Asian |
-| 3 | `vn`, `id`, `ms`, `th` | Southeast Asian languages |
-
-If a target locale from `contentLocales` is **not** listed in any row above, assign it to the group whose rationale best matches its script and linguistic family (e.g. Korean `ko` → Group 2 with CJK). If it fits none of the three, add it to Group 3.
-
-If the source locale belongs to one of these groups, omit it from that group. If a group becomes empty, skip it.
-
-**Each subagent prompt MUST include:**
-
-- The **path** to the source file (`src/runtime/locale/{source}.ts`) — the subagent reads it itself
-- The list of target locales (code + file) assigned to this group
-- The Translation Quality guidelines (compact summary, not full copy)
-- The Typography rules **only for this group's languages**
-- The file format rules (imports, `defineLocale`, single quotes, no semicolons)
-
-**IMPORTANT: Do NOT embed the full source file content in the subagent prompt.** Instead, instruct the subagent to Read `src/runtime/locale/{source}.ts` as its first action. This dramatically reduces prompt size.
-
-**Each subagent performs:**
-
-1. Read the source file + all assigned target files (parallel batch).
-2. For each target file, produce a translated `messages` object following the rules below.
-3. Write all translated files (parallel batch).
-4. Return a report listing each updated file: `Updated {code}.ts`
-
-### Step 2: Lint fix
-
-After ALL subagents complete, run ESLint auto-fix **only** on locale files:
-
-```bash
-npx eslint --fix src/runtime/locale/
+```json
+{
+  "source_locale": "en",
+  "target_locale": "ru",
+  "target_name": "Русский",
+  "source_messages": {
+    "alert": { "close": "Close" },
+    "chatPrompt": { "placeholder": "Enter your message here..." }
+  },
+  "chat_context_keys": ["chatPrompt", "chatReasoning"],
+  "typography_rules": "language-specific typography rules"
+}
 ```
 
-Report any remaining errors.
+## Output (your response — raw JSON, nothing else)
 
-### Step 3: Final report
+```json
+{
+  "translations": {
+    "alert": { "close": "Закрыть" },
+    "chatPrompt": { "placeholder": "Введите ваше сообщение здесь…" }
+  }
+}
+```
 
-1. Collect reports from all subagents. List every updated file.
-2. **Check for mismatches** between the dictionary and the filesystem:
-   - For each entry in `contentLocales`: if `src/runtime/locale/{file}` does not exist on disk, print: `WARNING: File {file} from i18n.ts dictionary not found in src/runtime/locale/`
-   - For each `.ts` file in `src/runtime/locale/` (excluding `index.ts` and source): if it is not listed in `contentLocales`, print: `WARNING: File {file} exists in src/runtime/locale/ but is not listed in i18n.ts dictionary`
-
-## Translation rules per target file
-
-1. The target's `messages` must have **the same key structure** as the source. The source file is the reference for the `Messages` type defined in `src/runtime/types/locale.ts`. This means:
-   - `''` (empty) → fill with translation
-   - `'existing text'` → replace with fresh translation
-   - **missing key** → add it with a translated value
-   - ALL required keys must be present and non-empty after you finish
-2. Keep unchanged: `import` lines, `name`, `code`, `locale`, `dir`, indentation, single quotes.
-3. Use `…` (not `...`) in ALL languages.
-4. Write the complete file.
+`translations` MUST have the **exact same key structure and key order** as `source_messages`. Every key present in the source MUST be present with a translated value.
 
 ## Translation Quality
 
@@ -105,93 +59,61 @@ Guidelines:
 
 - **Do NOT translate word-for-word.** Adapt meaning to sound native in the target language.
 - **Use imperative mood for actions**: button text like "Close" should be a verb command ("Закрыть"), not a noun ("Закрытие").
-- **Use conventional software terminology**: "Search" in an input placeholder translates as the noun form used in apps ("Поиск", not "Искать"; "搜索", not "查找").
-- **Think about the UI element's purpose**: a "System" option in a theme selector refers to system theme — use the adjective that agrees with the implied noun ("тема" → "Системная", not "Системный").
-- **Keep translations concise** — UI space is limited. Avoid verbose constructions when a shorter idiomatic form exists.
+- **Use conventional software terminology**: "Search" in a placeholder translates as the noun form used in apps ("Поиск", not "Искать"; "搜索", not "查找").
+- **Think about UI element purpose**: "System" in a theme selector refers to system theme — use the adjective that agrees with the implied noun ("тема" → "Системная", not "Системный").
+- **Keep translations concise** — UI space is limited.
 
 ### Semantic context from key names
 
 Use parent key names and sibling key names as semantic context when translating ambiguous values. For example, if the parent key is `chatReasoning` and sibling keys are `thinking` / `thought` / `thoughtFor`, infer that `'Thought'` means "reasoning completed", not the noun "a thought".
 
-Reference examples across key languages:
+### Chat context (AI-agent)
 
-| Source (en) | ru | ar | sc |
-|-------------|-----|-----|-----|
-| `Close` | `Закрыть` | `إغلاق` | `关闭` |
-| `Search…` | `Поиск…` | `بحث…` | `搜索…` |
-| `No matches found` | `Совпадений не найдено` | `لم يتم العثور على نتائج` | `未找到匹配项` |
-| `Switch to dark mode` | `Переключить на тёмную тему` | `التبديل إلى الوضع الداكن` | `切换到深色模式` |
-| `Thinking…` | `Размышляет…` | `يفكر…` | `思考中…` |
-| `Thought for {duration}` | `Размышление заняло {duration}` | `فكّر لمدة {duration}` | `思考用时 {duration}` |
+**All keys whose name starts with `chat`** (e.g., `chatPrompt`, `chatReasoning`, `chatPromptSubmit`) belong to the **AI‑agent chat interface**. Additionally, keys listed in `chat_context_keys` are also treated as AI‑agent context.
+
+Translate all such keys as if the dialog is from an AI assistant's perspective:
+
+- **AI is the actor** – use third‑person verbs for actions the AI performs (thinking, sending, reasoning).
+- **User‑facing prompts** – translate placeholders as natural input prompts for conversing with an AI.
+- **Reasoning process** – treat `thinking` as an ongoing process, `thought` as completed reasoning (not a noun “a thought”).
+- **Time expressions** – `for {duration}` means “took {duration}” (duration of the AI’s thinking), not “for {duration}”.
+
+**Examples:**
+- `"Thinking..."` → `"Размышляет…"` (ru), `"Myśli…"` (pl), `"Думає…"` (ua) – AI is currently thinking.
+- `"Thought"` → `"Размышление завершено"` (ru), `"Myślenie zakończone"` (pl), `"Подумав"` (ua) – AI has finished reasoning.
+- `"Thought for {duration}"` → `"Размышление заняло {duration}"` (ru), `"Myślenie zajęło {duration}"` (pl), `"Думав {duration}"` (ua) – thinking took that duration.
+- `"Enter your message here..."` (chatPrompt) → natural placeholder for talking to an AI.
+
+### Reference translations
+
+| Source (en) | ru | ar | sc | pl | ua | de | fr | es | it |
+|---|---|---|---|---|---|---|---|---|---|
+| `Close` | `Закрыть` | `إغلاق` | `关闭` | `Zamknij` | `Закрити` | `Schließen` | `Fermer` | `Cerrar` | `Chiudi` |
+| `Search…` | `Поиск…` | `بحث…` | `搜索…` | `Szukaj…` | `Пошук…` | `Suchen…` | `Rechercher…` | `Buscar…` | `Cerca…` |
+| `No matches found` | `Совпадений не найдено` | `لم يتم العثور على نتائج` | `未找到匹配项` | `Nie znaleziono pasujących wyników` | `Збігів не знайдено` | `Keine Übereinstimmungen gefunden` | `Aucun résultat trouvé` | `No se encontraron coincidencias` | `Nessun risultato trovato` |
+| `Switch to dark mode` | `Переключить на тёмную тему` | `التبديل إلى الوضع الداكن` | `切换到深色模式` | `Przełącz na tryb ciemny` | `Перемкнути на темну тему` | `Zu Dunkelmodus wechseln` | `Passer au mode sombre` | `Cambiar a modo oscuro` | `Passa alla modalità scura` |
+| `Thinking…` | `Размышляет…` | `يفكر…` | `思考中…` | `Myśli…` | `Думає…` | `Denkt…` | `Réfléchit…` | `Pensando…` | `Sta pensando…` |
+| `Thought` | `Размышление завершено` | `تم التفكير` | `思考完成` | `Myślenie zakończone` | `Подумав` | `Gedankengang beendet` | `Réflexion terminée` | `Razonamiento completado` | `Ragionamento completato` |
+| `Thought for {duration}` | `Размышление заняло {duration}` | `استغرق التفكير {duration}` | `思考用时 {duration}` | `Myślenie zajęło {duration}` | `Думав {duration}` | `Denkvorgang dauerte {duration}` | `Réflexion a pris {duration}` | `El razonamiento tardó {duration}` | `Il ragionamento ha impiegato {duration}` |
+
+**For Slavic languages (ru, ua, pl, etc.):**
+- Use **perfective aspect** (завершённое действие) for `thought` – e.g., `Подумав` (UA), `Pomyślał` (PL).
+- `thinking` should be **imperfective, third‑person, present tense** – e.g., `Думає` (UA), `Myśli` (PL).
 
 ## Rules
 
 - **Placeholders**: Keep `{slide}`, `{label}`, `{filename}`, `{duration}` unchanged.
 - **Do not translate**: `Bitrix24`, `AI`, `CRM`.
-- **Special chars**: `...` → `…` in ALL languages. `--` → `—` for ru, ua, kz.
+- `...` → `…` in ALL languages. `--` → `—` for ru, ua, kz.
+- Apply typography from the `typography_rules` field:
 
-### Typography by language
-
-| Locale(s) | Notes |
-|-----------|-------|
+| Locale(s) | Rules |
+|---|---|
 | `ru`, `ua` | Ellipsis `…`, em-dash `—`, feminine gender for тема/режим |
 | `kz` | Ellipsis `…`, em-dash `—` |
 | `ar` | Arabic punctuation: `؟` `،` `؛` |
 | `fr` | Non-breaking space before `?` `!` `:` `;` |
-| `sc`, `tc` | Fullwidth punctuation: `。，？！` |
-| `ja` | Fullwidth punctuation: `。、？！` |
+| `sc`, `tc` | Fullwidth: `。，？！` |
+| `ja` | Fullwidth: `。、？！` |
 | `de` | Nouns capitalized |
 | `th` | No spaces between words |
-
-## Example
-
-Source `en.ts` has keys: `alert.close`, `carousel.goto`, `chatPrompt.placeholder`.
-
-Target `pl.ts` BEFORE (empty strings + missing key `chatPrompt`):
-
-```ts
-import type { Messages } from '../types'
-import { defineLocale } from '../composables/defineLocale'
-
-export default defineLocale<Messages>({
-  name: 'Polski',
-  code: 'pl',
-  locale: 'pl',
-  messages: {
-    alert: {
-      close: ''
-    },
-    carousel: {
-      goto: '',
-      next: 'Następny'
-    }
-  }
-})
-```
-
-Target `pl.ts` AFTER:
-
-```ts
-import type { Messages } from '../types'
-import { defineLocale } from '../composables/defineLocale'
-
-export default defineLocale<Messages>({
-  name: 'Polski',
-  code: 'pl',
-  locale: 'pl',
-  messages: {
-    alert: {
-      close: 'Zamknij'
-    },
-    carousel: {
-      goto: 'Przejdź do {slide}',
-      next: 'Następny'
-    },
-    chatPrompt: {
-      placeholder: 'Wpisz swoją wiadomość tutaj…'
-    }
-  }
-})
-```
-
-What happened: empty `''` filled, existing `'Następny'` re-translated, missing `chatPrompt` block added. Single quotes, no semicolons. Imports/name/code/locale untouched.
