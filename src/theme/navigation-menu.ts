@@ -68,8 +68,8 @@ export default {
       'flex flex-row rtl:flex-row-reverse items-center transition-colors',
       'text-start'
     ].join(' '),
-    childLinkWrapper: 'min-w-0 flex-1 flex flex-row items-center justify-start rtl:justify-end gap-0.5',
-    childLinkIcon: 'size-4.5 shrink-0',
+    childLinkWrapper: 'flex-1 flex flex-col text-start min-w-0',
+    childLinkIcon: 'size-[25px] shrink-0',
     childLinkHint: [
       'inline-flex m-0 absolute -top-0.5 left-6',
       'text-(length:--ui-font-size-4xs)',
@@ -81,7 +81,9 @@ export default {
     ].join(' '),
     childLinkBadge: 'inline-flex m-0',
     childLinkBadgeSize: 'xs',
-    childLinkLabel: 'truncate ms-0.5 -mt-px',
+    childLinkLabel: 'max-w-60 truncate -mt-px',
+    childLinkTrailing: 'ml-auto rtl:ml-0 rtl:mr-auto inline-flex gap-1.5 items-center',
+    childLinkTrailingIcon: 'shrink-0 size-[25px] text-(--ui-color-accent-main-primary)',
     childLinkLabelExternalIcon: 'inline-block size-4 text-(--ui-color-design-plain-content-icon-secondary)',
     separator: 'h-px bg-(--leftmenu-bg-divider) my-4',
     popoverWrapper: 'px-0 py-(--menu-popup-padding)',
@@ -127,7 +129,7 @@ export default {
         linkLabelWrapper: 'gap-1 truncate',
         childList: 'grid px-0 py-(--menu-popup-padding)',
         childLink: [
-          'px-4.5', // @memo 10 + 15 = 25 != 18px
+          'px-4.5 pe-2 gap-2', // @memo 10 + 15 = 25 != 18px
           'min-w-[195px]',
           'whitespace-nowrap',
           'font-[family-name:var(--ui-font-family-primary)]',
@@ -161,7 +163,7 @@ export default {
         linkLabelWrapper: 'relative h-5.5',
         childList: '',
         childLink: [
-          'px-4.5', // @memo 10 + 15 = 25 != 18
+          'px-4.5 pe-2 gap-2', // @memo 10 + 15 = 25 != 18
           'min-w-[195px]',
           'whitespace-nowrap',
           'font-[family-name:var(--ui-font-family-primary)]',
