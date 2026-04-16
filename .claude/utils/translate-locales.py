@@ -110,8 +110,7 @@ def parse_i18n_dictionary() -> list[dict[str, str]]:
     ):
         entries.append({"code": m.group(1), "name": m.group(2), "file": m.group(3)})
     if not entries:
-        print("Ошибка: записи contentLocales не найдены в i18n.ts")
-        sys.exit(1)
+        raise ValueError("Ошибка: записи contentLocales не найдены в i18n.ts")
     return entries
 
 
@@ -537,13 +536,15 @@ def check_consistency(locales: list[dict[str, str]]) -> None:
             print(f"   WARNING: {fpath.name} в {LOCALE_DIR} не указан в i18n.ts")
 
 
-# ─── Лог ──────────────────────────────────────────────────────────────────────
+# ─── Лог (только ошибки) ───────────────────────────────────────────────────────
 
-def save_log(results: list[dict[str, Any]]) -> None:
-    """Дописывает в JSONL по одной строке JSON на каждую обработанную локаль."""
+def log_error_events(records: list[dict[str, Any]]) -> None:
+    """Дописывает в JSONL только записи об ошибках (запуск или перевод)."""
+    if not records:
+        return
     LOG_FILE.parent.mkdir(parents=True, exist_ok=True)
     with open(LOG_FILE, "a", encoding="utf-8") as f:
-        for r in results:
+        for r in records:
             f.write(json.dumps(r, ensure_ascii=False) + "\n")
 
 
@@ -556,12 +557,21 @@ def main() -> None:
     print(f"Исходная локаль: {source_locale}")
 
     print("\n1. Чтение словаря i18n.ts\u2026")
-    locales = parse_i18n_dictionary()
+    try:
+        locales = parse_i18n_dictionary()
+    except ValueError as e:
+        log_error_events(
+            [{"phase": "startup", "status": "error", "error": str(e)}]
+        )
+        print(str(e))
+        sys.exit(1)
     print(f"   Найдено локалей: {len(locales)}")
 
     source_entry = next((l for l in locales if l["code"] == source_locale), None)
     if not source_entry:
-        print(f"Ошибка: локаль '{source_locale}' не найдена в словаре")
+        msg = f"Ошибка: локаль '{source_locale}' не найдена в словаре"
+        log_error_events([{"phase": "startup", "status": "error", "error": msg}])
+        print(msg)
         sys.exit(1)
 
     # Все языки из словаря, кроме исходного и явно игнорируемых файлов.
@@ -577,7 +587,9 @@ def main() -> None:
 
     source_path = LOCALE_DIR / source_entry["file"]
     if not source_path.exists():
-        print(f"Ошибка: файл {source_path} не найден")
+        msg = f"Ошибка: файл {source_path} не найден"
+        log_error_events([{"phase": "startup", "status": "error", "error": msg}])
+        print(msg)
         sys.exit(1)
 
     print(f"\n2. Чтение {source_path}\u2026")
@@ -613,9 +625,10 @@ def main() -> None:
     print("\n6. Проверка соответствия\u2026")
     check_consistency(locales)
 
-    # Аудит: каждый прогон дописывается в конец log-translate.jsonl.
-    save_log(results)
-    print(f"\nГотово. Лог: {LOG_FILE}")
+    # В лог попадают только ошибки перевода (успешные прогоны файл не трогают).
+    error_results = [r for r in results if r.get("status") == "error"]
+    log_error_events(error_results)
+    print("\nГотово." + (f" Ошибки перевода в логе: {LOG_FILE}" if error_results else ""))
 
     # Подчищаем temp-папку если пуста.
     if TEMP_DIR.exists() and not any(TEMP_DIR.iterdir()):
