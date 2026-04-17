@@ -538,38 +538,15 @@ function onLinkTrailingClick(e: Event, item: NavigationMenuItem) {
                               {{ childItem.hint }}
                             </div>
 
-                            <div data-slot="childLinkWrapper" :class="b24ui.childLinkWrapper({ class: [uiProp?.childLinkWrapper, item.b24ui?.childLinkWrapper] })">
-                              <span data-slot="childLinkLabel" :class="b24ui.childLinkLabel({ class: [uiProp?.childLinkLabel, item.b24ui?.childLinkLabel], active: childActive })">
-                                {{ get(childItem, props.labelKey as string) }}
-                              </span>
-                            </div>
-
-                            <span
-                              v-if="childItem.badge !== undefined || childItem.trailingIcon || (childItem.target === '_blank' && externalIcon !== false)"
-                              data-slot="childLinkTrailing"
-                              :class="b24ui.childLinkTrailing({ class: [uiProp?.childLinkTrailing, item.b24ui?.childLinkTrailing] })"
-                            >
-                              <B24Badge
-                                v-if="childItem.badge !== undefined"
-                                color="air-primary-alert"
-                                :size="((item.b24ui?.childLinkBadgeSize || uiProp?.childLinkBadgeSize || b24ui.childLinkBadgeSize()) as BadgeProps['size'])"
-                                v-bind="(typeof childItem.badge === 'string' || typeof childItem.badge === 'number') ? { label: childItem.badge } : childItem.badge"
-                                data-slot="childLinkBadge"
-                                :class="b24ui.childLinkBadge({ class: [uiProp?.childLinkBadge, item.b24ui?.childLinkBadge] })"
-                              />
-                              <Component
-                                :is="childItem.trailingIcon"
-                                v-if="childItem.trailingIcon"
-                                data-slot="childLinkTrailingIcon"
-                                :class="b24ui.childLinkTrailingIcon({ class: [uiProp?.childLinkTrailingIcon, item.b24ui?.childLinkTrailingIcon], active: childActive })"
-                              />
-                              <Component
-                                :is="typeof externalIcon === 'boolean' ? icons.external : externalIcon"
-                                v-else-if="childItem.target === '_blank' && externalIcon !== false"
-                                data-slot="childLinkLabelExternalIcon"
-                                :class="b24ui.childLinkLabelExternalIcon({ class: [uiProp?.childLinkLabelExternalIcon, item.b24ui?.childLinkLabelExternalIcon], active: childActive })"
-                              />
+                            <span data-slot="childLinkLabel" :class="b24ui.childLinkLabel({ class: [uiProp?.childLinkLabel, item.b24ui?.childLinkLabel], active: childActive })">
+                              {{ get(childItem, props.labelKey as string) }}
                             </span>
+                            <Component
+                              :is="typeof externalIcon === 'boolean' ? icons.external : externalIcon"
+                              v-if="childItem.target === '_blank' && externalIcon !== false"
+                              data-slot="childLinkLabelExternalIcon"
+                              :class="b24ui.childLinkLabelExternalIcon({ class: [uiProp?.childLinkLabelExternalIcon, item.b24ui?.childLinkLabelExternalIcon], active: childActive })"
+                            />
                           </B24LinkBase>
                         </NavigationMenuLink>
                       </B24Link>
@@ -675,13 +652,6 @@ function onLinkTrailingClick(e: Event, item: NavigationMenuItem) {
                         <p data-slot="childLinkLabel" :class="b24ui.childLinkLabel({ class: [uiProp?.childLinkLabel, item.b24ui?.childLinkLabel], active: childActive })">
                           {{ get(childItem, props.labelKey as string) }}
                         </p>
-                      </div>
-
-                      <span
-                        v-if="childItem.badge !== undefined || childItem.trailingIcon || (childItem.target === '_blank' && externalIcon !== false)"
-                        data-slot="childLinkTrailing"
-                        :class="b24ui.childLinkTrailing({ class: [uiProp?.childLinkTrailing, item.b24ui?.childLinkTrailing] })"
-                      >
                         <B24Badge
                           v-if="childItem.badge !== undefined"
                           color="air-primary-alert"
@@ -690,19 +660,13 @@ function onLinkTrailingClick(e: Event, item: NavigationMenuItem) {
                           data-slot="childLinkBadge"
                           :class="b24ui.childLinkBadge({ class: [uiProp?.childLinkBadge, item.b24ui?.childLinkBadge] })"
                         />
-                        <Component
-                          :is="childItem.trailingIcon"
-                          v-if="childItem.trailingIcon"
-                          data-slot="childLinkTrailingIcon"
-                          :class="b24ui.childLinkTrailingIcon({ class: [uiProp?.childLinkTrailingIcon, item.b24ui?.childLinkTrailingIcon], active: childActive })"
-                        />
-                        <Component
-                          :is="typeof externalIcon === 'boolean' ? icons.external : externalIcon"
-                          v-else-if="childItem.target === '_blank' && externalIcon !== false"
-                          data-slot="childLinkLabelExternalIcon"
-                          :class="b24ui.childLinkLabelExternalIcon({ class: [uiProp?.childLinkLabelExternalIcon, item.b24ui?.childLinkLabelExternalIcon], active: childActive })"
-                        />
-                      </span>
+                      </div>
+                      <Component
+                        :is="typeof externalIcon === 'boolean' ? icons.external : externalIcon"
+                        v-if="childItem.target === '_blank' && externalIcon !== false"
+                        data-slot="childLinkLabelExternalIcon"
+                        :class="b24ui.childLinkLabelExternalIcon({ class: [uiProp?.childLinkLabelExternalIcon, item.b24ui?.childLinkLabelExternalIcon], active: childActive })"
+                      />
                     </B24LinkBase>
                   </NavigationMenuLink>
                 </B24Link>

@@ -58,7 +58,7 @@ export default {
     ].join(' '),
     linkLabel: 'truncate', // @memo remove -mt-px
     linkLabelWrapper: 'flex items-center justify-between rtl:flex-row-reverse',
-    linkLabelExternalIcon: 'inline-block size-4 text-(--ui-color-design-plain-content-icon-secondary)',
+    linkLabelExternalIcon: 'inline-block size-6 text-(--ui-color-design-plain-content-icon-secondary)',
     childList: 'isolate',
     childLabel: '',
     childItem: 'h-9 mt-(--menu-item-block-stack-space)',
@@ -68,8 +68,8 @@ export default {
       'flex flex-row rtl:flex-row-reverse items-center transition-colors',
       'text-start'
     ].join(' '),
-    childLinkWrapper: 'flex-1 flex flex-col text-start min-w-0',
-    childLinkIcon: 'size-[25px] shrink-0',
+    childLinkWrapper: 'min-w-0 flex-1 flex flex-row items-center justify-start rtl:justify-end gap-0.5',
+    childLinkIcon: 'size-[25px] shrink-0 -ms-1',
     childLinkHint: [
       'inline-flex m-0 absolute -top-0.5 left-6',
       'text-(length:--ui-font-size-4xs)',
@@ -82,9 +82,7 @@ export default {
     childLinkBadge: 'inline-flex m-0',
     childLinkBadgeSize: 'xs',
     childLinkLabel: 'max-w-60 truncate -mt-px',
-    childLinkTrailing: 'ml-auto rtl:ml-0 rtl:mr-auto inline-flex gap-1.5 items-center',
-    childLinkTrailingIcon: 'shrink-0 size-[25px] text-(--ui-color-accent-main-primary)',
-    childLinkLabelExternalIcon: 'inline-block size-4 text-(--ui-color-design-plain-content-icon-secondary)',
+    childLinkLabelExternalIcon: 'inline-block size-[25px] text-(--ui-color-design-plain-content-icon-secondary)',
     separator: 'h-px bg-(--leftmenu-bg-divider) my-4',
     popoverWrapper: 'px-0 py-(--menu-popup-padding)',
     viewportWrapper: 'absolute top-[53px] left-0 flex w-full',
