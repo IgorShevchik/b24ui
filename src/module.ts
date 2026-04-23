@@ -2,20 +2,21 @@ import type { HookResult } from '@nuxt/schema'
 import type { ModuleDependencies } from 'nuxt/schema'
 import type { ColorModeType, ColorModeTypeLight } from './runtime/types'
 import { defu } from 'defu'
-import { createResolver, defineNuxtModule, addComponentsDir, addImportsDir, addPlugin, hasNuxtModule } from '@nuxt/kit'
+import { createResolver, defineNuxtModule, addComponentsDir, addImports, addImportsDir, addPlugin, hasNuxtModule } from '@nuxt/kit'
 import { addTemplates } from './templates'
+import { publicComposables } from './imports'
 // @memo skep:  resolveColors
 import { defaultOptions, getDefaultConfig } from './utils/defaults'
 import { name, version } from '../package.json'
 
 export type * from './runtime/types'
 
-// type Color = 'air-primary' | 'air-secondary' | 'air-tertiary' | 'air-primary-success' | 'air-primary-warning' | 'air-primary-alert' | 'air-primary-copilot' | 'air-secondary-accent' | 'air-secondary-accent-1' | (string & {})
-// type Size = 'xss' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | (string & {})
+type Color = 'air-primary' | 'air-secondary' | 'air-tertiary' | 'air-primary-success' | 'air-primary-warning' | 'air-primary-alert' | 'air-primary-copilot' | 'air-secondary-accent' | 'air-secondary-accent-1' | (string & {})
+type Size = 'xss' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | (string & {})
 
 export interface ModuleOptions {
   /**
-   * Enable or disable `@vueuse/core` color-mode integration
+   * Enable or disable `@vueuse/core` color-mode module
    * @memo We not use `@nuxtjs/color-mode`
    * @defaultValue `true`
    * @link https://bitrix24.github.io/b24ui/docs/getting-started/installation/nuxt/#colormode
@@ -36,6 +37,24 @@ export interface ModuleOptions {
    */
   theme?: {
     /**
+     * The default variants to use for components
+     * @see https://bitrix24.github.io/b24ui/docs/getting-started/installation/nuxt/#themedefaultvariants
+     */
+    defaultVariants?: {
+      /**
+       * The default color variant to use for components
+       * @defaultValue `'primary'`
+       */
+      color?: Color
+
+      /**
+       * The default size variant to use for components
+       * @defaultValue `'md'`
+       */
+      size?: Size
+    }
+
+    /**
      * Prefix for Tailwind CSS utility classes
      * @see https://bitrix24.github.io/b24ui/docs/getting-started/installation/nuxt/#themeprefix
      * @example 'tw'
@@ -46,6 +65,13 @@ export interface ModuleOptions {
   /**
    * Force the import of prose components even if `@nuxtjs/mdc` or `@nuxt/content` are not installed
    * @defaultValue true
+   * @see https://bitrix24.github.io/b24ui/docs/getting-started/installation/nuxt/#prose
+   */
+  prose?: boolean
+
+  /**
+   * @deprecated Use `prose` instead
+   * @see https://bitrix24.github.io/b24ui/docs/getting-started/installation/nuxt/#mdc
    */
   mdc?: boolean
 
@@ -94,7 +120,6 @@ export default defineNuxtModule<ModuleOptions>({
   defaults: defaultOptions,
   moduleDependencies(nuxt): ModuleDependencies {
     const userUiOptions = nuxt.options.b24ui || {}
-
     return {
       '@bitrix24/b24icons-nuxt': {
         defaults: {}
@@ -176,6 +201,8 @@ export default defineNuxtModule<ModuleOptions>({
     nuxt.options.appConfig.version = version
     nuxt.options.appConfig.b24ui = defu(nuxt.options.appConfig.b24ui || {}, getDefaultConfig(options.theme))
 
+    nuxt.options.build.transpile.push('reka-ui')
+
     // Isolate root node from portaled components
     nuxt.options.app.rootAttrs = nuxt.options.app.rootAttrs || {}
     nuxt.options.app.rootAttrs.class = [nuxt.options.app.rootAttrs.class, `${options.theme?.prefix ? options.theme.prefix + ':' : ''}isolate`].filter(Boolean).join(' ')
@@ -193,7 +220,7 @@ export default defineNuxtModule<ModuleOptions>({
     addPlugin({ src: resolve('./runtime/plugins/ui-version') })
     addPlugin({ src: resolve('./runtime/plugins/platform') })
 
-    if (options.mdc || options.content || hasNuxtModule('@nuxtjs/mdc') || hasNuxtModule('@nuxt/content')) {
+    if (options.prose || options.mdc || options.content || hasNuxtModule('@nuxtjs/mdc') || hasNuxtModule('@nuxt/content')) {
       addComponentsDir({
         path: resolve('./runtime/components/prose'),
         pathPrefix: false,
@@ -228,7 +255,11 @@ export default defineNuxtModule<ModuleOptions>({
       ignore: ['color-mode/**', 'content/**', 'prose/**']
     })
 
-    addImportsDir(resolve('./runtime/composables'))
+    addImports(
+      Object.entries(publicComposables).flatMap(([file, exports]) =>
+        exports.map(name => ({ name, from: resolve(`./runtime/composables/${file}`) }))
+      )
+    )
 
     addTemplates(options, nuxt, resolve)
   }

@@ -3,7 +3,7 @@
  */
 export default {
   slots: {
-    root: 'relative [&_pre]:h-[200px]',
+    root: 'relative [&_pre]:h-[200px] bg-(--ui-color-design-outline-bg)',
     footer: [
       'h-[64px]',
       'absolute inset-x-px bottom-px',
@@ -20,7 +20,7 @@ export default {
       },
       false: {
         root: '[&_pre]:overflow-hidden',
-        footer: 'bg-gradient-to-t from-(--ui-color-g-plastic-greish-bg)'
+        footer: 'bg-linear-to-t from-(--ui-color-g-plastic-greish-bg)'
       }
     }
   }

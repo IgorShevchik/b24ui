@@ -5,16 +5,17 @@ exports[`Drawer > renders with b24ui correctly 1`] = `
 <!--teleport start-->
 
 
+
 <div data-state="open" style="pointer-events: auto;" data-vaul-overlay="" data-vaul-snap-points="false" data-vaul-snap-points-overlay="true" data-slot="overlay" class="fixed inset-0 motion-safe:backdrop-blur-[2px] bg-[#003366]/20"></div>
 <div data-dismissable-layer="" style="pointer-events: auto; --snap-point-height: 0;" tabindex="-1" data-vaul-drawer="" data-vaul-drawer-direction="bottom" data-vaul-delayed-snap-points="false" data-vaul-snap-points="false" data-slot="content" class="fixed base-mode bg-(--ui-color-bg-content-primary) flex focus:outline-none ring ring-(--ui-color-divider-default) mt-24 flex-col h-auto max-h-[96%] inset-x-0 bottom-0 rounded-t-lg" id="" role="dialog" aria-describedby="reka-dialog-description-v-1" aria-labelledby="reka-dialog-title-v-0" data-state="open">
-  <div data-vaul-drawer-visible="true" data-vaul-handle="" aria-hidden="true" data-slot="handle" class="shrink-0 !bg-(--ui-color-divider-default) transition-opacity mt-4 !w-12 !h-1.5 mx-auto w-20"><span data-vaul-handle-hitarea="" aria-hidden="true"></span></div>
-  <!--v-if-->
+  <div data-vaul-drawer-visible="true" data-vaul-handle="" aria-hidden="true" data-slot="handle" class="shrink-0 !bg-(--ui-color-divider-default) transition-opacity mt-4 !w-12 !h-1.5 mx-auto w-20"><span data-vaul-handle-hitarea="" aria-hidden="true"></span></div><span aria-hidden="true" style="position: absolute; border: 0px; width: 1px; height: 1px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); clip-path: inset(50%); white-space: nowrap; word-wrap: normal; top: -1px; left: -1px;"><h2 id="reka-dialog-title-v-0"></h2><p id="reka-dialog-description-v-1"></p></span>
   <div data-slot="container" class="w-full flex flex-col gap-4 p-4 overflow-y-auto">
     <!--v-if-->
     <!--v-if-->
     <!--v-if-->
   </div>
 </div>
+
 
 
 <!--teleport end-->"
@@ -25,16 +26,17 @@ exports[`Drawer > renders with body slot correctly 1`] = `
 <!--teleport start-->
 
 
+
 <div data-state="open" style="pointer-events: auto;" data-vaul-overlay="" data-vaul-snap-points="false" data-vaul-snap-points-overlay="true" data-slot="overlay" class="fixed inset-0 motion-safe:backdrop-blur-[2px] bg-[#003366]/20"></div>
 <div data-dismissable-layer="" style="pointer-events: auto; --snap-point-height: 0;" tabindex="-1" data-vaul-drawer="" data-vaul-drawer-direction="bottom" data-vaul-delayed-snap-points="false" data-vaul-snap-points="false" data-slot="content" class="fixed base-mode bg-(--ui-color-bg-content-primary) flex focus:outline-none ring ring-(--ui-color-divider-default) mt-24 flex-col h-auto max-h-[96%] inset-x-0 bottom-0 rounded-t-lg" id="" role="dialog" aria-describedby="reka-dialog-description-v-1" aria-labelledby="reka-dialog-title-v-0" data-state="open">
-  <div data-vaul-drawer-visible="true" data-vaul-handle="" aria-hidden="true" data-slot="handle" class="shrink-0 !bg-(--ui-color-divider-default) transition-opacity mt-4 !w-12 !h-1.5 mx-auto"><span data-vaul-handle-hitarea="" aria-hidden="true"></span></div>
-  <!--v-if-->
+  <div data-vaul-drawer-visible="true" data-vaul-handle="" aria-hidden="true" data-slot="handle" class="shrink-0 !bg-(--ui-color-divider-default) transition-opacity mt-4 !w-12 !h-1.5 mx-auto"><span data-vaul-handle-hitarea="" aria-hidden="true"></span></div><span aria-hidden="true" style="position: absolute; border: 0px; width: 1px; height: 1px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); clip-path: inset(50%); white-space: nowrap; word-wrap: normal; top: -1px; left: -1px;"><h2 id="reka-dialog-title-v-0"></h2><p id="reka-dialog-description-v-1"></p></span>
   <div data-slot="container" class="w-full flex flex-col gap-4 p-4 overflow-y-auto">
     <!--v-if-->
     <div data-slot="body" class="flex-1 scrollbar-thin">Body slot</div>
     <!--v-if-->
   </div>
 </div>
+
 
 
 <!--teleport end-->"
@@ -45,16 +47,17 @@ exports[`Drawer > renders with class correctly 1`] = `
 <!--teleport start-->
 
 
+
 <div data-state="open" style="pointer-events: auto;" data-vaul-overlay="" data-vaul-snap-points="false" data-vaul-snap-points-overlay="true" data-slot="overlay" class="fixed inset-0 motion-safe:backdrop-blur-[2px] bg-[#003366]/20"></div>
 <div data-dismissable-layer="" style="pointer-events: auto; --snap-point-height: 0;" tabindex="-1" data-vaul-drawer="" data-vaul-drawer-direction="bottom" data-vaul-delayed-snap-points="false" data-vaul-snap-points="false" data-slot="content" class="fixed base-mode flex focus:outline-none ring ring-(--ui-color-divider-default) mt-24 flex-col h-auto max-h-[96%] inset-x-0 bottom-0 rounded-t-lg bg-elevated" id="" role="dialog" aria-describedby="reka-dialog-description-v-1" aria-labelledby="reka-dialog-title-v-0" data-state="open">
-  <div data-vaul-drawer-visible="true" data-vaul-handle="" aria-hidden="true" data-slot="handle" class="shrink-0 !bg-(--ui-color-divider-default) transition-opacity mt-4 !w-12 !h-1.5 mx-auto"><span data-vaul-handle-hitarea="" aria-hidden="true"></span></div>
-  <!--v-if-->
+  <div data-vaul-drawer-visible="true" data-vaul-handle="" aria-hidden="true" data-slot="handle" class="shrink-0 !bg-(--ui-color-divider-default) transition-opacity mt-4 !w-12 !h-1.5 mx-auto"><span data-vaul-handle-hitarea="" aria-hidden="true"></span></div><span aria-hidden="true" style="position: absolute; border: 0px; width: 1px; height: 1px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); clip-path: inset(50%); white-space: nowrap; word-wrap: normal; top: -1px; left: -1px;"><h2 id="reka-dialog-title-v-0"></h2><p id="reka-dialog-description-v-1"></p></span>
   <div data-slot="container" class="w-full flex flex-col gap-4 p-4 overflow-y-auto">
     <!--v-if-->
     <!--v-if-->
     <!--v-if-->
   </div>
 </div>
+
 
 
 <!--teleport end-->"
@@ -65,11 +68,12 @@ exports[`Drawer > renders with content slot correctly 1`] = `
 <!--teleport start-->
 
 
+
 <div data-state="open" style="pointer-events: auto;" data-vaul-overlay="" data-vaul-snap-points="false" data-vaul-snap-points-overlay="true" data-slot="overlay" class="fixed inset-0 motion-safe:backdrop-blur-[2px] bg-[#003366]/20"></div>
 <div data-dismissable-layer="" style="pointer-events: auto; --snap-point-height: 0;" tabindex="-1" data-vaul-drawer="" data-vaul-drawer-direction="bottom" data-vaul-delayed-snap-points="false" data-vaul-snap-points="false" data-slot="content" class="fixed base-mode bg-(--ui-color-bg-content-primary) flex focus:outline-none ring ring-(--ui-color-divider-default) mt-24 flex-col h-auto max-h-[96%] inset-x-0 bottom-0 rounded-t-lg" id="" role="dialog" aria-describedby="reka-dialog-description-v-1" aria-labelledby="reka-dialog-title-v-0" data-state="open">
-  <div data-vaul-drawer-visible="true" data-vaul-handle="" aria-hidden="true" data-slot="handle" class="shrink-0 !bg-(--ui-color-divider-default) transition-opacity mt-4 !w-12 !h-1.5 mx-auto"><span data-vaul-handle-hitarea="" aria-hidden="true"></span></div>
-  <!--v-if-->Content slot
+  <div data-vaul-drawer-visible="true" data-vaul-handle="" aria-hidden="true" data-slot="handle" class="shrink-0 !bg-(--ui-color-divider-default) transition-opacity mt-4 !w-12 !h-1.5 mx-auto"><span data-vaul-handle-hitarea="" aria-hidden="true"></span></div><span aria-hidden="true" style="position: absolute; border: 0px; width: 1px; height: 1px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); clip-path: inset(50%); white-space: nowrap; word-wrap: normal; top: -1px; left: -1px;"><h2 id="reka-dialog-title-v-0"></h2><p id="reka-dialog-description-v-1"></p></span>Content slot
 </div>
+
 
 
 <!--teleport end-->"
@@ -80,16 +84,17 @@ exports[`Drawer > renders with default slot correctly 1`] = `
 <!--teleport start-->
 
 
+
 <div data-state="open" style="pointer-events: auto;" data-vaul-overlay="" data-vaul-snap-points="false" data-vaul-snap-points-overlay="true" data-slot="overlay" class="fixed inset-0 motion-safe:backdrop-blur-[2px] bg-[#003366]/20"></div>
 <div data-dismissable-layer="" style="pointer-events: auto; --snap-point-height: 0;" tabindex="-1" data-vaul-drawer="" data-vaul-drawer-direction="bottom" data-vaul-delayed-snap-points="false" data-vaul-snap-points="false" data-slot="content" class="fixed base-mode bg-(--ui-color-bg-content-primary) flex focus:outline-none ring ring-(--ui-color-divider-default) mt-24 flex-col h-auto max-h-[96%] inset-x-0 bottom-0 rounded-t-lg" id="reka-dialog-content-v-0" role="dialog" aria-describedby="reka-dialog-description-v-2" aria-labelledby="reka-dialog-title-v-1" data-state="open">
-  <div data-vaul-drawer-visible="true" data-vaul-handle="" aria-hidden="true" data-slot="handle" class="shrink-0 !bg-(--ui-color-divider-default) transition-opacity mt-4 !w-12 !h-1.5 mx-auto"><span data-vaul-handle-hitarea="" aria-hidden="true"></span></div>
-  <!--v-if-->
+  <div data-vaul-drawer-visible="true" data-vaul-handle="" aria-hidden="true" data-slot="handle" class="shrink-0 !bg-(--ui-color-divider-default) transition-opacity mt-4 !w-12 !h-1.5 mx-auto"><span data-vaul-handle-hitarea="" aria-hidden="true"></span></div><span aria-hidden="true" style="position: absolute; border: 0px; width: 1px; height: 1px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); clip-path: inset(50%); white-space: nowrap; word-wrap: normal; top: -1px; left: -1px;"><h2 id="reka-dialog-title-v-1"></h2><p id="reka-dialog-description-v-2"></p></span>
   <div data-slot="container" class="w-full flex flex-col gap-4 p-4 overflow-y-auto">
     <!--v-if-->
     <!--v-if-->
     <!--v-if-->
   </div>
 </div>
+
 
 
 <!--teleport end-->"
@@ -100,6 +105,7 @@ exports[`Drawer > renders with description correctly 1`] = `
 <!--teleport start-->
 
 
+
 <div data-state="open" style="pointer-events: auto;" data-vaul-overlay="" data-vaul-snap-points="false" data-vaul-snap-points-overlay="true" data-slot="overlay" class="fixed inset-0 motion-safe:backdrop-blur-[2px] bg-[#003366]/20"></div>
 <div data-dismissable-layer="" style="pointer-events: auto; --snap-point-height: 0;" tabindex="-1" data-vaul-drawer="" data-vaul-drawer-direction="bottom" data-vaul-delayed-snap-points="false" data-vaul-snap-points="false" data-slot="content" class="fixed base-mode bg-(--ui-color-bg-content-primary) flex focus:outline-none ring ring-(--ui-color-divider-default) mt-24 flex-col h-auto max-h-[96%] inset-x-0 bottom-0 rounded-t-lg" id="" role="dialog" aria-describedby="reka-dialog-description-v-1" aria-labelledby="reka-dialog-title-v-0" data-state="open">
   <div data-vaul-drawer-visible="true" data-vaul-handle="" aria-hidden="true" data-slot="handle" class="shrink-0 !bg-(--ui-color-divider-default) transition-opacity mt-4 !w-12 !h-1.5 mx-auto"><span data-vaul-handle-hitarea="" aria-hidden="true"></span></div>
@@ -113,6 +119,7 @@ exports[`Drawer > renders with description correctly 1`] = `
     <!--v-if-->
   </div>
 </div>
+
 
 
 <!--teleport end-->"
@@ -123,13 +130,13 @@ exports[`Drawer > renders with description slot correctly 1`] = `
 <!--teleport start-->
 
 
+
 <div data-state="open" style="pointer-events: auto;" data-vaul-overlay="" data-vaul-snap-points="false" data-vaul-snap-points-overlay="true" data-slot="overlay" class="fixed inset-0 motion-safe:backdrop-blur-[2px] bg-[#003366]/20"></div>
 <div data-dismissable-layer="" style="pointer-events: auto; --snap-point-height: 0;" tabindex="-1" data-vaul-drawer="" data-vaul-drawer-direction="bottom" data-vaul-delayed-snap-points="false" data-vaul-snap-points="false" data-slot="content" class="fixed base-mode bg-(--ui-color-bg-content-primary) flex focus:outline-none ring ring-(--ui-color-divider-default) mt-24 flex-col h-auto max-h-[96%] inset-x-0 bottom-0 rounded-t-lg" id="" role="dialog" aria-describedby="reka-dialog-description-v-1" aria-labelledby="reka-dialog-title-v-0" data-state="open">
-  <div data-vaul-drawer-visible="true" data-vaul-handle="" aria-hidden="true" data-slot="handle" class="shrink-0 !bg-(--ui-color-divider-default) transition-opacity mt-4 !w-12 !h-1.5 mx-auto"><span data-vaul-handle-hitarea="" aria-hidden="true"></span></div>
-  <!--v-if-->
+  <div data-vaul-drawer-visible="true" data-vaul-handle="" aria-hidden="true" data-slot="handle" class="shrink-0 !bg-(--ui-color-divider-default) transition-opacity mt-4 !w-12 !h-1.5 mx-auto"><span data-vaul-handle-hitarea="" aria-hidden="true"></span></div><span aria-hidden="true" style="position: absolute; border: 0px; width: 1px; height: 1px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); clip-path: inset(50%); white-space: nowrap; word-wrap: normal; top: -1px; left: -1px;"><h2 id="reka-dialog-title-v-0"></h2><!--v-if--></span>
   <div data-slot="container" class="w-full flex flex-col gap-4 p-4 overflow-y-auto">
     <div data-slot="header" class="">
-      <!--v-if-->
+      <h2 id="reka-dialog-title-v-0"></h2>
       <p id="reka-dialog-description-v-1" data-slot="description" class="mt-1 text-(--b24ui-typography-description-color) text-(length:--ui-font-size-sm)">Description slot</p>
     </div>
     <!--v-if-->
@@ -138,12 +145,14 @@ exports[`Drawer > renders with description slot correctly 1`] = `
 </div>
 
 
+
 <!--teleport end-->"
 `;
 
 exports[`Drawer > renders with direction bottom correctly 1`] = `
 "<!--v-if-->
 <!--teleport start-->
+
 
 
 <div data-state="open" style="pointer-events: auto;" data-vaul-overlay="" data-vaul-snap-points="false" data-vaul-snap-points-overlay="true" data-slot="overlay" class="fixed inset-0 motion-safe:backdrop-blur-[2px] bg-[#003366]/20"></div>
@@ -161,12 +170,14 @@ exports[`Drawer > renders with direction bottom correctly 1`] = `
 </div>
 
 
+
 <!--teleport end-->"
 `;
 
 exports[`Drawer > renders with direction bottom inset correctly 1`] = `
 "<!--v-if-->
 <!--teleport start-->
+
 
 
 <div data-state="open" style="pointer-events: auto;" data-vaul-overlay="" data-vaul-snap-points="false" data-vaul-snap-points-overlay="true" data-slot="overlay" class="fixed inset-0 motion-safe:backdrop-blur-[2px] bg-[#003366]/20"></div>
@@ -184,12 +195,14 @@ exports[`Drawer > renders with direction bottom inset correctly 1`] = `
 </div>
 
 
+
 <!--teleport end-->"
 `;
 
 exports[`Drawer > renders with direction left correctly 1`] = `
 "<!--v-if-->
 <!--teleport start-->
+
 
 
 <div data-state="open" style="pointer-events: auto;" data-vaul-overlay="" data-vaul-snap-points="false" data-vaul-snap-points-overlay="true" data-slot="overlay" class="fixed inset-0 motion-safe:backdrop-blur-[2px] bg-[#003366]/20"></div>
@@ -207,12 +220,14 @@ exports[`Drawer > renders with direction left correctly 1`] = `
 </div>
 
 
+
 <!--teleport end-->"
 `;
 
 exports[`Drawer > renders with direction left inset correctly 1`] = `
 "<!--v-if-->
 <!--teleport start-->
+
 
 
 <div data-state="open" style="pointer-events: auto;" data-vaul-overlay="" data-vaul-snap-points="false" data-vaul-snap-points-overlay="true" data-slot="overlay" class="fixed inset-0 motion-safe:backdrop-blur-[2px] bg-[#003366]/20"></div>
@@ -230,12 +245,14 @@ exports[`Drawer > renders with direction left inset correctly 1`] = `
 </div>
 
 
+
 <!--teleport end-->"
 `;
 
 exports[`Drawer > renders with direction right correctly 1`] = `
 "<!--v-if-->
 <!--teleport start-->
+
 
 
 <div data-state="open" style="pointer-events: auto;" data-vaul-overlay="" data-vaul-snap-points="false" data-vaul-snap-points-overlay="true" data-slot="overlay" class="fixed inset-0 motion-safe:backdrop-blur-[2px] bg-[#003366]/20"></div>
@@ -253,12 +270,14 @@ exports[`Drawer > renders with direction right correctly 1`] = `
 </div>
 
 
+
 <!--teleport end-->"
 `;
 
 exports[`Drawer > renders with direction right inset correctly 1`] = `
 "<!--v-if-->
 <!--teleport start-->
+
 
 
 <div data-state="open" style="pointer-events: auto;" data-vaul-overlay="" data-vaul-snap-points="false" data-vaul-snap-points-overlay="true" data-slot="overlay" class="fixed inset-0 motion-safe:backdrop-blur-[2px] bg-[#003366]/20"></div>
@@ -276,12 +295,14 @@ exports[`Drawer > renders with direction right inset correctly 1`] = `
 </div>
 
 
+
 <!--teleport end-->"
 `;
 
 exports[`Drawer > renders with direction top correctly 1`] = `
 "<!--v-if-->
 <!--teleport start-->
+
 
 
 <div data-state="open" style="pointer-events: auto;" data-vaul-overlay="" data-vaul-snap-points="false" data-vaul-snap-points-overlay="true" data-slot="overlay" class="fixed inset-0 motion-safe:backdrop-blur-[2px] bg-[#003366]/20"></div>
@@ -299,12 +320,14 @@ exports[`Drawer > renders with direction top correctly 1`] = `
 </div>
 
 
+
 <!--teleport end-->"
 `;
 
 exports[`Drawer > renders with direction top inset correctly 1`] = `
 "<!--v-if-->
 <!--teleport start-->
+
 
 
 <div data-state="open" style="pointer-events: auto;" data-vaul-overlay="" data-vaul-snap-points="false" data-vaul-snap-points-overlay="true" data-slot="overlay" class="fixed inset-0 motion-safe:backdrop-blur-[2px] bg-[#003366]/20"></div>
@@ -322,6 +345,7 @@ exports[`Drawer > renders with direction top inset correctly 1`] = `
 </div>
 
 
+
 <!--teleport end-->"
 `;
 
@@ -330,16 +354,17 @@ exports[`Drawer > renders with footer slot correctly 1`] = `
 <!--teleport start-->
 
 
+
 <div data-state="open" style="pointer-events: auto;" data-vaul-overlay="" data-vaul-snap-points="false" data-vaul-snap-points-overlay="true" data-slot="overlay" class="fixed inset-0 motion-safe:backdrop-blur-[2px] bg-[#003366]/20"></div>
 <div data-dismissable-layer="" style="pointer-events: auto; --snap-point-height: 0;" tabindex="-1" data-vaul-drawer="" data-vaul-drawer-direction="bottom" data-vaul-delayed-snap-points="false" data-vaul-snap-points="false" data-slot="content" class="fixed base-mode bg-(--ui-color-bg-content-primary) flex focus:outline-none ring ring-(--ui-color-divider-default) mt-24 flex-col h-auto max-h-[96%] inset-x-0 bottom-0 rounded-t-lg" id="" role="dialog" aria-describedby="reka-dialog-description-v-1" aria-labelledby="reka-dialog-title-v-0" data-state="open">
-  <div data-vaul-drawer-visible="true" data-vaul-handle="" aria-hidden="true" data-slot="handle" class="shrink-0 !bg-(--ui-color-divider-default) transition-opacity mt-4 !w-12 !h-1.5 mx-auto"><span data-vaul-handle-hitarea="" aria-hidden="true"></span></div>
-  <!--v-if-->
+  <div data-vaul-drawer-visible="true" data-vaul-handle="" aria-hidden="true" data-slot="handle" class="shrink-0 !bg-(--ui-color-divider-default) transition-opacity mt-4 !w-12 !h-1.5 mx-auto"><span data-vaul-handle-hitarea="" aria-hidden="true"></span></div><span aria-hidden="true" style="position: absolute; border: 0px; width: 1px; height: 1px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); clip-path: inset(50%); white-space: nowrap; word-wrap: normal; top: -1px; left: -1px;"><h2 id="reka-dialog-title-v-0"></h2><p id="reka-dialog-description-v-1"></p></span>
   <div data-slot="container" class="w-full flex flex-col gap-4 p-4 overflow-y-auto">
     <!--v-if-->
     <!--v-if-->
     <div data-slot="footer" class="flex flex-col gap-1.5">Footer slot</div>
   </div>
 </div>
+
 
 
 <!--teleport end-->"
@@ -350,16 +375,17 @@ exports[`Drawer > renders with header slot correctly 1`] = `
 <!--teleport start-->
 
 
+
 <div data-state="open" style="pointer-events: auto;" data-vaul-overlay="" data-vaul-snap-points="false" data-vaul-snap-points-overlay="true" data-slot="overlay" class="fixed inset-0 motion-safe:backdrop-blur-[2px] bg-[#003366]/20"></div>
 <div data-dismissable-layer="" style="pointer-events: auto; --snap-point-height: 0;" tabindex="-1" data-vaul-drawer="" data-vaul-drawer-direction="bottom" data-vaul-delayed-snap-points="false" data-vaul-snap-points="false" data-slot="content" class="fixed base-mode bg-(--ui-color-bg-content-primary) flex focus:outline-none ring ring-(--ui-color-divider-default) mt-24 flex-col h-auto max-h-[96%] inset-x-0 bottom-0 rounded-t-lg" id="" role="dialog" aria-describedby="reka-dialog-description-v-1" aria-labelledby="reka-dialog-title-v-0" data-state="open">
-  <div data-vaul-drawer-visible="true" data-vaul-handle="" aria-hidden="true" data-slot="handle" class="shrink-0 !bg-(--ui-color-divider-default) transition-opacity mt-4 !w-12 !h-1.5 mx-auto"><span data-vaul-handle-hitarea="" aria-hidden="true"></span></div>
-  <!--v-if-->
+  <div data-vaul-drawer-visible="true" data-vaul-handle="" aria-hidden="true" data-slot="handle" class="shrink-0 !bg-(--ui-color-divider-default) transition-opacity mt-4 !w-12 !h-1.5 mx-auto"><span data-vaul-handle-hitarea="" aria-hidden="true"></span></div><span aria-hidden="true" style="position: absolute; border: 0px; width: 1px; height: 1px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); clip-path: inset(50%); white-space: nowrap; word-wrap: normal; top: -1px; left: -1px;"><h2 id="reka-dialog-title-v-0"></h2><p id="reka-dialog-description-v-1"></p></span>
   <div data-slot="container" class="w-full flex flex-col gap-4 p-4 overflow-y-auto">
     <div data-slot="header" class="">Header slot</div>
     <!--v-if-->
     <!--v-if-->
   </div>
 </div>
+
 
 
 <!--teleport end-->"
@@ -370,19 +396,20 @@ exports[`Drawer > renders with title correctly 1`] = `
 <!--teleport start-->
 
 
+
 <div data-state="open" style="pointer-events: auto;" data-vaul-overlay="" data-vaul-snap-points="false" data-vaul-snap-points-overlay="true" data-slot="overlay" class="fixed inset-0 motion-safe:backdrop-blur-[2px] bg-[#003366]/20"></div>
 <div data-dismissable-layer="" style="--snap-point-height: 0; pointer-events: auto;" tabindex="-1" data-vaul-drawer="" data-vaul-drawer-direction="bottom" data-vaul-delayed-snap-points="false" data-vaul-snap-points="false" data-slot="content" class="fixed base-mode bg-(--ui-color-bg-content-primary) flex focus:outline-none ring ring-(--ui-color-divider-default) mt-24 flex-col h-auto max-h-[96%] inset-x-0 bottom-0 rounded-t-lg" id="" role="dialog" aria-describedby="reka-dialog-description-v-1" aria-labelledby="reka-dialog-title-v-0" data-state="open">
-  <div data-vaul-drawer-visible="true" data-vaul-handle="" aria-hidden="true" data-slot="handle" class="shrink-0 !bg-(--ui-color-divider-default) transition-opacity mt-4 !w-12 !h-1.5 mx-auto"><span data-vaul-handle-hitarea="" aria-hidden="true"></span></div>
-  <!--v-if-->
+  <div data-vaul-drawer-visible="true" data-vaul-handle="" aria-hidden="true" data-slot="handle" class="shrink-0 !bg-(--ui-color-divider-default) transition-opacity mt-4 !w-12 !h-1.5 mx-auto"><span data-vaul-handle-hitarea="" aria-hidden="true"></span></div><span aria-hidden="true" style="position: absolute; border: 0px; width: 1px; height: 1px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); clip-path: inset(50%); white-space: nowrap; word-wrap: normal; top: -1px; left: -1px;"><!--v-if--><p id="reka-dialog-description-v-1"></p></span>
   <div data-slot="container" class="w-full flex flex-col gap-4 p-4 overflow-y-auto">
     <div data-slot="header" class="">
       <h2 id="reka-dialog-title-v-0" data-slot="title" class="font-[family-name:var(--ui-font-family-primary)] text-(--b24ui-typography-label-color) font-(--ui-font-weight-medium) mb-0 text-[calc(var(--ui-font-size-2xl)+2px)]/(--ui-font-size-2xl)">Title</h2>
-      <!--v-if-->
+      <p id="reka-dialog-description-v-1"></p>
     </div>
     <!--v-if-->
     <!--v-if-->
   </div>
 </div>
+
 
 
 <!--teleport end-->"
@@ -393,19 +420,20 @@ exports[`Drawer > renders with title slot correctly 1`] = `
 <!--teleport start-->
 
 
+
 <div data-state="open" style="pointer-events: auto;" data-vaul-overlay="" data-vaul-snap-points="false" data-vaul-snap-points-overlay="true" data-slot="overlay" class="fixed inset-0 motion-safe:backdrop-blur-[2px] bg-[#003366]/20"></div>
 <div data-dismissable-layer="" style="pointer-events: auto; --snap-point-height: 0;" tabindex="-1" data-vaul-drawer="" data-vaul-drawer-direction="bottom" data-vaul-delayed-snap-points="false" data-vaul-snap-points="false" data-slot="content" class="fixed base-mode bg-(--ui-color-bg-content-primary) flex focus:outline-none ring ring-(--ui-color-divider-default) mt-24 flex-col h-auto max-h-[96%] inset-x-0 bottom-0 rounded-t-lg" id="" role="dialog" aria-describedby="reka-dialog-description-v-1" aria-labelledby="reka-dialog-title-v-0" data-state="open">
-  <div data-vaul-drawer-visible="true" data-vaul-handle="" aria-hidden="true" data-slot="handle" class="shrink-0 !bg-(--ui-color-divider-default) transition-opacity mt-4 !w-12 !h-1.5 mx-auto"><span data-vaul-handle-hitarea="" aria-hidden="true"></span></div>
-  <!--v-if-->
+  <div data-vaul-drawer-visible="true" data-vaul-handle="" aria-hidden="true" data-slot="handle" class="shrink-0 !bg-(--ui-color-divider-default) transition-opacity mt-4 !w-12 !h-1.5 mx-auto"><span data-vaul-handle-hitarea="" aria-hidden="true"></span></div><span aria-hidden="true" style="position: absolute; border: 0px; width: 1px; height: 1px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); clip-path: inset(50%); white-space: nowrap; word-wrap: normal; top: -1px; left: -1px;"><!--v-if--><p id="reka-dialog-description-v-1"></p></span>
   <div data-slot="container" class="w-full flex flex-col gap-4 p-4 overflow-y-auto">
     <div data-slot="header" class="">
       <h2 id="reka-dialog-title-v-0" data-slot="title" class="font-[family-name:var(--ui-font-family-primary)] text-(--b24ui-typography-label-color) font-(--ui-font-weight-medium) mb-0 text-[calc(var(--ui-font-size-2xl)+2px)]/(--ui-font-size-2xl)">Title slot</h2>
-      <!--v-if-->
+      <p id="reka-dialog-description-v-1"></p>
     </div>
     <!--v-if-->
     <!--v-if-->
   </div>
 </div>
+
 
 
 <!--teleport end-->"
@@ -414,6 +442,7 @@ exports[`Drawer > renders with title slot correctly 1`] = `
 exports[`Drawer > renders without handle correctly 1`] = `
 "<!--v-if-->
 <!--teleport start-->
+
 
 
 <div data-state="open" style="pointer-events: auto;" data-vaul-overlay="" data-vaul-snap-points="false" data-vaul-snap-points-overlay="true" data-slot="overlay" class="fixed inset-0 motion-safe:backdrop-blur-[2px] bg-[#003366]/20"></div>
@@ -431,12 +460,14 @@ exports[`Drawer > renders without handle correctly 1`] = `
 </div>
 
 
+
 <!--teleport end-->"
 `;
 
 exports[`Drawer > renders without overlay correctly 1`] = `
 "<!--v-if-->
 <!--teleport start-->
+
 
 
 <!--v-if-->
@@ -452,6 +483,7 @@ exports[`Drawer > renders without overlay correctly 1`] = `
     <!--v-if-->
   </div>
 </div>
+
 
 
 <!--teleport end-->"

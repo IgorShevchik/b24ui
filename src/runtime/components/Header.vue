@@ -121,6 +121,9 @@ const Menu = computed(() => ({
   drawer: B24Drawer
 })[props.mode as HeaderMode])
 
+/**
+ * @memo We move b24ui.overlay && b24ui.content from <template> in menuProps
+ */
 const menuProps = toRef(() => {
   const modeSettings: any = props.mode === 'modal'
     ? { fullscreen: true, transition: false }
@@ -128,18 +131,17 @@ const menuProps = toRef(() => {
       ? { side: 'left', close: false }
       : {}
 
-  // @memo thi fix componentMeta
+  // @memo fix componentMeta
   if (props.mode === 'modal') {
     modeSettings['b24ui'] = { content: 'p-0 pt-0' }
   }
 
   const result = defu(
     props.menu,
-    { content: { onOpenAutoFocus: (e: Event) => e.preventDefault() } },
     modeSettings
   ) as HeaderMenu<T>
 
-  // @memo thi fix componentMeta
+  // @memo fix componentMeta
   result['b24ui'] = {
     overlay: b24ui.value.overlay({ class: uiProp.value?.overlay }),
     content: b24ui.value.content({

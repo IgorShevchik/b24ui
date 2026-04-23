@@ -14,6 +14,10 @@ export type ContentTocLink = TocLink & {
   b24ui?: Pick<ContentToc['slots'], 'item' | 'itemWithChildren' | 'link' | 'linkText'>
 }
 
+/**
+ * @memo We not support: color, highlight, highlightColor, highlightVariant
+ * @todo refactoring is necessary
+ */
 export interface ContentTocProps<T extends ContentTocLink = ContentTocLink> extends Pick<CollapsibleRootProps, 'defaultOpen' | 'open'> {
   /**
    * The element or component this component should render as.
@@ -54,11 +58,12 @@ export interface ContentTocSlots<T extends ContentTocLink = ContentTocLink> {
 </script>
 
 <script setup lang="ts" generic="T extends ContentTocLink">
-import { computed } from 'vue'
+import { computed, onUnmounted } from 'vue'
 import { CollapsibleRoot, CollapsibleTrigger, CollapsibleContent, useForwardPropsEmits } from 'reka-ui'
 import { reactivePick, createReusableTemplate } from '@vueuse/core'
 import { useRouter, useAppConfig, useNuxtApp } from '#imports'
 import { useComponentUI } from '../../composables/useComponentUI'
+// import { useResolvedVariants } from '../../composables/useResolvedVariants'
 import { useScrollspy } from '../../composables/useScrollspy'
 import { useLocale } from '../../composables/useLocale'
 import { tv } from '../../utils/tv'
@@ -78,6 +83,8 @@ const { t } = useLocale()
 const router = useRouter()
 const appConfig = useAppConfig() as ContentToc['AppConfig']
 const uiProp = useComponentUI('contentToc', props)
+// @memo We not support: highlightVariant
+// const { highlightVariant } = useResolvedVariants('contentToc', props, theme, ['highlightVariant'])
 const { activeHeadings, updateHeadings } = useScrollspy()
 
 const [DefineListTemplate, ReuseListTemplate] = createReusableTemplate<{ links: T[], level: number }>({
@@ -97,15 +104,38 @@ function scrollToHeading(id: string) {
   emits('move', id)
 }
 
+function flattenLinks(links: T[]): T[] {
+  return links.flatMap(link => [link, ...(link.children ? flattenLinks(link.children as T[]) : [])])
+}
+
+// function flattenLinksWithLevel(links: T[], level = 0): { link: T, level: number }[] {
+//   return links.flatMap(link => [
+//     { link, level },
+//     ...(link.children ? flattenLinksWithLevel(link.children as T[], level + 1) : [])
+//   ])
+// }
+
+// const linkHeight = 1.75 // rem — text-sm line-height (1.25rem) + py-1 (0.5rem)
+
 const nuxtApp = useNuxtApp()
 
-nuxtApp.hooks.hook('page:loading:end', () => {
-  const headings = Array.from(document.querySelectorAll('h2, h3'))
+function refreshHeadings() {
+  const flatLinks = flattenLinks(props.links || [])
+  if (!flatLinks.length) {
+    updateHeadings([])
+    return
+  }
+  const selector = flatLinks.map(l => `#${CSS.escape(l.id)}`).join(', ')
+  const headings = Array.from(document.querySelectorAll(selector))
   updateHeadings(headings)
-})
-nuxtApp.hooks.hook('page:transition:finish', () => {
-  const headings = Array.from(document.querySelectorAll('h2, h3'))
-  updateHeadings(headings)
+}
+
+const offLoadingEnd = nuxtApp.hooks.hook('page:loading:end', refreshHeadings)
+const offTransitionFinish = nuxtApp.hooks.hook('page:transition:finish', refreshHeadings)
+
+onUnmounted(() => {
+  offLoadingEnd()
+  offTransitionFinish()
 })
 </script>
 

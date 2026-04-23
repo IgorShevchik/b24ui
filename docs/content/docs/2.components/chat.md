@@ -177,24 +177,41 @@ export default defineEventHandler(async (event) => {
 
 ::
 
-### Tool Calling (MCP)
+### Tool Calling with MCP
 
-You can enhance your chatbot with tool calling capabilities using the [Model Context Protocol](https://ai-sdk.dev/docs/ai-sdk-core/mcp-tools) (`@ai-sdk/mcp`). This allows the AI to search your documentation or perform other actions:
+Empower your chatbot with advanced tool-calling features using the [Model Context Protocol (MCP)](https://ai-sdk.dev/docs/ai-sdk-core/mcp-tools) from `@ai-sdk/mcp`. MCP enables your AI to perform dynamic actions, such as searching your documentation or executing custom tasks, to provide more relevant and accurate responses.
+
+To get started, install the MCP package:
+
+:::code-group
+
+```bash [npm]
+npm install @ai-sdk/mcp
+```
+
+```bash [pnpm]
+pnpm add @ai-sdk/mcp
+```
+
+```bash [yarn]
+yarn add @ai-sdk/mcp
+```
+
+:::
+
+Then, configure your server endpoint to use MCP tools:
 
 ```ts [server/api/chat.post.ts]
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js'
 import { streamText, convertToModelMessages, stepCountIs } from 'ai'
-import { experimental_createMCPClient } from '@ai-sdk/mcp'
+import { createMCPClient } from '@ai-sdk/mcp'
 import { gateway } from '@ai-sdk/gateway'
 
 export default defineEventHandler(async (event) => {
   const { messages } = await readBody(event)
 
-  const httpTransport = new StreamableHTTPClientTransport(
-    new URL('https://your-app.com/mcp')
-  )
-  const httpClient = await experimental_createMCPClient({
-    transport: httpTransport
+  const httpClient = await createMCPClient({
+    transport: { type: 'http', url: 'https://your-app.com/mcp' }
   })
   const tools = await httpClient.tools()
 
@@ -209,7 +226,7 @@ export default defineEventHandler(async (event) => {
       await httpClient.close()
     },
     onError: async (error) => {
-      console.error(error)
+      console.error('streamText error:', error)
       await httpClient.close()
     }
   }).toUIMessageStreamResponse()
@@ -297,7 +314,7 @@ export default defineEventHandler(async (event) => {
 ```ts [server/api/chat.post.ts]
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js'
 import { streamText, convertToModelMessages, stepCountIs, smoothStream } from 'ai'
-import { experimental_createMCPClient } from '@ai-sdk/mcp'
+import { createMCPClient } from '@ai-sdk/mcp'
 import { createDeepSeek } from '@ai-sdk/deepseek'
 
 export default defineEventHandler(async (event) => {
@@ -307,11 +324,8 @@ export default defineEventHandler(async (event) => {
     throw createError({ status: 400, message: 'Invalid or missing messages array.' })
   }
 
-  const httpTransport = new StreamableHTTPClientTransport(
-    new URL('https://your-app.com/mcp')
-  )
-  const httpClient = await experimental_createMCPClient({
-    transport: httpTransport
+  const httpClient = await createMCPClient({
+    transport: { type: 'http', url: 'https://your-app.com/mcp' }
   })
   const tools = await httpClient.tools()
 
@@ -325,12 +339,11 @@ export default defineEventHandler(async (event) => {
     stopWhen: stepCountIs(6),
     tools,
     onFinish: async () => {
-      event.waitUntil(httpClient?.close())
+      await httpClient.close()
     },
     onError: async (error) => {
       console.error('streamText error:', error)
-
-      event.waitUntil(httpClient?.close())
+      await httpClient.close()
     }
   }).toUIMessageStreamResponse()
 })
@@ -347,7 +360,7 @@ Use the `Chat` class from `@ai-sdk/vue` to manage chat state and connect to your
 import type { UIMessage } from 'ai'
 import { isReasoningUIPart, isTextUIPart, isToolUIPart, getToolName } from 'ai'
 import { Chat } from '@ai-sdk/vue'
-import { isReasoningStreaming, isToolStreaming } from '@bitrix24/b24ui-nuxt'
+import { isPartStreaming, isToolStreaming } from '@bitrix24/b24ui-nuxt'
 
 const input = ref('')
 
@@ -377,7 +390,7 @@ function onSubmit() {
         <B24ChatReasoning
           v-if="isReasoningUIPart(part)"
           :text="part.text"
-          :streaming="isReasoningStreaming(message, index, chat)"
+          :streaming="isPartStreaming(part)"
         >
           <MDC
             :value="part.text"
@@ -392,15 +405,20 @@ function onSubmit() {
           :streaming="isToolStreaming(part)"
         />
 
-        <MDC
-          v-else-if="isTextUIPart(part)"
-          :value="part.text"
-          :cache-key="`${message.id}-${index}`"
-          class="*:first:mt-0 *:last:mb-0"
-        />
+        <template v-else-if="isTextUIPart(part)">
+          <MDC
+            v-if="message.role === 'assistant'"
+            :value="part.text"
+            :cache-key="`${message.id}-${index}`"
+            class="*:first:mt-0 *:last:mb-0"
+          />
+          <p v-else-if="message.role === 'user'" class="whitespace-pre-wrap">
+            {{ part.text }}
+          </p>
+        </template>
       </template>
     </template>
-  </UChatMessages>
+  </B24ChatMessages>
 
   <B24ChatPrompt
     v-model="input"

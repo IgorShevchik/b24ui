@@ -3,15 +3,27 @@ import { queryCollection } from '@nuxt/content/server'
 import { withTrailingSlash } from 'ufo'
 
 export default defineMcpTool({
-  title: 'Search Components by Category',
-  description: 'Searches components by category or text filter',
+  title: 'Search Components',
+  description: 'Search components by name, description, or category',
+  annotations: {
+    readOnlyHint: true,
+    destructiveHint: false,
+    idempotentHint: true,
+    openWorldHint: false
+  },
   inputSchema: {
     category: z.string().optional().describe('Filter components by category'),
     search: z.string().optional().describe('Search term to filter components by name or description')
   },
+  inputExamples: [
+    { category: 'layout' },
+    { search: 'table' },
+    { category: 'forms', search: 'input' }
+  ],
   cache: '30m',
   async handler({ category, search }) {
     const event = useEvent()
+    const config = useRuntimeConfig()
 
     let query = queryCollection(event, 'docs')
       .where('path', 'LIKE', '/docs/components/%')
@@ -24,7 +36,6 @@ export default defineMcpTool({
     }
 
     const components = await query.all()
-    const config = useRuntimeConfig()
 
     let results = components.map(component => ({
       name: component.path.split('/').pop(),
@@ -36,7 +47,6 @@ export default defineMcpTool({
       links: component.links
     }))
 
-    // Apply search filter if provided
     if (search) {
       const searchLower = search.toLowerCase()
       results = results.filter(component =>
@@ -46,10 +56,10 @@ export default defineMcpTool({
       )
     }
 
-    return jsonResult({
+    return {
       components: results.sort((a, b) => (a.name || '').localeCompare(b.name || '')),
       total: results.length,
       filters: { category, search }
-    })
+    }
   }
 })

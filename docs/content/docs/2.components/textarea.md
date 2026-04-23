@@ -205,7 +205,7 @@ prettier: true
 ignore:
   - placeholder
   - avatar.src
-  - loading.src
+  - avatar.loading
 props:
   avatar:
     src: '/b24ui/avatar/employee.png'
@@ -362,6 +362,7 @@ When accessing the component via a template ref, you can use the following:
 | Name | Type |
 | ---- | ---- |
 | `textareaRef`{lang="ts-type"} | `Ref<HTMLTextAreaElement \| null>`{lang="ts-type"} |
+| `autoResize`{lang="ts-type"} | `() => void`{lang="ts-type"} |
 
 ## Theme
 

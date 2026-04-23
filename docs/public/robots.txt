@@ -1,2 +1,43 @@
 User-agent: *
+Disallow: /vercel/
+Disallow: /node_modules/
+Disallow: /docs/src/
+Disallow: /home/
+Disallow: /_nuxt/
+Disallow: /_plausible
+Disallow: /dev/
+Disallow: /api/
+Disallow: /
+
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: Claude-Web
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: PerplexityBot
+Disallow: /
+
+User-agent: Amazonbot
+Disallow: /
+
+User-agent: cohere-ai
+Disallow: /
+
+User-agent: DeepSeekBot
+Disallow: /
+
+Sitemap: https://bitrix24.github.io/b24ui/sitemap.xml
 Disallow: /

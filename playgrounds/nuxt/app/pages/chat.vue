@@ -2,9 +2,12 @@
 import { isReasoningUIPart, isTextUIPart, isToolUIPart, getToolName } from 'ai'
 import type { UIMessage } from 'ai'
 import { Chat } from '@ai-sdk/vue'
-import { isReasoningStreaming, isToolStreaming } from '@bitrix24/b24ui-nuxt/utils/ai'
+import { isPartStreaming, isToolStreaming } from '@bitrix24/b24ui-nuxt/utils/ai'
+import { Comark } from '@comark/vue'
+import highlight from '@comark/vue/plugins/highlight'
 import AlertIcon from '@bitrix24/b24icons-vue/outline/AlertIcon'
 import RobotIcon from '@bitrix24/b24icons-vue/outline/RobotIcon'
+import TrashcanIcon from '@bitrix24/b24icons-vue/outline/TrashcanIcon'
 
 type MayHasQuery = {
   query?: string
@@ -42,6 +45,13 @@ function onSubmit() {
   input.value = ''
 }
 
+function clearMessages() {
+  if (chat.status === 'streaming') {
+    chat.stop()
+  }
+  chat.messages = []
+}
+
 function getDomain(url: string): string {
   try {
     return new URL(url).hostname.replace(/^www\./, '')
@@ -56,10 +66,21 @@ function getFaviconUrl(url: string): string {
 </script>
 
 <template>
-  <B24DashboardNavbar class="absolute top-0 inset-x-0 z-5 border-b-0 lg:pointer-events-none" />
+  <B24DashboardNavbar class="h-(--b24ui-header-height) shrink-0 flex items-center justify-between ps-2 pe-4 lg:ps-4 lg:pe-4 gap-1.5 absolute top-0 inset-x-0 z-5">
+    <template #right>
+      <B24Button
+        :icon="TrashcanIcon"
+        size="sm"
+        color="air-tertiary"
+        :b24ui="{ baseLine: '[--ui-btn-icon-size:19px]' }"
+        @click="clearMessages"
+      />
+    </template>
+  </B24DashboardNavbar>
 
   <div class="flex-1 flex flex-col gap-4 sm:gap-6 max-w-[650px] w-full mx-auto min-h-0">
     <B24ChatMessages
+      should-auto-scroll
       :messages="chat.messages"
       :status="chat.status"
       :user="{ avatar: { src: '/avatar/assistant.png' } }"
@@ -74,21 +95,23 @@ function getFaviconUrl(url: string): string {
           <B24ChatReasoning
             v-if="isReasoningUIPart(part)"
             :text="part.text"
-            :streaming="isReasoningStreaming(message, index, chat)"
+            :streaming="isPartStreaming(part)"
             chevron="leading"
             :b24ui="{ body: 'scrollbar-thin scrollbar-transparent' }"
           >
-            <MDC
-              :value="part.text"
-              :cache-key="`reasoning-${message.id}-${index}`"
+            <Comark
+              :markdown="part.text"
+              :streaming="isPartStreaming(part)"
+              :plugins="[highlight()]"
               class="*:first:mt-0 *:last:mb-0"
             />
           </B24ChatReasoning>
           <template v-else-if="isTextUIPart(part)">
-            <MDC
+            <Comark
               v-if="message.role === 'assistant'"
-              :value="part.text"
-              :cache-key="`${message.id}-${index}`"
+              :markdown="part.text"
+              :streaming="isPartStreaming(part)"
+              :plugins="[highlight()]"
               class="*:first:mt-0 *:last:mb-0"
             />
             <p v-else-if="message.role === 'user'" class="whitespace-pre-wrap">

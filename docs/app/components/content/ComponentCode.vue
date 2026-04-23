@@ -8,9 +8,12 @@ import { CalendarDate, Time } from '@internationalized/date'
 import * as theme from '#build/b24ui'
 import { get, set } from '#b24ui/utils'
 import RocketIcon from '@bitrix24/b24icons-vue/main/RocketIcon'
+import PlayLIcon from '@bitrix24/b24icons-vue/outline/PlayLIcon'
 // import SignIcon from '@bitrix24/b24icons-vue/main/SignIcon'
 // import MoreMIcon from '@bitrix24/b24icons-vue/outline/MoreMIcon'
 // import InfoIcon from '@bitrix24/b24icons-vue/button/InfoIcon'
+
+const { track } = useAnalytics()
 
 interface CastImport {
   name: string
@@ -25,6 +28,7 @@ interface Cast {
 
 type CastDateValue = [number, number, number]
 type CastTimeValue = [number, number, number]
+type CastTimeRangeValue = { start: CastTimeValue, end: CastTimeValue }
 
 const iconsTypeList = ['icon', 'trailingIcon', 'deleteIcon', 'selectedIcon', 'incrementIcon', 'decrementIcon', 'checkedIcon', 'uncheckedIcon', 'separatorIcon', 'closeIcon', 'backIcon', 'prevIcon', 'nextIcon']
 const convertIcon = (key: string): null | string => {
@@ -104,6 +108,13 @@ const castMap: Record<string, Cast> = {
     get: (args: CastTimeValue) => new Time(...args),
     template: (value: Time) => {
       return value ? `new Time(${value.hour}, ${value.minute}, ${value.second})` : 'null'
+    },
+    imports: [{ name: 'Time', from: '@internationalized/date' }]
+  },
+  'TimeRangeValue': {
+    get: (args: CastTimeRangeValue) => ({ start: new Time(...args.start), end: new Time(...args.end) }),
+    template: (value: { start: Time, end: Time }) => {
+      return value ? `{ start: new Time(${value.start.hour}, ${value.start.minute}, ${value.start.second}), end: new Time(${value.end.hour}, ${value.end.minute}, ${value.end.second}) }` : 'null'
     },
     imports: [{ name: 'Time', from: '@internationalized/date' }]
   },
@@ -281,7 +292,7 @@ const options = computed(() => {
 /**
  * @see docs/server/utils/transformMDC.ts -> generateComponentCode
  */
-const code = computed(() => {
+function buildCode() {
   let code = ''
 
   let isUseIcon = false
@@ -343,8 +354,9 @@ ${props.slots?.default}
     code += `
 <script setup lang="ts">
 `
-    // Collect imports from cast types
     const importsBySource = new Map<string, Set<string>>()
+
+    // Collect imports from cast types
     if (props.external?.length) {
       for (const key of props.external) {
         const cast = props.cast?.[key]
@@ -479,6 +491,32 @@ ${props.slots?.default}
   }
 
   return code
+}
+
+function wrapCode(markdown: string, cssClass: string) {
+  if (props.collapse) {
+    return markdown.replace('::code-collapse', `::code-collapse{class="${cssClass}"}`)
+  }
+  return `::div{class="${cssClass}"}\n${markdown}\n::`
+}
+
+const code = computed(() => {
+  const nuxtCode = buildCode()
+  const vueCode = addVueImports(nuxtCode)
+
+  if (vueCode !== nuxtCode) {
+    return wrapCode(nuxtCode, 'nuxt-only') + '\n\n' + wrapCode(vueCode, 'vue-only')
+  }
+
+  return nuxtCode
+})
+
+const playgroundUrl = computed(() => {
+  if (props.prose) return null
+  const rawMarkdown = buildCode()
+  const vueMarkdown = addVueImports(rawMarkdown)
+  const match = vueMarkdown.match(/```vue[^\n]*\n([\s\S]*?)\n```/)
+  return match?.[1] ? getPlaygroundUrl(match[1].trim()) : null
 })
 
 const codeKey = computed(() => `component-code-${name}-${hash(props)}-${helperForChangeComponentProps.value}`)
@@ -553,7 +591,7 @@ const { data: ast } = useAsyncData(codeKey, async () => {
         v-if="component"
         ref="componentContainer"
         style="background-position: 10px 10px"
-        class="flex justify-center border border-b-0 border-muted relative p-4 z-[1]"
+        class="flex justify-center border border-b-0 border-muted relative p-4 z-1"
         :class="[
           !options.length && 'rounded-t-md',
           props.class,
@@ -571,6 +609,18 @@ const { data: ast } = useAsyncData(codeKey, async () => {
       </div>
 
       <ClientOnly>
+        <B24Tooltip v-if="playgroundUrl" text="Open in playground" :content="{ side: 'right' }">
+          <B24Button
+            :to="playgroundUrl"
+            target="_blank"
+            :icon="PlayLIcon"
+            size="sm"
+            class="absolute -bottom-[13px] -right-[13px] z-1 rounded-full lg:opacity-0 lg:group-hover/component:opacity-100 ring-muted transition-opacity duration-200"
+            aria-label="Open in playground"
+            @click="track('Playground Opened', { component: camelName, source: 'code' })"
+          />
+        </B24Tooltip>
+
         <LazyComponentThemeVisualizer
           :container="componentContainer"
           :position-container="wrapperContainer"
@@ -584,7 +634,7 @@ const { data: ast } = useAsyncData(codeKey, async () => {
       v-if="ast"
       :body="ast.body"
       :data="ast.data"
-      class="[&_pre]:!rounded-t-none [&_div.my-5]:!mt-0"
+      class="[&_pre]:rounded-t-none! [&_div.my-5]:mt-0!"
     />
   </div>
 </template>

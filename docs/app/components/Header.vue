@@ -9,6 +9,14 @@ const config = useRuntimeConfig()
 // @memo @memo this for NUXT.UI.docs
 const { open } = useChat()
 const { isEnabled: isAssistantEnabled } = useAssistant()
+const { track } = useAnalytics()
+
+function toggleChat() {
+  if (!open.value) {
+    track('AI Chat Opened', { source: 'header' })
+  }
+  open.value = !open.value
+}
 
 // region ColorMode ////
 const colorMode = useColorMode()
@@ -27,6 +35,7 @@ defineShortcuts({
 // endregion ////
 </script>
 
+<!-- eslint-disable vue/no-template-shadow -->
 <template>
   <B24Header
     mode="modal"
@@ -50,7 +59,7 @@ defineShortcuts({
           color="air-selection"
           :icon="AiStarsIcon"
           aria-label="Ask AI for help"
-          @click="open = !open"
+          @click="toggleChat"
         />
       </B24Tooltip>
       <!-- @memo this for docus -->

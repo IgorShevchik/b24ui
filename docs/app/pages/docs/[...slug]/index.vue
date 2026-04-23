@@ -33,7 +33,7 @@ const { isEnabled } = useAssistant()
 
 const { data: page } = await useAsyncData(kebabCase(pageUrl), () => queryCollection('docs').path(pageUrl).first())
 if (!page.value) {
-  throw createError({ statusCode: 404, statusMessage: 'Page not found', fatal: true })
+  throw createError({ status: 404, statusText: 'Page not found', fatal: true })
 }
 
 // Update the framework if the page has different one
@@ -45,9 +45,9 @@ watch(page, () => {
 
 const navigation = inject<Ref<ContentNavigationItem[]>>('navigation')
 
-const { findSurround } = useNavigation(navigation!)
+const { findSurround, findBreadcrumb } = useNavigation(navigation!)
 
-//  breadcrumb = computed(() => findBreadcrumb(page.value?.path as string))
+const breadcrumb = computed(() => findBreadcrumb(page.value?.path as string))
 const surround = computed(() => findSurround(page.value?.path as string))
 
 if (!import.meta.prerender) {
@@ -94,18 +94,80 @@ useSeoMeta({
 //   })
 // }
 
+const today = new Date().toISOString().split('T')[0]
+
 // Pre-render the markdown path + add it to alternate links
-const site = useSiteConfig()
 const path = computed(() => pageUrl.replace(/\/$/, ''))
 prerenderRoutes([joinURL(`${config.public.baseUrl}/raw`, `${path.value}.md`)])
 useHead({
   link: [
     {
       rel: 'alternate',
-      href: joinURL(site.url, `${config.public.baseUrl}/raw`, `${path.value}.md`),
+      // @memo we use redirect in `docs/modules/md-rewrite.ts`
+      // href: joinURL(config.public.siteUrl, `${config.public.baseUrl}/raw`, `${path.value}.md`),
+      // @memo But at GitHub Pages we use /raw
+      // href: joinURL(config.public.siteUrl, `${config.public.baseUrl}`, `${path.value}.md`),
+      href: joinURL(config.public.siteUrl, `${config.public.baseUrl}/raw`, `${path.value}.md`),
       type: 'text/markdown'
     }
-  ]
+  ],
+  script: [{
+    type: 'application/ld+json',
+    innerHTML: JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'TechArticle',
+      'dateModified': today,
+      'proficiencyLevel': 'Beginner',
+      'dependencies': 'Vue 3, Nuxt (optional)',
+      'headline': `${prefix}${title} ${suffix}`.trim(),
+      'description': description,
+      'url': joinURL(config.public.siteUrl, config.public.baseUrl, path.value + '/'),
+      'mainEntityOfPage': {
+        '@type': 'WebPage',
+        '@id': joinURL(config.public.siteUrl, config.public.baseUrl, path.value + '/')
+      },
+      'breadcrumb': {
+        '@type': 'BreadcrumbList',
+        'itemListElement': [
+          {
+            '@type': 'ListItem',
+            'position': 1,
+            'name': 'Home',
+            'item': {
+              '@id': `${config.public.siteUrl}${config.public.baseUrl}/`
+            }
+          },
+          ...(breadcrumb.value?.map((item, index) => ({
+            '@type': 'ListItem',
+            'position': index + 2,
+            'name': item.label,
+            'item': {
+              '@id': item.to ? joinURL(config.public.siteUrl, config.public.baseUrl, String(item.to) + '/') : undefined
+            }
+          })) || []),
+          {
+            '@type': 'ListItem',
+            'position': (breadcrumb.value?.length || 0) + 2,
+            'name': `${prefix}${title} ${suffix}`.trim(),
+            'item': {
+              '@id': joinURL(config.public.siteUrl, config.public.baseUrl, path.value + '/')
+            }
+          }
+        ]
+      },
+      'author': { '@type': 'Organization', 'name': 'Bitrix24' },
+      'publisher': {
+        '@type': 'Organization',
+        'name': 'Bitrix24',
+        'logo': {
+          '@type': 'ImageObject',
+          'url': 'https://bitrix24.github.io/b24ui/avatar/b24-logo.jpg',
+          'width': 460,
+          'height': 460
+        }
+      }
+    }).replace(/</g, '\\u003c').replace(/>/g, '\\u003e')
+  }]
 })
 
 const communityLinks = computed(() => [
@@ -160,6 +222,11 @@ onMounted(() => {
   isMounted.value = true
 })
 
+// @todo fix this
+// @see docs/app/components/PageHeaderLinks.vue:16
+// const aiPrompt = computed(() => `I'm looking at this Bitrix24 UI documentation: ${page.value?.path}\nHelp me understand how to use it. Be ready to explain concepts, give examples, or help debug based on it.`)
+const aiPrompt = ref('Read this documentation page and summarize it. I want to ask questions about it.')
+
 function makeExplain() {
   // @memo this for NUXT.UI.docs
   messages.value = [
@@ -167,13 +234,13 @@ function makeExplain() {
     {
       id: String(Date.now()),
       role: 'user',
-      parts: [{ type: 'text', text: `Read the documentation page at ${page.value?.path} and summarize it. I want to ask questions about it.` }]
+      parts: [{ type: 'text', text: aiPrompt.value }]
     }
   ]
   open.value = true
 
   // @memo this for docus
-  // openAIChat(`Explain the page ${pageUrl}`, true)
+  // openAIChat(aiPrompt.value, true)
 }
 </script>
 
@@ -182,8 +249,8 @@ function makeExplain() {
     v-if="page"
     :b24ui="{
       root: 'lg:gap-2.5 lg:py-3',
-      center: 'flex flex-col lg:gap-4',
-      right: 'lg:col-span-2 order-first lg:order-last lg:top-[0px]'
+      center: `flex flex-col lg:gap-4 ${open ? 'lg:col-span-10' : ''}`,
+      right: `order-first lg:order-last lg:top-[0px] ${open ? 'lg:hidden' : 'lg:col-span-2'}`
     }"
   >
     <PageHeader>
@@ -215,7 +282,9 @@ function makeExplain() {
           size="sm"
           @click="makeExplain"
         />
+
         <PageHeaderLinks />
+
         <B24DropdownMenu
           class="hidden sm:flex"
           :items="communityLinks"

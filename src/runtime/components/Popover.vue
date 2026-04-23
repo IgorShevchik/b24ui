@@ -66,6 +66,7 @@ import { Popover, HoverCard } from 'reka-ui/namespaced'
 import { reactivePick } from '@vueuse/core'
 import { useAppConfig } from '#imports'
 import { useComponentUI } from '../composables/useComponentUI'
+import { FieldGroupReset } from '../composables/useFieldGroup'
 import { usePortal } from '../composables/usePortal'
 import { pointerDownOutside } from '../utils/overlay'
 import { tv } from '../utils/tv'
@@ -89,7 +90,7 @@ const portalProps = usePortal(toRef(() => props.portal))
 const contentProps = toRef(() => defu(props.content, { side: 'bottom', sideOffset: 8, collisionPadding: 8 }) as PopoverContentProps)
 const contentEvents = computed(() => {
   if (!props.dismissible) {
-    const events = ['pointerDownOutside', 'interactOutside', 'escapeKeyDown']
+    const events = ['interactOutside', 'escapeKeyDown']
 
     return events.reduce((acc, curr) => {
       acc[curr] = (e: Event) => {
@@ -131,11 +132,13 @@ const Component = computed(() => props.mode === 'hover' ? HoverCard : Popover)
     </Component.Anchor>
 
     <Component.Portal v-bind="portalProps">
-      <Component.Content v-bind="contentProps" data-slot="content" :class="b24ui.content({ class: [!slots.default && props.class, uiProp?.content] })" v-on="contentEvents">
-        <slot name="content" v-bind="((close ? { close } : {}) as SlotProps<M>)" />
+      <FieldGroupReset>
+        <Component.Content v-bind="contentProps" data-slot="content" :class="b24ui.content({ class: [!slots.default && props.class, uiProp?.content] })" v-on="contentEvents">
+          <slot name="content" v-bind="((close ? { close } : {}) as SlotProps<M>)" />
 
-        <Component.Arrow v-if="!!arrow" v-bind="arrowProps" data-slot="arrow" :class="b24ui.arrow({ class: uiProp?.arrow })" />
-      </Component.Content>
+          <Component.Arrow v-if="!!arrow" v-bind="arrowProps" data-slot="arrow" :class="b24ui.arrow({ class: uiProp?.arrow })" />
+        </Component.Content>
+      </FieldGroupReset>
     </Component.Portal>
   </Component.Root>
 </template>

@@ -172,12 +172,13 @@ export interface SelectSlots<
 <script setup lang="ts" generic="T extends ArrayOrNested<SelectItem>, VK extends GetItemKeys<T> = 'value', M extends boolean = false, Mod extends Omit<ModelModifiers, 'lazy'> = Omit<ModelModifiers, 'lazy'>">
 import { useTemplateRef, computed, onMounted, toRef } from 'vue'
 // @memo we use Primitive
-import { Primitive, SelectRoot, SelectArrow, SelectTrigger, SelectPortal, SelectContent, SelectLabel, SelectGroup, SelectItem as RSelectItem, SelectItemIndicator, SelectItemText, SelectSeparator, useForwardPropsEmits } from 'reka-ui'
+import { Primitive, SelectRoot, SelectArrow, SelectTrigger, SelectPortal, SelectContent, SelectViewport, SelectValue as RSelectValue, SelectLabel, SelectGroup, SelectItem as RSelectItem, SelectItemIndicator, SelectItemText, SelectSeparator, useForwardPropsEmits } from 'reka-ui'
 import { defu } from 'defu'
 import { reactivePick } from '@vueuse/core'
 import { useAppConfig } from '#imports'
 import { useComponentUI } from '../composables/useComponentUI'
-import { useFieldGroup } from '../composables/useFieldGroup'
+import { useResolvedVariants } from '../composables/useResolvedVariants'
+import { useFieldGroup, FieldGroupReset } from '../composables/useFieldGroup'
 import { useComponentIcons } from '../composables/useComponentIcons'
 import { useFormField } from '../composables/useFormField'
 import { usePortal } from '../composables/usePortal'
@@ -205,14 +206,19 @@ const uiProp = useComponentUI('select', props)
 
 const rootProps = useForwardPropsEmits(reactivePick(props, 'open', 'defaultOpen', 'disabled', 'autocomplete', 'required', 'multiple'), emits)
 const portalProps = usePortal(toRef(() => props.portal))
-const contentProps = toRef(() => defu(props.content, { side: 'bottom', sideOffset: 8, collisionPadding: 8, position: 'popper' }) as SelectContentProps)
+const { position } = useResolvedVariants('select', props, theme, ['position'], {
+  position: () => props.content?.position
+})
+const contentProps = toRef(() => defu(props.content, { side: 'bottom', sideOffset: 8, collisionPadding: 8, position: position.value }) as SelectContentProps)
 const arrowProps = toRef(() => defu(typeof props.arrow === 'boolean' ? {} : props.arrow, { width: 20, height: 10 }) as SelectArrowProps)
 
-const { emitFormChange, emitFormInput, emitFormBlur, emitFormFocus, size: formGroupSize, color, id, name, highlight, disabled, ariaAttrs } = useFormField<InputProps>(props)
+const { emitFormChange, emitFormInput, emitFormBlur, emitFormFocus, size: formFieldSize, color, id, name, highlight, disabled, ariaAttrs } = useFormField<InputProps>(props)
 const { orientation, size: fieldGroupSize } = useFieldGroup<InputProps>(props)
 const { isLeading, isTrailing, leadingIconName, trailingIconName } = useComponentIcons(toRef(() => defu(props, { trailingIcon: icons.chevronDown })))
 
-const selectSize = computed(() => fieldGroupSize.value || formGroupSize.value)
+const selectSize = computed(() => fieldGroupSize.value || formFieldSize.value)
+
+const isItemAligned = computed(() => position.value === 'item-aligned')
 
 const isTag = computed(() => {
   return props.tag
@@ -229,7 +235,8 @@ const b24ui = computed(() => tv({ extend: tv(theme), ...(appConfig.b24ui?.select
   highlight: highlight.value,
   leading: Boolean(isLeading.value || !!props.avatar || !!slots.leading),
   trailing: Boolean(isTrailing.value || !!slots.trailing),
-  fieldGroup: orientation.value
+  fieldGroup: orientation.value,
+  position: position.value
 }))
 
 const groups = computed<SelectItem[][]>(() =>
@@ -320,7 +327,10 @@ const viewportRef = useTemplateRef('viewportRef')
 
 defineExpose({
   triggerRef: toRef(() => triggerRef.value?.$el as HTMLButtonElement),
-  viewportRef: toRef(() => viewportRef.value)
+  viewportRef: toRef(() => {
+    const instance = viewportRef.value
+    return (instance && typeof instance === 'object' && '$el' in instance ? instance.$el : instance) as HTMLElement | null
+  })
 })
 </script>
 
@@ -371,24 +381,16 @@ defineExpose({
           </slot>
         </span>
 
-        <slot :model-value="(modelValue as ApplyModifiers<GetModelValue<T, VK, M, ExcludeItem>, Mod>)" :open="open" :b24ui="b24ui">
-          <template v-for="displayedModelValue in [displayValue(modelValue as any)]" :key="displayedModelValue">
-            <span
-              v-if="displayedModelValue !== undefined && displayedModelValue !== null"
-              data-slot="value"
-              :class="b24ui.value({ class: uiProp?.value })"
-            >
-              {{ displayedModelValue }}
-            </span>
-            <span
-              v-else
-              data-slot="placeholder"
-              :class="b24ui.placeholder({ class: uiProp?.placeholder })"
-            >
-              {{ placeholder ?? '&nbsp;' }}
-            </span>
-          </template>
-        </slot>
+        <template v-for="displayedModelValue in [displayValue(modelValue as any)]" :key="displayedModelValue">
+          <RSelectValue
+            :data-slot="displayedModelValue != null ? 'value' : 'placeholder'"
+            :class="displayedModelValue != null ? b24ui.value({ class: uiProp?.value }) : b24ui.placeholder({ class: uiProp?.placeholder })"
+          >
+            <slot :model-value="(modelValue as ApplyModifiers<GetModelValue<T, VK, M, ExcludeItem>, Mod>)" :open="open" :b24ui="b24ui">
+              {{ displayedModelValue ?? (placeholder ?? '&nbsp;') }}
+            </slot>
+          </RSelectValue>
+        </template>
 
         <span v-if="isTrailing || !!slots.trailing" data-slot="trailing" :class="b24ui.trailing({ class: uiProp?.trailing })">
           <slot name="trailing" :model-value="(modelValue as ApplyModifiers<GetModelValue<T, VK, M, ExcludeItem>, Mod>)" :open="open" :b24ui="b24ui">
@@ -403,101 +405,104 @@ defineExpose({
       </SelectTrigger>
 
       <SelectPortal v-bind="portalProps">
-        <SelectContent data-slot="content" :class="b24ui.content({ class: uiProp?.content })" v-bind="contentProps">
-          <slot name="content-top" />
+        <FieldGroupReset>
+          <SelectContent data-slot="content" :class="b24ui.content({ class: uiProp?.content })" v-bind="contentProps">
+            <slot name="content-top" />
 
-          <div
-            ref="viewportRef"
-            role="presentation"
-            data-slot="viewport"
-            :class="b24ui.viewport({ class: uiProp?.viewport })"
-          >
-            <SelectGroup v-for="(group, groupIndex) in groups" :key="`group-${groupIndex}`" data-slot="group" :class="b24ui.group({ class: uiProp?.group })">
-              <template v-for="(item, index) in group" :key="`group-${groupIndex}-${index}`">
-                <SelectLabel v-if="isSelectItem(item) && item.type === 'label'" data-slot="label" :class="b24ui.label({ class: [uiProp?.label, item.b24ui?.label, item.class] })">
-                  {{ get(item, props.labelKey as string) }}
-                </SelectLabel>
+            <component
+              :is="isItemAligned ? SelectViewport : 'div'"
+              ref="viewportRef"
+              role="presentation"
+              data-slot="viewport"
+              :class="b24ui.viewport({ class: uiProp?.viewport })"
+            >
+              <SelectGroup v-for="(group, groupIndex) in groups" :key="`group-${groupIndex}`" data-slot="group" :class="b24ui.group({ class: uiProp?.group })">
+                <template v-for="(item, index) in group" :key="`group-${groupIndex}-${index}`">
+                  <SelectLabel v-if="isSelectItem(item) && item.type === 'label'" data-slot="label" :class="b24ui.label({ class: [uiProp?.label, item.b24ui?.label, item.class] })">
+                    {{ get(item, props.labelKey as string) }}
+                  </SelectLabel>
 
-                <SelectSeparator v-else-if="isSelectItem(item) && item.type === 'separator'" data-slot="separator" :class="b24ui.separator({ class: [uiProp?.separator, item.b24ui?.separator, item.class] })" />
+                  <SelectSeparator v-else-if="isSelectItem(item) && item.type === 'separator'" data-slot="separator" :class="b24ui.separator({ class: [uiProp?.separator, item.b24ui?.separator, item.class] })" />
 
-                <RSelectItem
-                  v-else
-                  data-slot="item"
-                  :class="b24ui.item({ class: [uiProp?.item, isSelectItem(item) && item.b24ui?.item, isSelectItem(item) && item.class], colorItem: (isSelectItem(item) && item?.color) || undefined })"
-                  :disabled="isSelectItem(item) && item.disabled"
-                  :value="isSelectItem(item) ? get(item, props.valueKey as string) : item"
-                  @select="isSelectItem(item) && item.onSelect?.($event)"
-                >
-                  <slot name="item" :item="(item as NestedItem<T>)" :index="index" :b24ui="b24ui">
-                    <slot name="item-leading" :item="(item as NestedItem<T>)" :index="index" :b24ui="b24ui">
-                      <B24Avatar
-                        v-if="isSelectItem(item) && item.avatar"
-                        :size="((item.b24ui?.itemLeadingAvatarSize || uiProp?.itemLeadingAvatarSize || b24ui.itemLeadingAvatarSize()) as AvatarProps['size'])"
-                        v-bind="item.avatar"
-                        data-slot="itemLeadingAvatar"
-                        :class="b24ui.itemLeadingAvatar({ class: [uiProp?.itemLeadingAvatar, item.b24ui?.itemLeadingAvatar], colorItem: item?.color })"
-                      />
-                    </slot>
-
-                    <span data-slot="itemWrapper" :class="b24ui.itemWrapper({ class: [uiProp?.itemWrapper, isSelectItem(item) && item.b24ui?.itemWrapper] })">
-                      <SelectItemText data-slot="itemLabel" :class="b24ui.itemLabel({ class: [uiProp?.itemLabel, isSelectItem(item) && item.b24ui?.itemLabel] })">
-                        <slot name="item-label" :item="(item as NestedItem<T>)" :index="index">
-                          {{ isSelectItem(item) ? get(item, props.labelKey as string) : item }}
-                        </slot>
-                      </SelectItemText>
-
-                      <span
-                        v-if="isSelectItem(item) && (get(item, props.descriptionKey as string) || !!slots['item-description'])"
-                        data-slot="itemDescription"
-                        :class="b24ui.itemDescription({ class: [uiProp?.itemDescription, isSelectItem(item) && item.b24ui?.itemDescription] })"
-                      >
-                        <slot
-                          name="item-description"
-                          :item="(item as NestedItem<T>)"
-                          :index="index"
-                        >
-                          {{ get(item, props.descriptionKey as string) }}
-                        </slot>
-                      </span>
-                    </span>
-
-                    <span data-slot="itemTrailing" :class="b24ui.itemTrailing({ class: [uiProp?.itemTrailing, isSelectItem(item) && item.b24ui?.itemTrailing], colorItem: (isSelectItem(item) && item?.color) || undefined })">
-                      <SelectItemIndicator as-child>
-                        <Component
-                          :is="selectedIcon || icons.check"
-                          data-slot="itemTrailingIcon"
-                          :class="b24ui.itemTrailingIcon({ class: [uiProp?.itemTrailingIcon, isSelectItem(item) && item.b24ui?.itemTrailingIcon], colorItem: (isSelectItem(item) && item?.color) || undefined })"
-                        />
-                      </SelectItemIndicator>
-
-                      <slot name="item-trailing" :item="(item as NestedItem<T>)" :index="index" :b24ui="b24ui">
-                        <Component
-                          :is="item.icon"
-                          v-if="isSelectItem(item) && item.icon"
-                          data-slot="itemLeadingIcon"
-                          :class="b24ui.itemLeadingIcon({ class: [uiProp?.itemLeadingIcon, item.b24ui?.itemLeadingIcon], colorItem: item?.color })"
-                        />
-                        <B24Chip
-                          v-else-if="isSelectItem(item) && item.chip"
-                          :size="((item.b24ui?.itemLeadingChipSize || uiProp?.itemLeadingChipSize || b24ui.itemLeadingChipSize()) as ChipProps['size'])"
-                          inset
-                          standalone
-                          v-bind="item.chip"
-                          data-slot="itemLeadingChip"
-                          :class="b24ui.itemLeadingChip({ class: [uiProp?.itemLeadingChip, item.b24ui?.itemLeadingChip], colorItem: item?.color })"
+                  <RSelectItem
+                    v-else
+                    data-slot="item"
+                    :class="b24ui.item({ class: [uiProp?.item, isSelectItem(item) && item.b24ui?.item, isSelectItem(item) && item.class], colorItem: (isSelectItem(item) && item?.color) || undefined })"
+                    :disabled="isSelectItem(item) && item.disabled"
+                    :value="isSelectItem(item) ? get(item, props.valueKey as string) : item"
+                    @select="isSelectItem(item) && item.onSelect?.($event)"
+                  >
+                    <slot name="item" :item="(item as NestedItem<T>)" :index="index" :b24ui="b24ui">
+                      <slot name="item-leading" :item="(item as NestedItem<T>)" :index="index" :b24ui="b24ui">
+                        <B24Avatar
+                          v-if="isSelectItem(item) && item.avatar"
+                          :size="((item.b24ui?.itemLeadingAvatarSize || uiProp?.itemLeadingAvatarSize || b24ui.itemLeadingAvatarSize()) as AvatarProps['size'])"
+                          v-bind="item.avatar"
+                          data-slot="itemLeadingAvatar"
+                          :class="b24ui.itemLeadingAvatar({ class: [uiProp?.itemLeadingAvatar, item.b24ui?.itemLeadingAvatar], colorItem: item?.color })"
                         />
                       </slot>
-                    </span>
-                  </slot>
-                </RSelectItem>
-              </template>
-            </SelectGroup>
-          </div>
 
-          <slot name="content-bottom" />
+                      <span data-slot="itemWrapper" :class="b24ui.itemWrapper({ class: [uiProp?.itemWrapper, isSelectItem(item) && item.b24ui?.itemWrapper] })">
+                        <SelectItemText data-slot="itemLabel" :class="b24ui.itemLabel({ class: [uiProp?.itemLabel, isSelectItem(item) && item.b24ui?.itemLabel] })">
+                          <slot name="item-label" :item="(item as NestedItem<T>)" :index="index">
+                            {{ isSelectItem(item) ? get(item, props.labelKey as string) : item }}
+                          </slot>
+                        </SelectItemText>
 
-          <SelectArrow v-if="!!arrow" v-bind="arrowProps" data-slot="arrow" :class="b24ui.arrow({ class: uiProp?.arrow })" />
-        </SelectContent>
+                        <span
+                          v-if="isSelectItem(item) && (get(item, props.descriptionKey as string) || !!slots['item-description'])"
+                          data-slot="itemDescription"
+                          :class="b24ui.itemDescription({ class: [uiProp?.itemDescription, isSelectItem(item) && item.b24ui?.itemDescription] })"
+                        >
+                          <slot
+                            name="item-description"
+                            :item="(item as NestedItem<T>)"
+                            :index="index"
+                          >
+                            {{ get(item, props.descriptionKey as string) }}
+                          </slot>
+                        </span>
+                      </span>
+
+                      <span data-slot="itemTrailing" :class="b24ui.itemTrailing({ class: [uiProp?.itemTrailing, isSelectItem(item) && item.b24ui?.itemTrailing], colorItem: (isSelectItem(item) && item?.color) || undefined })">
+                        <SelectItemIndicator as-child>
+                          <Component
+                            :is="selectedIcon || icons.check"
+                            data-slot="itemTrailingIcon"
+                            :class="b24ui.itemTrailingIcon({ class: [uiProp?.itemTrailingIcon, isSelectItem(item) && item.b24ui?.itemTrailingIcon], colorItem: (isSelectItem(item) && item?.color) || undefined })"
+                          />
+                        </SelectItemIndicator>
+
+                        <slot name="item-trailing" :item="(item as NestedItem<T>)" :index="index" :b24ui="b24ui">
+                          <Component
+                            :is="item.icon"
+                            v-if="isSelectItem(item) && item.icon"
+                            data-slot="itemLeadingIcon"
+                            :class="b24ui.itemLeadingIcon({ class: [uiProp?.itemLeadingIcon, item.b24ui?.itemLeadingIcon], colorItem: item?.color })"
+                          />
+                          <B24Chip
+                            v-else-if="isSelectItem(item) && item.chip"
+                            :size="((item.b24ui?.itemLeadingChipSize || uiProp?.itemLeadingChipSize || b24ui.itemLeadingChipSize()) as ChipProps['size'])"
+                            inset
+                            standalone
+                            v-bind="item.chip"
+                            data-slot="itemLeadingChip"
+                            :class="b24ui.itemLeadingChip({ class: [uiProp?.itemLeadingChip, item.b24ui?.itemLeadingChip], colorItem: item?.color })"
+                          />
+                        </slot>
+                      </span>
+                    </slot>
+                  </RSelectItem>
+                </template>
+              </SelectGroup>
+            </component>
+
+            <slot name="content-bottom" />
+
+            <SelectArrow v-if="!!arrow" v-bind="arrowProps" data-slot="arrow" :class="b24ui.arrow({ class: uiProp?.arrow })" />
+          </SelectContent>
+        </FieldGroupReset>
       </SelectPortal>
     </SelectRoot>
   </Primitive>

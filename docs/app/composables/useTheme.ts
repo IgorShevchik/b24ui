@@ -1,13 +1,26 @@
+// import { defu } from 'defu'
 import { useLocalStorage } from '@vueuse/core'
+// import { themeIcons, cssVariableDefaults } from '../utils/theme'
 import { omit } from '#b24ui/utils'
 import colors from 'tailwindcss/colors'
 import ContrastIcon from '@bitrix24/b24icons-vue/outline/ContrastIcon'
 import SunIcon from '@bitrix24/b24icons-vue/outline/SunIcon'
 import MoonIcon from '@bitrix24/b24icons-vue/outline/MoonIcon'
 
+// function readLocalStorage<T>(key: string, fallback: T): T {
+//   if (!import.meta.client) return fallback
+//   try {
+//     const raw = window.localStorage.getItem(key)
+//     return raw ? JSON.parse(raw) : fallback
+//   } catch {
+//     return fallback
+//   }
+// }
+
 export function useTheme() {
   const colorMode = useColorMode()
   const { track } = useAnalytics()
+  const { framework } = useFrameworks()
 
   const _radius = useLocalStorage('b24-ui-radius', 0.25)
   const _font = useLocalStorage('b24-ui-font', 'Public Sans')
@@ -111,7 +124,7 @@ export function useTheme() {
 
   const hasCSSChanges = computed(() => false)
 
-  const hasAppConfigChanges = computed(() => false)
+  const hasConfigChanges = computed(() => false)
 
   function exportCSS(): string {
     track('Theme Exported', { type: 'CSS' })
@@ -124,14 +137,34 @@ export function useTheme() {
     return lines.join('\n')
   }
 
-  function exportAppConfig(): string {
-    track('Theme Exported', { type: 'AppConfig' })
+  function exportConfig(): string {
+    track('Theme Exported', { type: 'Config', framework: framework.value })
 
     const config: Record<string, any> = { b24ui: {} }
 
     const configString = JSON.stringify(config, null, 2)
       .replace(/"([^"]+)":/g, '$1:')
       .replace(/"/g, '\'')
+
+    if (framework.value === 'vue') {
+      const pluginConfig = config.b24ui
+        ? JSON.stringify({ b24ui: config.b24ui }, null, 2)
+            .replace(/"([^"]+)":/g, '$1:')
+            .replace(/"/g, '\'')
+        : '{}'
+      return [
+        'import { defineConfig } from \'vite\'',
+        'import vue from \'@vitejs/plugin-vue\'',
+        'import bitrix24UIPluginVite from \'@bitrix24/b24ui-nuxt/vite\'',
+        '',
+        `export default defineConfig({`,
+        '  plugins: [',
+        '    vue(),',
+        `    bitrix24UIPluginVite(${pluginConfig.split('\n').map((line, i) => i === 0 ? line : '    ' + line).join('\n')})`,
+        '  ]',
+        '})'
+      ].join('\n')
+    }
 
     return `export default defineAppConfig(${configString})`
   }
@@ -162,9 +195,10 @@ export function useTheme() {
     modes,
     mode,
     hasCSSChanges,
-    hasAppConfigChanges,
+    hasConfigChanges,
+    configLabel: computed(() => framework.value === 'vue' ? 'vite.config.ts' : 'app.config.ts'),
     exportCSS,
-    exportAppConfig,
+    exportConfig,
     applyThemeSettings,
     resetTheme
   }

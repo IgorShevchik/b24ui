@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import type { DefineComponent } from 'vue'
 import type { ToolUIPart, DynamicToolUIPart } from 'ai'
 import type { IconComponent } from '@bitrix24/b24ui-nuxt'
 import { DefaultChatTransport, isToolUIPart, isReasoningUIPart, isTextUIPart, getToolName } from 'ai'
 import { Chat } from '@ai-sdk/vue'
-import { isReasoningStreaming, isToolStreaming } from '@bitrix24/b24ui-nuxt/utils/ai'
+import { isPartStreaming, isToolStreaming } from '@bitrix24/b24ui-nuxt/utils/ai'
 import { useMemoize } from '@vueuse/core'
 import * as theme from '#build/b24ui'
-import ProseStreamPre from '../prose/PreStream.vue'
 import AlertIcon from '@bitrix24/b24icons-vue/outline/AlertIcon'
 import UndoIcon from '@bitrix24/b24icons-vue/outline/UndoIcon'
 import CloseChatIcon from '@bitrix24/b24icons-vue/outline/CloseChatIcon'
@@ -15,10 +13,7 @@ import AiStarsIcon from '@bitrix24/b24icons-vue/outline/AiStarsIcon'
 import SearchIcon from '@bitrix24/b24icons-vue/outline/SearchIcon'
 import FileIcon from '@bitrix24/b24icons-vue/outline/FileIcon'
 import TrashcanIcon from '@bitrix24/b24icons-vue/outline/TrashcanIcon'
-
-const components = {
-  pre: ProseStreamPre as unknown as DefineComponent
-}
+import CopilotAi2Icon from '@bitrix24/b24icons-vue/main/CopilotAi2Icon'
 
 const input = ref('')
 
@@ -26,10 +21,12 @@ const config = useRuntimeConfig()
 const appConfig = useAppConfig()
 const toast = useToast()
 const { track } = useAnalytics()
+const route = useRoute()
 const { open, messages } = useChat()
-const { resetTheme, applyThemeSettings, hasCSSChanges, hasAppConfigChanges } = useTheme()
+const { framework } = useFrameworks()
+const { resetTheme, applyThemeSettings, hasCSSChanges, hasConfigChanges } = useTheme()
 
-const hasThemeChanges = computed(() => hasCSSChanges.value || hasAppConfigChanges.value)
+const hasThemeChanges = computed(() => hasCSSChanges.value || hasConfigChanges.value)
 
 let _skipSync = false
 const _themeApplied = new Set<string>()
@@ -59,7 +56,7 @@ const chat = new Chat({
   transport: new DefaultChatTransport({
     api: `${config.public.baseUrl}/api/ai`,
     // api: '/api/ai',
-    body: { theme }
+    body: () => ({ theme, framework: framework.value, currentPage: route.path.startsWith('/docs/') ? route.path : null })
   }),
   onError: (error) => {
     let message = error.message
@@ -128,19 +125,19 @@ function getToolMessage(state: ToolState, toolName: string, input: Record<string
   const readVerb = state === 'output-available' ? 'Read' : 'Reading'
 
   return {
-    'b24-ui-list-components': `${searchVerb} components`,
-    'b24-ui-list-composables': `${searchVerb} composables`,
+    'b24-ui-search-components': `${searchVerb} components${input.category ? ` in ${input.category} category` : ''}${input.search ? ` for "${input.search}"` : ''}`,
+    'b24-ui-search-composables': `${searchVerb} composables${input.search ? ` for "${input.search}"` : ''}`,
+    'b24-ui-search-documentation': `${searchVerb} documentation${input.section ? ` in ${input.section}` : ''}${input.search ? ` for "${input.search}"` : ''}`,
+    'b24-ui-search-icons': `${searchVerb} icons${input.query ? ` for "${input.query}"` : ''}`,
     'b24-ui-get-component': `${readVerb} ${upperName(input.componentName || '')} component`,
     'b24-ui-get-component-metadata': `${readVerb} metadata for component ${upperName(input.componentName || '')}`,
     'b24-ui-list-templates': `${searchVerb} templates${input.category ? ` in ${input.category} category` : ''}`,
     'b24-ui-get-template': `${readVerb} template ${upperName(input.templateName || '')}`,
     'b24-ui-get-documentation-page': `${readVerb} ${input.path || ''} page`,
-    'b24-ui-list-documentation-pages': `${searchVerb} documentation pages`,
     'b24-ui-list-getting-started-guides': `${searchVerb} documentation guides`,
     'b24-ui-get-migration-guide': `${readVerb} migration guide${input.version ? ` for ${input.version}` : ''}`,
     'b24-ui-list-examples': `${searchVerb} examples`,
-    'b24-ui-get-example': `${readVerb} ${upperName(input.exampleName || '')} example`,
-    'b24-ui-search-components-by-category': `${searchVerb} components${input.category ? ` in ${input.category} category` : ''}${input.search ? ` for "${input.search}"` : ''}`
+    'b24-ui-get-example': `${readVerb} ${upperName(input.exampleName || '')} example`
   }[toolName] || `${searchVerb} ${toolName}`
 }
 
@@ -156,12 +153,12 @@ function getToolIcon(part: ToolPart): IconComponent {
   const toolName = getToolName(part)
 
   const iconMap: Record<string, IconComponent> = {
-    'get-component': FileIcon,
-    'get-component-metadata': FileIcon,
-    'get-template': FileIcon,
-    'get-documentation-page': FileIcon,
-    'get-migration-guide': FileIcon,
-    'get-example': FileIcon
+    'b24-ui-get-component': FileIcon,
+    'b24-ui-get-component-metadata': FileIcon,
+    'b24-ui-get-template': FileIcon,
+    'b24-ui-get-documentation-page': FileIcon,
+    'b24-ui-get-migration-guide': FileIcon,
+    'b24-ui-get-example': FileIcon
   }
 
   return iconMap[toolName] || SearchIcon
@@ -267,30 +264,36 @@ defineShortcuts({
         class="px-0 gap-2"
         :user="{ b24ui: { container: 'max-w-full' } }"
       >
+        <template #indicator>
+          <B24ChatTool :icon="CopilotAi2Icon" text="Thinking..." streaming />
+        </template>
+
         <template #content="{ message }">
           <template v-for="(part, index) in message.parts" :key="`${message.id}-${part.type}-${index}`">
             <B24ChatReasoning
               v-if="isReasoningUIPart(part)"
               :text="part.text"
-              :streaming="isReasoningStreaming(message, index, chat)"
+              :streaming="isPartStreaming(part)"
               :icon="AiStarsIcon"
               chevron="leading"
             >
-              <MDCCached
-                :value="part.text"
-                :cache-key="`reasoning-${message.id}-${index}`"
-                :parser-options="{ highlight: false }"
-                class="*:first:mt-0 *:last:mb-0"
+              <ChatComark
+                :markdown="part.text"
+                :streaming="isPartStreaming(part)"
               />
             </B24ChatReasoning>
-            <MDCCached
-              v-else-if="isTextUIPart(part) && part.text.length > 0"
-              :value="part.text"
-              :cache-key="`${message.id}-${index}`"
-              :components="components"
-              :parser-options="{ highlight: false }"
-              class="*:first:mt-0 *:last:mb-0"
-            />
+
+            <template v-else-if="isTextUIPart(part) && part.text.length > 0">
+              <ChatComark
+                v-if="message.role === 'assistant'"
+                :markdown="part.text"
+                :streaming="isPartStreaming(part)"
+              />
+              <p v-else-if="message.role === 'user'" class="whitespace-pre-wrap text-sm/6">
+                {{ part.text }}
+              </p>
+            </template>
+
             <B24ChatTool
               v-else-if="isToolUIPart(part)"
               :text="getToolText(part)"

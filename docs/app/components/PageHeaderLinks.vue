@@ -14,12 +14,15 @@ const { track } = useAnalytics()
 
 const mdPath = computed(() => `${withoutTrailingSlash(`${config.public.siteUrl}${config.public.baseUrl}/raw${route.path}`)}.md`)
 
+// @see docs/app/pages/docs/[...slug]/index.vue:164
+const aiPrompt = computed(() => `I'm looking at this Bitrix24 UI documentation: ${mdPath.value}\nHelp me understand how to use it. Be ready to explain concepts, give examples, or help debug based on it.`)
+
 const items = [
   {
     label: 'Copy Markdown link',
     avatar: { icon: LinkIcon },
     onSelect() {
-      track('Page Action', { action: 'Copy Markdown Link' })
+      track('Page Action', { action: 'Copy Markdown Link', page: route.path })
       copy(mdPath.value)
       toast.add({
         title: 'Copied to clipboard',
@@ -31,33 +34,33 @@ const items = [
     label: 'View as Markdown',
     avatar: { icon: MarkdownIcon },
     target: '_blank',
-    to: `${withoutTrailingSlash(`/raw${route.path}`)}.md`,
+    to: `${withoutTrailingSlash(`${config.public.baseUrl}/raw${route.path}`)}.md`,
     onSelect() {
-      track('Page Action', { action: 'View as Markdown' })
+      track('Page Action', { action: 'View as Markdown', page: route.path })
     }
   },
   {
     label: 'Open in ChatGPT',
     avatar: { src: `${config.public.baseUrl}/avatar/openai.svg` },
     target: '_blank',
-    to: `https://chatgpt.com/?hints=search&q=${encodeURIComponent(`Read ${mdPath.value} so I can ask questions about it.`)}`,
+    to: `https://chatgpt.com/?prompt=${encodeURIComponent(aiPrompt.value)}`,
     onSelect() {
-      track('Page Action', { action: 'Open in ChatGPT' })
+      track('Page Action', { action: 'Open in ChatGPT', page: route.path })
     }
   },
   {
     label: 'Open in Claude',
     avatar: { src: `${config.public.baseUrl}/avatar/anthropic.svg` },
     target: '_blank',
-    to: `https://claude.ai/new?q=${encodeURIComponent(`Read ${mdPath.value} so I can ask questions about it.`)}`,
+    to: `https://claude.ai/new?q=${encodeURIComponent(aiPrompt.value)}`,
     onSelect() {
-      track('Page Action', { action: 'Open in Claude' })
+      track('Page Action', { action: 'Open in Claude', page: route.path })
     }
   }
 ]
 
 async function copyPage() {
-  track('Page Action', { action: 'Copy Page' })
+  track('Page Action', { action: 'Copy Page', page: route.path })
   await copy(await $fetch<string>(`${withoutTrailingSlash(`/raw${route.path}`)}.md`))
 }
 </script>

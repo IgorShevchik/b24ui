@@ -3,6 +3,9 @@ import { camelCase, upperFirst } from 'scule'
 import { hash } from 'ohash'
 import { useElementSize } from '@vueuse/core'
 import { get, set } from '#b24ui/utils'
+import PlayLIcon from '@bitrix24/b24icons-vue/outline/PlayLIcon'
+
+const { track } = useAnalytics()
 
 const props = withDefaults(defineProps<{
   name: string
@@ -103,24 +106,35 @@ const { data } = await useFetchComponentExample(camelName)
 
 const componentProps = reactive({ ...(props.props || {}) })
 
-const code = computed(() => {
-  let code = ''
-
-  if (props.collapse) {
-    code += `::code-collapse
-`
-  }
-
-  code += `\`\`\`${props.lang} ${props.preview ? '' : ` [${props.filename ?? data.value?.pascalName}.${props.lang}]`}${props.highlights?.length ? `{${props.highlights.join('-')}}` : ''}
-${data.value?.code ?? ''}
+function buildCodeBlock(source: string, cssClass?: string) {
+  const codeFence = `\`\`\`${props.lang} ${props.preview ? '' : ` [${props.filename ?? data.value?.pascalName}.${props.lang}]`}${props.highlights?.length ? `{${props.highlights.join('-')}}` : ''}
+${source}
 \`\`\``
 
   if (props.collapse) {
-    code += `
+    return `::code-collapse${cssClass ? `{class="${cssClass}"}` : ''}
+${codeFence}
 ::`
   }
 
-  return code
+  if (cssClass) {
+    return `::div{class="${cssClass}"}
+${codeFence}
+::`
+  }
+
+  return codeFence
+}
+
+const code = computed(() => {
+  const rawCode = data.value?.code ?? ''
+  const vueCode = addVueImports(rawCode)
+
+  if (vueCode !== rawCode) {
+    return buildCodeBlock(rawCode, 'nuxt-only') + '\n\n' + buildCodeBlock(vueCode, 'vue-only')
+  }
+
+  return buildCodeBlock(rawCode)
 })
 
 const { data: ast } = useAsyncData(`component-example-${camelName}${hash({ props: componentProps, collapse: props.collapse })}`, async () => {
@@ -157,6 +171,12 @@ const optionsValues = ref(props.options?.reduce((acc, option) => {
   return acc
 }, {} as Record<string, any>) || {})
 
+const playgroundUrl = computed(() => {
+  const rawCode = data.value?.code
+  if (!rawCode) return null
+  return getPlaygroundUrl(addVueImports(rawCode))
+})
+
 const urlSearchParams = computed(() => {
   const params = {
     ...optionsValues.value,
@@ -179,7 +199,7 @@ const urlSearchParams = computed(() => {
         class="relative group/component"
       >
         <div
-          class="relative z-[1]"
+          class="relative z-1"
           :class="[{
             'border-(--ui-color-divider-accent) border': props.border,
             'border-b-0 rounded-t-md': props.source,
@@ -239,6 +259,18 @@ const urlSearchParams = computed(() => {
         </div>
 
         <ClientOnly>
+          <B24Tooltip v-if="playgroundUrl" text="Open in playground" :content="{ side: 'right' }">
+            <B24Button
+              :to="playgroundUrl"
+              target="_blank"
+              :icon="PlayLIcon"
+              size="sm"
+              class="absolute -bottom-[13px] -right-[13px] z-1 rounded-full lg:opacity-0 lg:group-hover/component:opacity-100 ring-muted transition-opacity duration-200"
+              aria-label="Open in playground"
+              @click="track('Playground Opened', { component: camelName, source: 'example' })"
+            />
+          </B24Tooltip>
+
           <LazyComponentThemeVisualizer
             :container="componentContainer"
             :position-container="wrapperContainer"
@@ -248,14 +280,14 @@ const urlSearchParams = computed(() => {
     </template>
 
     <template v-if="props.source">
-      <div v-if="!!slots.code" class="[&_pre]:!rounded-t-none [&_div.my-5]:!mt-0 scrollbar-transparent">
+      <div v-if="!!slots.code" class="[&_pre]:rounded-t-none! [&_div.my-5]:mt-0! scrollbar-transparent">
         <slot name="code" />
       </div>
       <MDCRenderer
         v-else-if="ast"
         :body="ast.body"
         :data="ast.data"
-        class="[&_pre]:!rounded-t-none [&_div.my-5]:!mt-0 scrollbar-transparent"
+        class="[&_pre]:rounded-t-none! [&_div.my-5]:mt-0! scrollbar-transparent"
       />
     </template>
   </div>

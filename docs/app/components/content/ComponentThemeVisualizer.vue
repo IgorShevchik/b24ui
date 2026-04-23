@@ -159,7 +159,7 @@ watch(open, (isOpen) => {
       <B24Button
         :icon="open ? CrossMIcon : BoardIcon"
         size="sm"
-        class="absolute -top-[11px] -right-[11px] z-1 rounded-full lg:opacity-0 lg:group-hover/component:opacity-100 ring-(--ui-color-design-tinted-na-bg) transition-opacity duration-200"
+        class="absolute -top-[13px] -right-[13px] z-1 rounded-full lg:opacity-0 lg:group-hover/component:opacity-100 ring-(--ui-color-design-tinted-na-bg) transition-opacity duration-200"
         :class="[open && 'lg:opacity-100 bg-(--ui-color-bg-content-secondary)']"
         tabindex="-1"
       />
@@ -175,7 +175,7 @@ watch(open, (isOpen) => {
           <div
             v-for="slotName in themeSlots"
             :key="slotName"
-            class="p-1.5 cursor-default hover:bg-(--ui-color-bg-content-secondary) transition-colors rounded"
+            class="p-1.5 cursor-default hover:bg-(--ui-color-bg-content-secondary) transition-colors rounded-sm"
             :class="[highlightedSlot === slotName && 'bg-(--ui-color-bg-content-secondary)']"
             @mouseenter="highlightSlot(slotName)"
             @mouseleave="clearHighlight"
@@ -204,7 +204,7 @@ watch(open, (isOpen) => {
       <div
         v-if="highlightStyle"
         :style="highlightStyle"
-        class="pointer-events-none border-2 border-dashed border-(--ui-color-design-filled-alert-stroke) rounded transition-all duration-150"
+        class="pointer-events-none border-2 border-dashed border-(--ui-color-design-filled-alert-stroke) rounded-sm transition-all duration-150"
         :class="[
           highlightedSlot ? 'opacity-100' : 'opacity-0',
           isPortalHighlight ? 'fixed z-2147483647' : 'absolute z-1'
@@ -212,7 +212,7 @@ watch(open, (isOpen) => {
       >
         <div
           v-if="highlightedSlot"
-          class="absolute -top-6 -left-0.5 px-1.5 py-0.5 text-(length:--ui-font-size-xs) font-(--ui-font-weight-medium) font-[family-name:var(--ui-font-family-system-mono)] bg-(--ui-color-design-filled-alert-bg) text-(--ui-color-design-filled-alert-content-secondary) rounded whitespace-nowrap"
+          class="absolute -top-6 -left-0.5 px-1.5 py-0.5 text-(length:--ui-font-size-xs) font-(--ui-font-weight-medium) font-[family-name:var(--ui-font-family-system-mono)] bg-(--ui-color-design-filled-alert-bg) text-(--ui-color-design-filled-alert-content-secondary) rounded-sm whitespace-nowrap"
         >
           {{ highlightedSlot }}
         </div>

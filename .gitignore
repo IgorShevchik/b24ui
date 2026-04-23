@@ -28,6 +28,7 @@ logs
 .env
 .env.*
 !.env.prod.example
+!.env.example
 
 playgrounds/vue/auto-imports.d.ts
 playgrounds/vue/components.d.ts
@@ -41,3 +42,14 @@ playgrounds/demo/tsconfig.node.tsbuildinfo
 
 # Docs
 /b24ui-app.tar
+
+# REPL playground
+playgrounds/repl/auto-imports.d.ts
+playgrounds/repl/components.d.ts
+playgrounds/repl/public/bitrix24-b24ui.*
+playgrounds/repl/dist/
+
+# AI
+.claude/settings.local.json
+.claude/channels/
+.claude/debug/
