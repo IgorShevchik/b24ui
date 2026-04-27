@@ -46,6 +46,7 @@ playgrounds/repl/public/bitrix24-b24ui.*
 playgrounds/repl/dist/
 
 # AI
+CLAUDE.md
 .claude/settings.local.json
 .claude/channels/
 .claude/debug/
