@@ -531,6 +531,7 @@ function onLinkTrailingClick(e: Event, item: NavigationMenuItem) {
                               data-slot="childLinkIcon"
                               :class="b24ui.childLinkIcon({ class: [uiProp?.childLinkIcon, item.b24ui?.childLinkIcon], active: childActive })"
                             />
+
                             <div
                               v-if="childItem.hint"
                               data-slot="childLinkHint"
@@ -542,6 +543,7 @@ function onLinkTrailingClick(e: Event, item: NavigationMenuItem) {
                             <span data-slot="childLinkLabel" :class="b24ui.childLinkLabel({ class: [uiProp?.childLinkLabel, item.b24ui?.childLinkLabel], active: childActive })">
                               {{ get(childItem, props.labelKey as string) }}
                             </span>
+
                             <Component
                               :is="typeof externalIcon === 'boolean' ? icons.external : externalIcon"
                               v-if="childItem.target === '_blank' && externalIcon !== false"
@@ -662,6 +664,7 @@ function onLinkTrailingClick(e: Event, item: NavigationMenuItem) {
                           :class="b24ui.childLinkBadge({ class: [uiProp?.childLinkBadge, item.b24ui?.childLinkBadge] })"
                         />
                       </div>
+
                       <Component
                         :is="typeof externalIcon === 'boolean' ? icons.external : externalIcon"
                         v-if="childItem.target === '_blank' && externalIcon !== false"

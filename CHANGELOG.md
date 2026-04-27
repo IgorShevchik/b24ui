@@ -12,6 +12,7 @@
 * fix(ContentSearch): speed up navigation mapping
 * fix(ChatMessage/ChatMessages): preserve generic message type in slot scope
 * fix(Drawer): handle RTL mode
+* fix(ContextMenu|DropdownMenu|EditorSuggestionMenu|InputMenu|NavigationMenu|Select): improve select state
 
 ### Chore
 

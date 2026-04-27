@@ -110,7 +110,10 @@ const _useHeader = () => {
       label: 'GitHub',
       to: 'https://github.com/bitrix24/b24ui',
       icon: GitHubIcon,
-      target: '_blank'
+      target: '_blank',
+      b24ui: {
+        linkLeadingIcon: 'size-[20px] ms-[4px] me-[4px]'
+      }
     }
   ])
 

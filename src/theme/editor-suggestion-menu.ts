@@ -50,28 +50,19 @@ export default {
       'text-(--b24ui-typography-legend-color) hover:text-(--b24ui-typography-label-color)',
       'data-highlighted:text-(--b24ui-typography-label-color)',
       'data-[state=open]:text-(--b24ui-typography-label-color)',
-      'hover:bg-(--ui-color-divider-optical-1-alt)',
-      'data-highlighted:bg-(--ui-color-divider-optical-1-alt)',
-      'data-[state=open]:bg-(--ui-color-divider-optical-1-alt)',
+      'hover:bg-(--ui-color-base-black-fixed)/3 dark:hover:bg-(--ui-color-base-black-fixed)',
+      'active:bg-(--ui-color-base-black-fixed)/6 dark:active:bg-(--ui-color-base-black-fixed)',
+      'data-highlighted:not-active:bg-(--ui-color-base-black-fixed)/3 dark:data-highlighted:not-active:bg-(--ui-color-base-black-fixed)',
+      'data-[state=open]:bg-(--ui-color-base-black-fixed)/6 dark:data-[state=open]:bg-(--ui-color-base-black-fixed)',
       'transition-colors'
     ].join(' '),
-    itemLeadingIcon: [
-      'shrink-0',
-      'text-(--ui-color-design-plain-content-icon-secondary)',
-      'group-data-highlighted:text-(--ui-color-accent-main-primary)',
-      'group-data-[state=open]:text-(--ui-color-accent-main-primary)',
-      'group-data-[state=checked]:text-(--ui-color-accent-main-primary)',
-      'transition-colors'
-    ].join(' '),
+    itemLeadingIcon: 'size-[25px] shrink-0 text-(--ui-color-base-5)',
     itemLeadingAvatar: 'shrink-0',
     itemLeadingAvatarSize: '',
     itemWrapper: 'ms-[4px] flex-1 flex flex-col text-start min-w-0',
-    itemLabel: [
-      'max-w-60 truncate -mt-px',
-      'group-data-[state=checked]:text-(--ui-color-accent-main-primary)'
-    ].join(' '),
+    itemLabel: 'max-w-60 truncate -mt-px',
     itemDescription: 'max-w-60 truncate -mt-[6px] text-(--b24ui-typography-description-color) text-(length:--ui-font-size-sm)',
-    itemLabelExternalIcon: 'inline-block size-[16px] text-(--ui-color-design-plain-content-icon-secondary)'
+    itemLabelExternalIcon: 'inline-block size-[25px] text-(--ui-color-base-5)'
   },
   variants: {
     size: {
@@ -117,15 +108,8 @@ export default {
     },
     active: {
       true: {
-        item: [
-          'text-(--ui-color-accent-main-primary)',
-          'hover:text-(--ui-color-accent-main-primary)'
-        ].join(' '),
-        itemLeadingIcon: [
-          'text-(--ui-color-accent-main-primary)',
-          'hover:text-(--ui-color-accent-main-primary)',
-          'group-data-[state=open]:text-(--ui-color-accent-main-primary)'
-        ].join(' ')
+        item: 'bg-(--ui-color-base-black-fixed)/3',
+        itemLeadingIcon: ''
       },
       false: {}
     }

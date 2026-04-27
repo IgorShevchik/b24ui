@@ -52,14 +52,14 @@ onMounted(() => {
 
           <B24DropdownMenu
             :items="dropdownMenuItems"
-            arrow
             filter
             :content="{ side: 'bottom', align: 'center' }"
+            :b24ui="{ content: 'w-[270px]', viewport: 'min-w-[270px] w-[270px]' }"
           >
             <B24Button color="air-secondary-accent" :icon="MoreMIcon" />
 
             <template #custom-trailing>
-              <CircleCheckThinIcon class="shrink-0 size-lg text-(--ui-color-copilot-accent-primary)" />
+              <CircleCheckThinIcon class="shrink-0 size-[25px] text-(--ui-color-copilot-accent-primary)" />
             </template>
           </B24DropdownMenu>
         </div>
