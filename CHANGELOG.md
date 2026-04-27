@@ -1,5 +1,24 @@
 # Changelog
 
+## [2.6.1](https://github.com/bitrix24/b24ui/compare/v2.6.0...v2.6.1) (2026-04-27)
+
+### Features
+
+* CommandPalette): add `searchDelay` prop
+
+### Bug Fixes
+
+* ContentSearch/DashboardSearch: pick shared props from CommandPalette
+* ContentSearch: speed up navigation mapping
+* ChatMessage/ChatMessages: preserve generic message type in slot scope
+* Drawer: handle RTL mode
+* ContextMenu|DropdownMenu|EditorSuggestionMenu|InputMenu|NavigationMenu|Select: improve select state
+
+### Chore
+
+* scripts/b24-self-task: run AI with task description from bitrix24 (tsk:32364)
+* scripts/bx-translate-locales: run AI for translate
+
 ## [2.6.0](https://github.com/bitrix24/b24ui/compare/v2.5.3...v2.6.0) (2026-04-23)
 
 ### ⚠ BREAKING CHANGES

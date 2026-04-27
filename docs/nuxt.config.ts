@@ -225,6 +225,10 @@ const pagesFrameExamples = [
 ]
 
 const pagesService = [
+  // Prerender the homepage markdown so Vercel's filesystem check after the
+  // `/` → `/raw/index.md` rewrite (see `modules/md-rewrite.ts`) resolves
+  // to a static file, the same way `/docs/*.md` does.
+  '/raw/index.md',
   '/api/countries.json',
   '/api/phone-codes.json',
   '/api/locales.json',
@@ -309,8 +313,29 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
+    // Agent discovery Link headers on the homepage (RFC 8288, RFC 9727)
+    '/': {
+      headers: {
+        Link: [
+          '</sitemap.xml>; rel="sitemap"; type="application/xml"',
+          '</sitemap.md>; rel="describedby"; type="text/markdown"',
+          '</.well-known/api-catalog>; rel="api-catalog"; type="application/linkset+json"',
+          '</.well-known/mcp/server-card.json>; rel="service-desc"; type="application/json"',
+          '</docs>; rel="service-doc"; type="text/html"',
+          '</llms.txt>; rel="describedby"; type="text/plain"',
+          '</llms-full.txt>; rel="describedby"; type="text/plain"',
+          '</>; rel="alternate"; type="text/markdown"'
+        ].join(', '),
+        Vary: 'Accept, User-Agent'
+      }
+    },
     // @memo But at GitHub Pages we use /raw
     '/docs/**': { headers: { Vary: 'Accept, User-Agent' } },
+    // Our markdown rewrites (see `modules/md-rewrite.ts`) internally route
+    // `/` and `/docs/**` to `/raw/**`, so the `Vary` rules above no longer
+    // match the rewritten path. This rule re-applies it on the actual
+    // served response.
+    '/raw/**': { headers: { Vary: 'Accept, User-Agent' } },
     // v4 redirects - default root pages
     '/docs/': { redirect: '/docs/getting-started/', prerender: false },
     '/docs/getting-started/migration/': { redirect: '/docs/getting-started/migration/v2/', prerender: false },
@@ -359,6 +384,112 @@ export default defineNuxtConfig({
     server: {
       // Fix: "Blocked request. This host is not allowed" when using tunnels like ngrok
       allowedHosts: [...extraAllowedHosts]
+    },
+    optimizeDeps: {
+      include: [
+        'tailwindcss/colors',
+        'ai',
+        '@ai-sdk/vue',
+        'prettier',
+        'tailwind-variants',
+        '@comark/vue',
+        '@comark/vue/plugins/highlight',
+        'vaul-vue',
+        '@vueuse/integrations/useFuse',
+        '@floating-ui/dom',
+        '@tiptap/vue-3',
+        '@tiptap/suggestion',
+        '@tiptap/pm/state',
+        'shiki-transformer-color-highlight',
+        // @memo: custom sources
+        'fflate',
+        '@vueuse/core',
+        'json5',
+        'canvas-confetti',
+        '@internationalized/date',
+        '@bitrix24/b24icons-vue/outline/MobileSelectedIcon',
+        '@bitrix24/b24icons-vue/social/GitHubIcon',
+        '@bitrix24/b24icons-vue/outline/AiStarsIcon',
+        '@bitrix24/b24icons-vue/outline/RocketIcon',
+        '@bitrix24/b24icons-vue/common-service/Bitrix24Icon',
+        '@bitrix24/b24icons-vue/outline/TelegramIcon',
+        '@bitrix24/b24icons-vue/outline/AlertIcon',
+        '@bitrix24/b24icons-vue/outline/UndoIcon',
+        '@bitrix24/b24icons-vue/outline/CloseChatIcon',
+        '@bitrix24/b24icons-vue/outline/SearchIcon',
+        '@bitrix24/b24icons-vue/outline/FileIcon',
+        '@bitrix24/b24icons-vue/outline/TrashcanIcon',
+        '@bitrix24/b24icons-vue/main/CopilotAi2Icon',
+        '@bitrix24/b24icons-vue/outline/ContrastIcon',
+        '@bitrix24/b24icons-vue/outline/SunIcon',
+        '@bitrix24/b24icons-vue/outline/MoonIcon',
+        '@bitrix24/b24icons-vue/outline/ALetterIcon',
+        '@bitrix24/b24icons-vue/outline/LayersIcon',
+        '@bitrix24/b24icons-vue/crm/ItemIcon',
+        '@bitrix24/b24icons-vue/crm/FormIcon',
+        '@bitrix24/b24icons-vue/outline/BulletedListIcon',
+        '@bitrix24/b24icons-vue/outline/LinkIcon',
+        '@bitrix24/b24icons-vue/outline/OpenChatIcon',
+        '@bitrix24/b24icons-vue/button/PageIcon',
+        '@bitrix24/b24icons-vue/outline/TaskListIcon',
+        '@bitrix24/b24icons-vue/common-service/CodeIcon',
+        '@bitrix24/b24icons-vue/actions/BrushIcon',
+        '@bitrix24/b24icons-vue/main/EarthLanguageIcon',
+        '@bitrix24/b24icons-vue/main/EditPencilIcon',
+        '@bitrix24/b24icons-vue/outline/PlayLIcon',
+        '@bitrix24/b24icons-vue/outline/DeveloperResourcesIcon',
+        '@bitrix24/b24icons-vue/editor/ViewmodeCodeIcon',
+        '@bitrix24/b24icons-vue/editor/FormattingIcon',
+        '@bitrix24/b24icons-vue/outline/FormIcon',
+        '@bitrix24/b24icons-vue/outline/RobotIcon',
+        '@bitrix24/b24icons-vue/outline/ChevronDownSIcon',
+        '@bitrix24/b24icons-vue/animated/LoaderWaitIcon',
+        '@bitrix24/b24icons-vue/animated/LoaderClockIcon',
+        '@bitrix24/b24icons-vue/specialized/SpinnerIcon',
+        '@bitrix24/b24icons-vue/outline/BarcodeIcon',
+        '@bitrix24/b24icons-vue/outline/EarthIcon',
+        '@bitrix24/b24icons-vue/actions/Cross20Icon',
+        '@bitrix24/b24icons-vue/actions/ArrowToTheLeftIcon',
+        '@bitrix24/b24icons-vue/actions/ArrowToTheRightIcon',
+        '@bitrix24/b24icons-vue/outline/CheckLIcon',
+        '@bitrix24/b24icons-vue/outline/ChevronTopLIcon',
+        '@bitrix24/b24icons-vue/outline/ChevronLeftLIcon',
+        '@bitrix24/b24icons-vue/outline/ChevronRightLIcon',
+        '@bitrix24/b24icons-vue/actions/DoubleShevronsRightIcon',
+        '@bitrix24/b24icons-vue/actions/DoubleShevronsLeftIcon',
+        '@bitrix24/b24icons-vue/outline/CrossMIcon',
+        '@bitrix24/b24icons-vue/button/DotsIcon',
+        '@bitrix24/b24icons-vue/actions/Refresh6Icon',
+        '@bitrix24/b24icons-vue/actions/Minus30Icon',
+        '@bitrix24/b24icons-vue/actions/Plus30Icon',
+        '@bitrix24/b24icons-vue/main/Search2Icon',
+        '@bitrix24/b24icons-vue/outline/ChevronDownLIcon',
+        '@bitrix24/b24icons-vue/outline/ScreenIcon',
+        '@bitrix24/b24icons-vue/outline/TagIcon',
+        '@bitrix24/b24icons-vue/outline/InfoCircleIcon',
+        '@bitrix24/b24icons-vue/outline/IdeaLampIcon',
+        '@bitrix24/b24icons-vue/main/WarningIcon',
+        '@bitrix24/b24icons-vue/outline/CopyIcon',
+        '@bitrix24/b24icons-vue/outline/CircleCheckIcon',
+        '@bitrix24/b24icons-vue/outline/UploadFileIcon',
+        '@bitrix24/b24icons-vue/outline/ArrowDownLIcon',
+        '@bitrix24/b24icons-vue/outline/ArrowTopLIcon',
+        '@bitrix24/b24icons-vue/outline/StopLIcon',
+        '@bitrix24/b24icons-vue/outline/RefreshIcon',
+        '@bitrix24/b24icons-vue/main/SendIcon',
+        '@bitrix24/b24icons-vue/outline/DragLIcon',
+        '@bitrix24/b24icons-vue/outline/GoToLIcon',
+        '@bitrix24/b24icons-vue/outline/HamburgerMenuIcon',
+        '@bitrix24/b24icons-vue/outline/DesignIcon',
+        '@bitrix24/b24icons-vue/outline/FavoriteIcon',
+        '@bitrix24/b24icons-vue/outline/MoreMIcon',
+        '@bitrix24/b24icons-vue/file-type/NuxtIcon',
+        '@bitrix24/b24icons-vue/outline/DemonstrationOnIcon',
+        '@bitrix24/b24icons-vue/editor/EncloseTextInCodeTagIcon',
+        '@bitrix24/b24icons-vue/social/MdnwebdocsIcon',
+        '@bitrix24/b24icons-vue/crm/Refresh9Icon',
+        '@bitrix24/b24icons-vue/file-type/MarkdownIcon'
+      ]
     }
   },
 

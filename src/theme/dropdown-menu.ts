@@ -23,7 +23,14 @@ export default {
       'pointer-events-auto'
     ].join(' '),
     input: 'border-b border-default w-full',
-    empty: 'text-center text-description p-2.5 text-sm',
+    empty: [
+      'px-4.5 pt-4 pb-2',
+      'select-none outline-none whitespace-nowrap',
+      'text-center',
+      'text-(length:--popup-window-delimiter-font-size)/(--ui-font-line-height-lg)',
+      'text-(--b24ui-typography-legend-color)',
+      'font-(--ui-font-weight-normal)'
+    ].join(' '),
     viewport: [
       'relative',
       'w-full max-h-[40vh] min-w-48',
@@ -43,7 +50,7 @@ export default {
       'text-(--ui-color-base-3)',
       'bitrix-mobile:[&_[data-slot="itemLabel"]]:text-(--ui-color-base-5)',
       'font-(--ui-font-weight-normal)',
-      'after:ms-[10px] after:block after:flex-1 after:min-w-[15px] after:h-px after:bg-(--ui-color-divider-vibrant-default)'
+      'after:ms-2 after:block after:flex-1 after:min-w-3 after:h-px after:bg-(--ui-color-divider-vibrant-default)'
     ].join(' '),
     separator: [
       'bg-(--ui-color-divider-vibrant-default)',
@@ -54,7 +61,7 @@ export default {
       'group',
       'w-full h-9',
       'bitrix-mobile:h-10.5',
-      'px-4.5 pe-2 mt-(--menu-item-block-stack-space)',
+      'px-4.5 mt-(--menu-item-block-stack-space)',
       'bitrix-mobile:mt-0',
       'relative',
       'flex flex-row rtl:flex-row-reverse items-center gap-2',
@@ -67,35 +74,25 @@ export default {
       'hover:text-(--ui-color-base-1)',
       'data-highlighted:text-(--ui-color-base-1)',
       'data-[state=open]:text-(--ui-color-base-1)',
-      'hover:bg-(--ui-color-divider-optical-1-alt)',
-      'data-highlighted:bg-(--ui-color-divider-optical-1-alt)',
-      'data-[state=open]:bg-(--ui-color-divider-optical-1-alt)',
+      'hover:bg-(--ui-color-base-black-fixed)/3 dark:hover:bg-(--ui-color-base-black-fixed)',
+      'active:bg-(--ui-color-base-black-fixed)/6 dark:active:bg-(--ui-color-base-black-fixed)',
+      'data-highlighted:not-active:bg-(--ui-color-base-black-fixed)/3 dark:data-highlighted:not-active:bg-(--ui-color-base-black-fixed)',
+      'data-[state=open]:bg-(--ui-color-base-black-fixed)/6 dark:data-[state=open]:bg-(--ui-color-base-black-fixed)',
       'bitrix-mobile:data-[state=open]:bg-(--ui-color-bg-state-hover-default)',
       'transition-colors',
       'bitrix-mobile:[[data-slot="item"]+&]:border-t',
       'bitrix-mobile:border-t-(--ui-color-divider-vibrant-default)',
       'bitrix-mobile:data-highlighted:bg-(--ui-color-bg-state-hover-default)'
     ].join(' '),
-    itemLeadingIcon: [
-      'shrink-0',
-      'size-[25px]',
-      'text-(--ui-color-base-5)',
-      'group-data-highlighted:text-(--ui-color-accent-main-primary)',
-      'group-data-[state=open]:text-(--ui-color-accent-main-primary)',
-      'group-data-[state=checked]:text-(--ui-color-accent-main-primary)',
-      'transition-colors'
-    ].join(' '),
-    itemLeadingAvatar: 'shrink-0 size-[16px]', // @memo 18-2px
+    itemLeadingIcon: 'size-[25px] shrink-0 text-(--ui-color-base-5)',
+    itemLeadingAvatar: 'shrink-0 size-4 me-1',
     itemLeadingAvatarSize: '2xs', // @memo this wrong
     itemTrailing: 'ml-auto rtl:ml-0 rtl:mr-auto inline-flex gap-1.5 items-center',
-    itemTrailingIcon: 'shrink-0 size-[25px] text-(--ui-color-accent-main-primary)',
+    itemTrailingIcon: 'shrink-0 size-[25px] text-(--ui-color-base-5)',
     itemTrailingKbds: 'shrink-0 hidden lg:inline-flex items-center gap-0.5',
-    itemTrailingKbdsSize: 'md',
     itemWrapper: 'flex-1 flex flex-col text-start min-w-0',
-    itemLabel: [
-      'max-w-60 truncate -mt-px',
-      'group-data-[state=checked]:text-(--ui-color-accent-main-primary)'
-    ].join(' '),
+    itemTrailingKbdsSize: 'md',
+    itemLabel: 'max-w-60 truncate -mt-px',
     itemDescription: 'max-w-60 truncate -mt-[6px] text-(--b24ui-typography-description-color) text-(length:--ui-font-size-sm)',
     itemLabelExternalIcon: 'inline-block size-[25px] text-(--ui-color-base-5)'
   },
@@ -118,10 +115,7 @@ export default {
     },
     active: {
       true: {
-        item: [
-          'text-(--ui-color-accent-main-primary)',
-          'hover:text-(--ui-color-accent-main-primary)'
-        ].join(' '),
+        item: '', // bg-(--ui-color-base-black-fixed)/3
         itemLeadingIcon: [
           'text-(--ui-color-accent-main-primary)',
           'hover:text-(--ui-color-accent-main-primary)',
@@ -142,23 +136,18 @@ export default {
       active: false,
       class: {
         item: [
-          'text-(--b24ui-background) data-highlighted:text-(--b24ui-background-hover) data-[state=open]:text-(--b24ui-background-hover)'
+          'text-(--b24ui-background)',
+          'data-highlighted:text-(--b24ui-background-hover) data-[state=open]:text-(--b24ui-background-hover)'
         ].join(' '),
-        itemLeadingIcon: [
-          'text-(--b24ui-background) group-data-highlighted:text-(--b24ui-background-hover) group-data-[state=open]:text-(--b24ui-background-hover)'
-        ].join(' ')
+        itemLeadingIcon: 'text-(--b24ui-background)'
       }
     },
     {
       color: ['air-primary', 'air-primary-success', 'air-primary-alert', 'air-primary-copilot', 'air-primary-warning'],
       active: true,
       class: {
-        item: [
-          'text-(--b24ui-background-active)'
-        ].join(' '),
-        itemLeadingIcon: [
-          'text-(--b24ui-background-active) group-data-[state=open]:text-(--b24ui-background-active)'
-        ].join(' ')
+        item: 'text-(--b24ui-background-active)',
+        itemLeadingIcon: 'text-(--b24ui-background-active) group-data-[state=open]:text-(--b24ui-background-active)'
       }
     },
     {
@@ -177,11 +166,10 @@ export default {
       active: false,
       class: {
         item: [
-          'text-(--b24ui-background-active) data-highlighted:text-(--b24ui-background-hover) data-[state=open]:text-(--b24ui-background-hover)'
+          'text-(--b24ui-background-active)',
+          'data-highlighted:text-(--b24ui-background-hover) data-[state=open]:text-(--b24ui-background-hover)'
         ].join(' '),
-        itemLeadingIcon: [
-          'text-(--b24ui-icon) group-data-highlighted:text-(--b24ui-icon) group-data-[state=open]:text-(--b24ui-icon)'
-        ].join(' ')
+        itemLeadingIcon: 'text-(--b24ui-icon)'
       }
     },
     /* @deprecate This rule is deprecated and will be removed in version 3.0.0 */
@@ -189,12 +177,8 @@ export default {
       color: ['danger', 'success', 'warning', 'primary', 'secondary', 'collab', 'ai'],
       active: true,
       class: {
-        item: [
-          'text-(--b24ui-background-active)'
-        ].join(' '),
-        itemLeadingIcon: [
-          'text-(--b24ui-background-active) group-data-[state=open]:text-(--b24ui-background-active)'
-        ].join(' ')
+        item: 'text-(--b24ui-background-active)',
+        itemLeadingIcon: 'text-(--b24ui-background-active) group-data-[state=open]:text-(--b24ui-background-active)'
       }
     }
   ],

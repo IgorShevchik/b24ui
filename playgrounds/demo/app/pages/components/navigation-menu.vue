@@ -66,6 +66,9 @@ const items = [
       icon: GitHubIcon,
       to: 'https://github.com/bitrix24/b24ui',
       target: '_blank',
+      b24ui: {
+        linkLeadingIcon: 'size-[20px] ms-[3px] me-[3px]'
+      },
       tooltip: {
         text: 'Open on GitHub',
         kbds: ['meta', 'G']
@@ -76,7 +79,6 @@ const items = [
       label: 'Sales Analytics',
       hint: '500%',
       type: 'trigger' as NavigationMenuItem['type'],
-      active: true,
       activeClass: '',
       defaultOpen: true,
       chip: false,
@@ -133,7 +135,7 @@ const items = [
         :collapsed="collapsed"
         :items="items"
         :orientation="orientation"
-        class="data-[orientation=horizontal]:h-max data-[orientation=horizontal]:min-w-120 data-[orientation=vertical]:w-48 data-[orientation=vertical]:data-[collapsed=true]:w-6xl"
+        class="data-[orientation=horizontal]:h-max data-[orientation=horizontal]:min-w-120 data-[orientation=vertical]:w-[250px] data-[orientation=vertical]:data-[collapsed=true]:w-[40px]"
       />
       <Placeholder class="size-full mt-0" />
     </div>
