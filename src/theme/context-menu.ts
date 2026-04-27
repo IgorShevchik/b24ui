@@ -95,8 +95,12 @@ export default {
     },
     active: {
       true: {
-        item: 'bg-(--ui-color-base-black-fixed)/3',
-        itemLeadingIcon: ''
+        item: '', // bg-(--ui-color-base-black-fixed)/3
+        itemLeadingIcon: [
+          'text-(--ui-color-accent-main-primary)',
+          'hover:text-(--ui-color-accent-main-primary)',
+          'group-data-[state=open]:text-(--ui-color-accent-main-primary)'
+        ].join(' ')
       },
       false: {}
     },

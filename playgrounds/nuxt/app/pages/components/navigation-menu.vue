@@ -79,7 +79,6 @@ const items = [
       label: 'Sales Analytics',
       hint: '500%',
       type: 'trigger' as NavigationMenuItem['type'],
-      active: true,
       activeClass: '',
       defaultOpen: true,
       chip: false,

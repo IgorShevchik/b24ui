@@ -105,7 +105,7 @@ export default () => {
         itemLeadingChip: 'shrink-0 size-[16px]',
         itemLeadingChipSize: 'sm',
         itemTrailing: 'ml-auto rtl:ml-0 rtl:mr-auto inline-flex gap-1.5 items-center',
-        itemTrailingIcon: 'shrink-0 size-[25px] text-(--ui-color-base-5)',
+        itemTrailingIcon: 'shrink-0 size-[25px] text-(--ui-color-accent-main-primary)',
         itemWrapper: 'flex-1 flex flex-col min-w-0',
         itemLabel: 'truncate',
         itemDescription: 'truncate -mt-[6px] text-(--b24ui-typography-description-color) text-(length:--ui-font-size-sm)'

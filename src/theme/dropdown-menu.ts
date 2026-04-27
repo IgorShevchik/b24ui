@@ -23,7 +23,14 @@ export default {
       'pointer-events-auto'
     ].join(' '),
     input: 'border-b border-default w-full',
-    empty: 'text-center text-description px-4.5 pt-2 text-sm',
+    empty: [
+      'px-4.5 pt-4 pb-2',
+      'select-none outline-none whitespace-nowrap',
+      'text-center',
+      'text-(length:--popup-window-delimiter-font-size)/(--ui-font-line-height-lg)',
+      'text-(--b24ui-typography-legend-color)',
+      'font-(--ui-font-weight-normal)'
+    ].join(' '),
     viewport: [
       'relative',
       'w-full max-h-[40vh] min-w-48',
@@ -108,8 +115,12 @@ export default {
     },
     active: {
       true: {
-        item: 'bg-(--ui-color-base-black-fixed)/3',
-        itemLeadingIcon: ''
+        item: '', // bg-(--ui-color-base-black-fixed)/3
+        itemLeadingIcon: [
+          'text-(--ui-color-accent-main-primary)',
+          'hover:text-(--ui-color-accent-main-primary)',
+          'group-data-[state=open]:text-(--ui-color-accent-main-primary)'
+        ].join(' ')
       },
       false: {}
     },
