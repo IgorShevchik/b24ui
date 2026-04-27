@@ -17,6 +17,7 @@
 ### Chore
 
 * chore(scripts/b24-self-task): run Claude AI with task description from bitrix24 (tsk:32364)
+* chore(scripts/bx-translate-locales): run Claude AI for translate
 
 ## [2.6.0](https://github.com/bitrix24/b24ui/compare/v2.5.3...v2.6.0) (2026-04-23)
 
